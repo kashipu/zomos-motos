@@ -34,7 +34,17 @@ graph TD
 - **Docker:** Contenerización de todos los servicios para paridad absoluta entre desarrollo y producción.
 - **Dokploy:** Orquestador simplificado para gestionar despliegues, volúmenes y certificados SSL.
 
-## Flujo de Datos
-1.  **Carga de Productos:** Strapi entrega el JSON mediante `/api/products`.
-2.  **Generación de Sitio:** Astro consume la API en tiempo de construcción (SSG) o ejecución (SSR).
-3.  **Conversión:** El carrito (React Island) interactúa con el backend para iniciar el flujo de WhatsApp.
+## Flujo de Datos y Conversión
+
+1.  **Catálogo:** Astro consume productos de Strapi (`/api/products`) con población automática de imágenes.
+2.  **Tracking de WhatsApp (Embudo):**
+    - **INTENT (Click):** Cuando el usuario pulsa "Finalizar por WhatsApp", el frontend genera un evento en el backend enviando el snapshot del carrito. Se genera un `tracking_id` único (ej: `ZM-5K8A2`).
+    - **OPEN (Seguimiento):** El backend devuelve una URL de redirección: `http://localhost:1338/api/wa/ZM-5K8A2`.
+    - **Redirección:** Al acceder a esa URL, el backend registra el evento `OPEN` y redirige al usuario a la API de WhatsApp con el mensaje pre-formateado.
+
+## Resumen de Mensaje WhatsApp
+El mensaje enviado incluye:
+- Referencia de pedido.
+- Lista detallada de productos (Nombre, SKU, Cantidad).
+- Desglose de precios unitarios y subtotales.
+- Total de la compra en formato moneda de Colombia (COP).

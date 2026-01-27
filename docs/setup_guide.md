@@ -139,13 +139,15 @@ cd backend
 Asegúrate de que el archivo `backend/.env` tenga las variables correctas:
 ```ini
 HOST=0.0.0.0
-PORT=1337
+PORT=1338
 DATABASE_CLIENT=postgres
 DATABASE_HOST=localhost
 DATABASE_PORT=5432
 DATABASE_NAME=zomos_db
 DATABASE_USERNAME=postgres
 DATABASE_PASSWORD=postgres
+PUBLIC_STRAPI_URL=http://localhost:1338
+WHATSAPP_NUMBER=573028336170
 ```
 
 **Iniciar Backend:**
@@ -153,7 +155,7 @@ DATABASE_PASSWORD=postgres
 # En terminal /backend
 bun dev
 ```
-*El backend debe responder en `http://localhost:1337/admin`.*
+*El backend debe responder en `http://localhost:1338/admin`.*
 
 ---
 
@@ -165,20 +167,15 @@ Abre **otra ventana de PowerShell** para el frontend.
 # Vuelve a la raíz
 cd ..
 
-# 1. Crear Astro App
-# Usamos bunx para una instalación rápida
-bunx create-astro@latest storefront -- --template minimal --no-install --no-git
-
-# 2. Instalar dependencias e integraciones
+# 1. Crear Astro App (Ya creada en este repositorio)
 cd storefront
 bun install
-bun astro add react tailwind sitemap
 ```
 
 **Configuración (.env):**
 Crea el archivo `storefront/.env`:
 ```ini
-STRAPI_URL=http://localhost:1337
+PUBLIC_STRAPI_URL=http://localhost:1338
 ```
 
 **Iniciar Frontend:**
@@ -190,14 +187,26 @@ bun run dev
 
 ---
 
-## 6. Comandos Útiles (Cheatsheet Windows)
+## 6. Comandos Útiles y Solución de Problemas
+
+### Puertos bloqueados en Windows
+Si al ejecutar `bun dev` recibes el error `The port 1338 is already used`, ejecuta estos comandos en PowerShell (como Administrador si es necesario):
+
+```powershell
+# 1. Encontrar el proceso que usa el puerto
+netstat -ano | findstr :1338
+
+# 2. Matar el proceso (reemplaza PID por el número de la última columna)
+taskkill /F /PID <PID>
+```
+
+### Tabla de Comandos Rápidos
 
 | Acción | Comando PowerShell |
 | :--- | :--- |
 | **Levantar DB** | `docker compose up -d` (en raíz) |
 | **Apagar DB** | `docker compose down` |
-| **Ver Logs Backend** | `Get-Content backend.log -Wait` (si usas logs a archivo) |
-| **Limpiar puertos** | Si un puerto se queda pegado: `Get-Process -Id (Get-NetTCPConnection -LocalPort 1337).OwningProcess | Stop-Process` |
+| **Limpiar Git Index** | `git rm -r --cached .` seguido de `git add .` |
 
 ---
 

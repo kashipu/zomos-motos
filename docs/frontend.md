@@ -1,44 +1,29 @@
-# Arquitectura Frontend - Zomos Motos Storefront (Astro)
+# Arquitectura Frontend - Zomos Motos Storefront (Astro 5)
 
 ## Stack Tecnológico
-- **Framework:** [Astro](https://astro.build/) (version 4+)
+- **Framework:** [Astro](https://astro.build/) (v5.0+)
 - **Lenguaje:** TypeScript
 - **Estilos:** Tailwind CSS
-- **Componentes UI:** shadcn/ui + Lucide Icons (integrado vía React)
-- **Estado Local:** Nanostores (ligero y compatible con Astro/React)
-- **Data Fetching:** Fetch API estándar (en componentes Astro para SSG/SSR)
+- **Componentes UI:** React 18 + Lucide Icons
+- **Estado Local:** Nanostores (con persistencia local)
 
-## Estructura de Directorios
-```
-/storefront
-  /src
-    /pages         # Rutas (index.astro, productos/[slug].astro)
-    /components    # Componentes .astro y .tsx
-      /ui          # shadcn/ui (React)
-      /common      # Header, Footer
-    /layouts       # Layout base (Layout.astro)
-    /lib           # Clientes API (strapi.ts)
-    /store         # Nanostores para el carrito
-  /public          # Assets estáticos
-```
+## Componentes Críticos (React Islands)
 
-## Funcionalidades Clave
+### 1. `AddToCart.tsx`
+Botón hidratado en el cliente que añade ítems al carrito.
+- **Dato:** Incluye `sku`, `price` e `image`.
+- **Estado:** Interactúa con el store de Nanostores.
 
-### 1. Catálogo (Astro Pages)
-- **Listado:** Generado estáticamente o mediante SSR para máxima velocidad.
-- **Detalle:** Uso de parámetros dinámicos para slugs de productos.
-- **Islands:** El selector de variantes y fotos puede ser un componente interactivo.
+### 2. `CartDrawer.tsx`
+Isla reactiva que maneja el resumen de compra y totales.
+- **Checkout:** Llama al backend (puerto 1338) para registrar el `INTENT`.
+- **Imágenes:** Procesa las URLs de Strapi usando el helper local.
 
-### 2. Carrito (Nanostores)
-- El carrito se gestiona mediante Nanostores para que sea accesible tanto desde componentes Astro como desde componentes React (islas).
-- Persistencia en `localStorage`.
+## Integración y Utilidades
+Ubicadas en `src/lib/strapi.ts`:
 
-### 3. Checkout WhatsApp
-- Botón interactivo que recopila los datos del carrito.
-- Llamada a `POST /api/checkout/whatsapp` en Strapi.
-- Redirección final gestionada por el backend.
+- **queryStrapi:** Función genérica para obtener datos del CMS.
+- **getStrapiMedia:** Resuelve automáticamente las URLs de las imágenes, manejando el prefijo del host de Strapi (útil para desarrollo local).
 
-## Notas de Implementación
-- **Optimización:** Usar el componente `<Image />` nativo de Astro.
-- **SEO:** Metadata autogenerada en el layout base y páginas de producto.
-- **React en Astro:** Configurar la integración de React para usar shadcn (@astrojs/react).
+## Gestión de Estado (Nanostores)
+El store se define en `src/store/cart.ts` usando `@nanostores/persistent`. Esto garantiza que los clientes no pierdan su carrito al navegar por la web o recargar la página.

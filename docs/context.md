@@ -34,23 +34,22 @@ Tienda enfocada en:
 ---
 
 ## Definición de “Hello-World” (Resultado Verificable)
-Al finalizar esta fase debe existir:
+✅ Fase completada satisfactoriamente.
 
-1.  **Storefront Web (Frontend)**
-    - Home / listado / detalle de producto
-    - Carrito
-    - Botón “Comprar por WhatsApp”
+1.  **[x] Storefront Web (Frontend)**
+    - Home / listado / detalle de producto (Astro)
+    - Carrito (Nanostores + React)
+    - Botón “Comprar por WhatsApp” integrado.
 
-2.  **Backend (API + admin)**
-    - CRUD de productos (admin)
-    - Subida de imágenes (y video si aplica, con límites)
-    - Endpoint para crear “pedido draft” con ID
+2.  **[x] Backend (API + admin)**
+    - CRUD de productos en Strapi v5.
+    - Subida de imágenes con población automática.
+    - Endpoint para creación de eventos de tracking único.
 
-3.  **Tracking Robusto de WhatsApp** (Clave)
-    - Saber cuántos carritos llegaron **hasta el paso de abrir WhatsApp**
-    - Métricas básicas: intents, aperturas, top productos, campañas (UTM)
-
-> *Nota: Con click-to-chat no hay confirmación técnica de “mensaje enviado”. Medimos “llegó al enlace que abre WhatsApp” como proxy fuerte.*
+3.  **[x] Tracking Robusto de WhatsApp**
+    - Registro de intención (`INTENT`) y apertura (`OPEN`).
+    - Redirección inteligente mediante códigos cortos (`ZM-XXXXX`).
+    - Mensajes formateados con SKU, precios y total en COP.
 
 ---
 

@@ -1,51 +1,35 @@
-# Arquitectura Backend - Zomos Motos API (Strapi)
+# Arquitectura Backend - Zomos Motos API (Strapi v5)
 
 ## Stack Tecnológico
 - **Core:** [Strapi v5+](https://strapi.io/) - Runtime: **Bun**
 - **Base de Datos:** PostgreSQL
-- **Cache:** Redis (Opcional)
-- **Almacenamiento:** Strapi Local Upload Provider (Volumen Docker)
+- **Puerto local:** 1338 (para evitar conflictos en Windows)
 
 ## Estructura de Datos (Content Types)
 
 ### 1. Producto (Product)
-- **Basic:** Nombre, Descripción, Precio, SKU.
-- **Media:** Galería de Imágenes (Strapi Media Library).
-- **Relations:** Categorías, Variantes (Componentes o Colección relacionada).
-- **Metadatos:** Compatibilidad (Moto, Año).
+- **Campos:** Nombre, Descripción, Precio, SKU, Imágenes.
+- **Relaciones:** Categoría (Many-To-One).
+- **Populado automático:** Las imágenes se incluyen por defecto en las consultas desde el Storefront.
 
-### 2. Evento WhatsApp (WhatsAppEvent) - *Custom API*
+### 2. Evento WhatsApp (WhatsAppEvent)
 Colección para trackear el embudo de ventas.
-- `type`: Enumeration (`INTENT`, `OPEN`)
-- `tracking_id`: UID único
-- `payload`: JSON (Carrito, UTMs)
+- **Tipo:** `INTENT` (Click en carrito) o `OPEN` (Llegada a WhatsApp).
+- **ID de seguimiento:** `tracking_id` (String no único para permitir historial de eventos por código).
+- **Payload:** JSON con el snapshot del carrito en el momento del evento.
 
-## Servicios Personalizados
+## Lógica y Endpoints Personalizados
 
-### WhatsApp Tracking logic
-Implementado vía controladores personalizados en Strapi:
+### 1. Intento de Compra (`POST /api/checkout/whatsapp`)
+- **Acción:** Registra un evento `INTENT`.
+- **Retorno:** Devuelve una URL absoluta (usando `PUBLIC_STRAPI_URL`) hacia el proxy de seguimiento.
 
-#### Endpoints
-- `POST /api/checkout/whatsapp`
-  - **Input:** JSON con items del carrito y metadatos.
-  - **Lógica:**
-    1.  Genera un `tracking_id` (ej: `ZM-5542`).
-    2.  Crea un registro en `WhatsAppEvent` con tipo `INTENT`.
-    3.  Retorna la URL de redirección: `/api/wa/{tracking_id}`.
+### 2. Proxy de Redirección (`GET /api/wa/:tracking_id`)
+- **Acción:** Registra el evento `OPEN`.
+- **Mensaje:** Construye un mensaje profesional en WhatsApp usando datos del carrito y formato Unicode para asegurar compatibilidad de emojis.
+- **Redirección:** Envía al usuario a `wa.me` con el número configurado en `WHATSAPP_NUMBER`.
 
-- `GET /api/wa/:tracking_id`
-  - **Lógica:**
-    1.  Busca el evento original por `tracking_id`.
-    2.  Crea un nuevo registro `WhatsAppEvent` con tipo `OPEN`.
-    3.  Construye el mensaje de WhatsApp.
-    4.  Redirige (302) a `wa.me`.
-
-## Seguridad
-- **Admin:** Protegido por Strapi Auth System.
-- **API:** Uso de API Tokens o acceso público configurado en Roles & Permissions.
-- **CORS:** Configurado en `config/middlewares.js` para permitir el Storefront.
-
-## Por qué Bun?
-- **Velocidad:** Strapi arranca y recarga (hot-reload) mucho más rápido con Bun.
-- **Gestión de dependencias:** Instalación casi instantánea.
-- **Native Fetch:** Mejor rendimiento en llamadas externas.
+## Automatización (Bootstrap)
+El sistema incluye lógica en `src/index.ts` para:
+- **Seed automático:** Carga productos iniciales desde `seed_products.json`.
+- **Gestión de Permisos:** Configura automáticamente los roles públicos para permitir `find` y `findOne` en productos y categorías sin intervención manual.

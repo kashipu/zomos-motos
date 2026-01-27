@@ -1,0 +1,26 @@
+{
+  "kind": "collectionType",
+  "collectionName": "whats_app_events",
+  "info": {
+    "singularName": "whats-app-event",
+    "pluralName": "whats-app-events",
+    "displayName": "WhatsAppEvent"
+  },
+  "options": {
+    "draftAndPublish": false
+  },
+  "attributes": {
+    "type": {
+      "type": "enumeration",
+      "enum": ["INTENT", "OPEN"],
+      "required": true
+    },
+    "tracking_id": {
+      "type": "string",
+      "required": true
+    },
+    "payload": {
+      "type": "json"
+    }
+  }
+}

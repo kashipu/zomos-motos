@@ -1,0 +1,14 @@
+# Astro Exclusions
+node_modules/
+dist/
+.astro/
+
+# Environment
+.env
+.env.local
+
+# Logs
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*

@@ -1,0 +1,16 @@
+# Strapi Exclusions
+node_modules/
+dist/
+.cache/
+.tmp/
+build/
+.strapi/
+
+# Environment
+.env
+
+# Database
+.sqlite
+
+# Media uploads (usually handled by external storage in production)
+public/uploads/

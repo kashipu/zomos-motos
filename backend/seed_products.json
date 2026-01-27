@@ -1,0 +1,16 @@
+[
+  {
+    "name": "Casco Airoh Aviator 3",
+    "price": 2800000,
+    "description": "Casco Off-Road de alta gama en fibra de carbono. Máxima ventilación y ligereza.",
+    "sku": "CAS-ARH-A3",
+    "status": "published"
+  },
+  {
+    "name": "Guantes Alpinestars SMX-1 Air V2",
+    "price": 320000,
+    "description": "Guantes de calle ligeros con malla técnica y protección de nudillos.",
+    "sku": "GUA-AST-SMX1",
+    "status": "published"
+  }
+]

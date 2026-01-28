@@ -1,20 +1,20 @@
 # Build Stage
-FROM oven/bun:1.1 as build
+FROM oven/bun:1.1.45 as build
 
 # Set node env
 ARG NODE_ENV=production
 ENV NODE_ENV=${NODE_ENV}
 
 WORKDIR /opt/
-COPY package.json bun.lock ./
-RUN bun install --production
+COPY package.json ./
+RUN bun install --production --no-save
 
 WORKDIR /opt/app
 COPY . .
 RUN bun run build
 
 # Production Stage
-FROM oven/bun:1.1
+FROM oven/bun:1.1.45
 
 ARG NODE_ENV=production
 ENV NODE_ENV=${NODE_ENV}

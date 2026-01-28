@@ -1,11 +1,11 @@
 # Build Stage
-FROM oven/bun:1.1 as build
+FROM oven/bun:1.1.45 as build
 
 WORKDIR /app
 
 # Install dependencies
-COPY package.json bun.lock ./
-RUN bun install
+COPY package.json ./
+RUN bun install --no-save
 
 # Copy source and build
 COPY . .

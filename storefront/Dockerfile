@@ -17,7 +17,9 @@ COPY . .
 # Build the application
 # We use standard npm run build which calls "astro build"
 ARG PUBLIC_STRAPI_URL
+ARG PUBLIC_DEBUG_MODE
 ENV PUBLIC_STRAPI_URL=${PUBLIC_STRAPI_URL}
+ENV PUBLIC_DEBUG_MODE=${PUBLIC_DEBUG_MODE}
 RUN npm run build
 
 # 2. Runtime Stage

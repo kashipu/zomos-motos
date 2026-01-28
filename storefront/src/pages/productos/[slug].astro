@@ -3,20 +3,26 @@ import Layout from "@/layouts/Layout.astro";
 import { queryStrapi, getStrapiMedia } from "@/lib/strapi";
 import AddToCart from "@/components/AddToCart";
 
-export async function getStaticPaths() {
-  try {
-    const products = await queryStrapi<any[]>("products");
-    return products.map((product: any) => ({
-      params: { slug: product.documentId },
-      props: { product },
-    }));
-  } catch (e) {
-    console.error("Failed to generate static paths:", e);
-    return [];
-  }
-}
+export const prerender = false;
 
-const { product } = Astro.props;
+const { slug } = Astro.params;
+
+let product = null;
+
+try {
+  if (!slug) throw new Error("No slug provided");
+  const data = await queryStrapi<any[]>("products", {
+    params: {
+      "filters[documentId][$eq]": slug,
+    },
+  });
+
+  if (data && data.length > 0) {
+    product = data[0];
+  }
+} catch (e) {
+  console.error(`Failed to fetch product with slug ${slug}:`, e);
+}
 
 if (!product) {
   return Astro.redirect("/404");

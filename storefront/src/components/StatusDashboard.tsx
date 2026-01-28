@@ -119,14 +119,32 @@ export default function StatusDashboard() {
         <div>
             <h1 className="text-3xl font-bold text-gray-900 dark:text-white">System Status</h1>
             <p className="text-gray-500 mt-1">Real-time monitoring of infrastructure and content</p>
-            <div className={`mt-2 inline-flex items-center gap-2 px-3 py-1 rounded-md text-xs font-mono ${
+            <div className={`mt-2 inline-flex flex-col gap-1 px-3 py-2 rounded-md font-mono ${
               import.meta.env.PUBLIC_STRAPI_URL?.includes('localhost') 
               ? 'bg-red-50 text-red-600 border border-red-100' 
               : 'bg-blue-50 text-blue-600 border border-blue-100'
             }`}>
-              <Server className="w-3 h-3" />
-              API URL: {import.meta.env.PUBLIC_STRAPI_URL || 'http://localhost:1337'}
-              {import.meta.env.PUBLIC_STRAPI_URL?.includes('localhost') && ' ⚠️ (Warning: Pointing to Localhost)'}
+              <div className="flex items-center gap-2 text-xs">
+                <Server className="w-3 h-3" />
+                <span>API URL: {import.meta.env.PUBLIC_STRAPI_URL || 'http://localhost:1337'}</span>
+              </div>
+              {import.meta.env.PUBLIC_DEBUG_MODE === 'true' && (
+                <div className="text-[10px] mt-2 pt-2 border-t border-current opacity-70">
+                  <strong>Build-time Env Check:</strong>
+                  <ul className="list-disc list-inside mt-1">
+                    {Object.keys(import.meta.env)
+                      .filter(key => key.startsWith('PUBLIC_'))
+                      .map(key => (
+                        <li key={key}>{key}: {import.meta.env[key] ? '✅ Set' : '❌ Empty'}</li>
+                      ))
+                    }
+                  </ul>
+                  <p className="mt-1 text-[9px]">MODE: {import.meta.env.MODE}</p>
+                </div>
+              )}
+              {import.meta.env.PUBLIC_STRAPI_URL?.includes('localhost') && (
+                <p className="text-[10px] mt-1 font-bold">⚠️ Error: Pointing to Localhost (Build-time injection failed)</p>
+              )}
             </div>
         </div>
         <button 

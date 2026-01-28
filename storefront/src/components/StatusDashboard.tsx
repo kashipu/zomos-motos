@@ -119,6 +119,15 @@ export default function StatusDashboard() {
         <div>
             <h1 className="text-3xl font-bold text-gray-900 dark:text-white">System Status</h1>
             <p className="text-gray-500 mt-1">Real-time monitoring of infrastructure and content</p>
+            <div className={`mt-2 inline-flex items-center gap-2 px-3 py-1 rounded-md text-xs font-mono ${
+              import.meta.env.PUBLIC_STRAPI_URL?.includes('localhost') 
+              ? 'bg-red-50 text-red-600 border border-red-100' 
+              : 'bg-blue-50 text-blue-600 border border-blue-100'
+            }`}>
+              <Server className="w-3 h-3" />
+              API URL: {import.meta.env.PUBLIC_STRAPI_URL || 'http://localhost:1337'}
+              {import.meta.env.PUBLIC_STRAPI_URL?.includes('localhost') && ' ⚠️ (Warning: Pointing to Localhost)'}
+            </div>
         </div>
         <button 
           onClick={checkStatus}

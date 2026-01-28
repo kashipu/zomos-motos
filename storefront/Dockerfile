@@ -4,8 +4,8 @@ FROM oven/bun:1.1.45 as build
 WORKDIR /app
 
 # Install dependencies
-COPY package.json ./
-RUN bun install --no-save
+COPY package.json bun.lock ./
+RUN bun install
 
 # Copy source and build
 COPY . .

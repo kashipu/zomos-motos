@@ -33,10 +33,20 @@ export default function StatusDashboard() {
     const startTime = Date.now();
     
     const apiUrl = import.meta.env.PUBLIC_STRAPI_URL || 'http://localhost:1337';
+    const debugMode = import.meta.env.PUBLIC_DEBUG_MODE === 'true';
+
+    if (debugMode) {
+      console.log(`[DEBUG] Attempting to connect to: ${apiUrl}`);
+    }
 
     try {
       // 1. Check Health (Backend + DB)
       const response = await fetch(`${apiUrl}/api/health-check`);
+      
+      if (debugMode) {
+        console.log(`[DEBUG] Health check response status: ${response.status}`);
+      }
+
       const data = await response.json();
       
       const endTime = Date.now();
@@ -46,6 +56,11 @@ export default function StatusDashboard() {
       let productStatus: StatusState['products'] = { status: 'ok', count: 0 };
       try {
         const prodResponse = await fetch(`${apiUrl}/api/products`);
+        
+        if (debugMode) {
+          console.log(`[DEBUG] Products API response status: ${prodResponse.status}`);
+        }
+
         if (prodResponse.status === 403 || prodResponse.status === 401) {
             productStatus = { status: 'forbidden', count: 0, message: 'Missing Public Permissions' };
         } else if (!prodResponse.ok) {
@@ -60,6 +75,9 @@ export default function StatusDashboard() {
             };
         }
       } catch (prodErr) {
+        if (debugMode) {
+          console.error(`[DEBUG] Products API fetch failure:`, prodErr);
+        }
         productStatus = { status: 'error', count: 0, message: 'Fetch Failed' };
       }
 
@@ -75,6 +93,9 @@ export default function StatusDashboard() {
         throw new Error('Invalid response from server');
       }
     } catch (err) {
+      if (debugMode) {
+        console.error(`[DEBUG] Connection error reaching ${apiUrl}:`, err);
+      }
       setStatus({
         backend: 'disconnected',
         database: 'disconnected',

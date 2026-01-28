@@ -1,0 +1,254 @@
+import { useState, useEffect } from 'react';
+import { Activity, Database, Server, Clock, RefreshCw, CheckCircle, XCircle, Package, Lock, AlertCircle } from 'lucide-react';
+
+interface StatusState {
+  backend: 'connected' | 'disconnected' | 'loading';
+  database: 'connected' | 'disconnected' | 'unknown';
+  products: {
+    status: 'ok' | 'error' | 'forbidden' | 'empty' | 'loading';
+    count: number;
+    message?: string;
+  };
+  latency: number | null;
+  lastChecked: string | null;
+  error?: string;
+}
+
+export default function StatusDashboard() {
+  const [status, setStatus] = useState<StatusState>({
+    backend: 'loading',
+    database: 'unknown',
+    products: { status: 'loading', count: 0 },
+    latency: null,
+    lastChecked: null
+  });
+
+  const checkStatus = async () => {
+    setStatus(prev => ({ 
+        ...prev, 
+        backend: 'loading', 
+        products: { ...prev.products, status: 'loading' },
+        error: undefined 
+    }));
+    const startTime = Date.now();
+    
+    const apiUrl = import.meta.env.PUBLIC_STRAPI_URL || 'http://localhost:1337';
+
+    try {
+      // 1. Check Health (Backend + DB)
+      const response = await fetch(`${apiUrl}/api/health-check`);
+      const data = await response.json();
+      
+      const endTime = Date.now();
+      const latency = endTime - startTime;
+
+      // 2. Check Products (Content Permissions)
+      let productStatus: StatusState['products'] = { status: 'ok', count: 0 };
+      try {
+        const prodResponse = await fetch(`${apiUrl}/api/products`);
+        if (prodResponse.status === 403 || prodResponse.status === 401) {
+            productStatus = { status: 'forbidden', count: 0, message: 'Missing Public Permissions' };
+        } else if (!prodResponse.ok) {
+            productStatus = { status: 'error', count: 0, message: `HTTP ${prodResponse.status}` };
+        } else {
+            const prodData = await prodResponse.json();
+            const count = prodData.data?.length || 0;
+            productStatus = { 
+                status: count > 0 ? 'ok' : 'empty', 
+                count,
+                message: count === 0 ? 'No products found' : undefined
+            };
+        }
+      } catch (prodErr) {
+        productStatus = { status: 'error', count: 0, message: 'Fetch Failed' };
+      }
+
+      if (response.ok && data.status === 'ok') {
+        setStatus({
+          backend: 'connected',
+          database: data.database || 'unknown',
+          products: productStatus,
+          latency: data.latency || latency,
+          lastChecked: new Date().toLocaleTimeString()
+        });
+      } else {
+        throw new Error('Invalid response from server');
+      }
+    } catch (err) {
+      setStatus({
+        backend: 'disconnected',
+        database: 'disconnected',
+        products: { status: 'error', count: 0, message: 'Unreachable' },
+        latency: null,
+        lastChecked: new Date().toLocaleTimeString(),
+        error: 'Failed to connect to backend'
+      });
+    }
+  };
+
+  useEffect(() => {
+    checkStatus();
+    const interval = setInterval(checkStatus, 30000); // Poll every 30s
+    return () => clearInterval(interval);
+  }, []);
+
+  return (
+    <div className="max-w-6xl mx-auto p-6 space-y-8">
+      <div className="flex items-center justify-between">
+        <div>
+            <h1 className="text-3xl font-bold text-gray-900 dark:text-white">System Status</h1>
+            <p className="text-gray-500 mt-1">Real-time monitoring of infrastructure and content</p>
+        </div>
+        <button 
+          onClick={checkStatus}
+          className="flex items-center gap-2 px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg transition-colors"
+        >
+          <RefreshCw className={`w-4 h-4 ${status.backend === 'loading' ? 'animate-spin' : ''}`} />
+          Refresh
+        </button>
+      </div>
+
+      <div className="grid md:grid-cols-3 gap-6">
+        {/* Backend Status Card */}
+        <div className="bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-100 dark:border-gray-700 p-6">
+          <div className="flex items-start justify-between mb-4">
+            <div className="flex items-center gap-3">
+              <div className="p-3 bg-blue-50 dark:bg-blue-900/20 rounded-lg">
+                <Server className="w-6 h-6 text-blue-600 dark:text-blue-400" />
+              </div>
+              <div>
+                <h3 className="font-semibold text-gray-900 dark:text-white">Backend API</h3>
+                <p className="text-sm text-gray-500">Strapi CMS Server</p>
+              </div>
+            </div>
+            {status.backend === 'connected' ? (
+              <span className="flex items-center gap-1.5 px-3 py-1 bg-green-100 text-green-700 text-sm font-medium rounded-full">
+                <CheckCircle className="w-4 h-4" /> Operational
+              </span>
+            ) : status.backend === 'loading' ? (
+              <span className="flex items-center gap-1.5 px-3 py-1 bg-yellow-100 text-yellow-700 text-sm font-medium rounded-full">
+                <Activity className="w-4 h-4 animate-pulse" /> Checking...
+              </span>
+            ) : (
+              <span className="flex items-center gap-1.5 px-3 py-1 bg-red-100 text-red-700 text-sm font-medium rounded-full">
+                <XCircle className="w-4 h-4" /> Down
+              </span>
+            )}
+          </div>
+          
+          <div className="space-y-4">
+            <div className="flex items-center justify-between p-3 bg-gray-50 dark:bg-gray-700/30 rounded-lg">
+              <span className="text-gray-600 dark:text-gray-400 text-sm flex items-center gap-2">
+                <Clock className="w-4 h-4" /> Response Time
+              </span>
+              <span className={`font-mono font-medium ${
+                (status.latency || 0) > 500 ? 'text-yellow-600' : 'text-gray-900 dark:text-white'
+              }`}>
+                {status.latency ? `${status.latency}ms` : '-'}
+              </span>
+            </div>
+            {status.error && (
+                <div className="p-3 bg-red-50 text-red-600 text-sm rounded-lg">
+                    {status.error}
+                </div>
+            )}
+          </div>
+        </div>
+
+        {/* Database Status Card */}
+        <div className="bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-100 dark:border-gray-700 p-6">
+          <div className="flex items-start justify-between mb-4">
+            <div className="flex items-center gap-3">
+              <div className="p-3 bg-purple-50 dark:bg-purple-900/20 rounded-lg">
+                <Database className="w-6 h-6 text-purple-600 dark:text-purple-400" />
+              </div>
+              <div>
+                <h3 className="font-semibold text-gray-900 dark:text-white">Database</h3>
+                <p className="text-sm text-gray-500">Connection Status</p>
+              </div>
+            </div>
+            {status.database === 'connected' ? (
+              <span className="flex items-center gap-1.5 px-3 py-1 bg-green-100 text-green-700 text-sm font-medium rounded-full">
+                <CheckCircle className="w-4 h-4" /> Operational
+              </span>
+            ) : status.backend === 'disconnected' ? (
+              <span className="flex items-center gap-1.5 px-3 py-1 bg-gray-100 text-gray-500 text-sm font-medium rounded-full">
+                <XCircle className="w-4 h-4" /> Unreachable
+              </span>
+            ) : (
+              <span className="flex items-center gap-1.5 px-3 py-1 bg-red-100 text-red-700 text-sm font-medium rounded-full">
+                <XCircle className="w-4 h-4" /> Error
+              </span>
+            )}
+          </div>
+           <div className="space-y-4">
+            <div className="flex items-center justify-between p-3 bg-gray-50 dark:bg-gray-700/30 rounded-lg">
+              <span className="text-gray-600 dark:text-gray-400 text-sm flex items-center gap-2">
+                <Activity className="w-4 h-4" /> Last Checked
+              </span>
+               <span className="font-mono text-gray-900 dark:text-white font-medium">
+                {status.lastChecked || 'Never'}
+              </span>
+            </div>
+          </div>
+        </div>
+
+        {/* Content API Status Card (NEW) */}
+        <div className="bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-100 dark:border-gray-700 p-6">
+          <div className="flex items-start justify-between mb-4">
+            <div className="flex items-center gap-3">
+              <div className="p-3 bg-orange-50 dark:bg-orange-900/20 rounded-lg">
+                <Package className="w-6 h-6 text-orange-600 dark:text-orange-400" />
+              </div>
+              <div>
+                <h3 className="font-semibold text-gray-900 dark:text-white">Products API</h3>
+                <p className="text-sm text-gray-500">Content Availability</p>
+              </div>
+            </div>
+            {status.products.status === 'ok' ? (
+              <span className="flex items-center gap-1.5 px-3 py-1 bg-green-100 text-green-700 text-sm font-medium rounded-full">
+                <CheckCircle className="w-4 h-4" /> Accessible
+              </span>
+            ) : status.products.status === 'forbidden' ? (
+              <span className="flex items-center gap-1.5 px-3 py-1 bg-red-100 text-red-700 text-sm font-medium rounded-full">
+                <Lock className="w-4 h-4" /> Forbidden
+              </span>
+            ) : status.products.status === 'empty' ? (
+              <span className="flex items-center gap-1.5 px-3 py-1 bg-yellow-100 text-yellow-700 text-sm font-medium rounded-full">
+                <AlertCircle className="w-4 h-4" /> Empty
+              </span>
+            ) : (
+               <span className="flex items-center gap-1.5 px-3 py-1 bg-gray-100 text-gray-500 text-sm font-medium rounded-full">
+                <XCircle className="w-4 h-4" /> Error
+              </span>
+            )}
+          </div>
+          
+          <div className="space-y-4">
+             {status.products.status === 'forbidden' ? (
+                <div className="p-3 bg-red-50 text-red-600 text-sm rounded-lg border border-red-100">
+                    <strong>Action Required:</strong><br/>
+                    Enable <code>find</code> permission for <code>Product</code> in Strapi Admin (Settings &gt; Roles &gt; Public).
+                </div>
+             ) : (
+                <div className="flex items-center justify-between p-3 bg-gray-50 dark:bg-gray-700/30 rounded-lg">
+                  <span className="text-gray-600 dark:text-gray-400 text-sm flex items-center gap-2">
+                    <Package className="w-4 h-4" /> Total Products
+                  </span>
+                  <span className="font-mono text-gray-900 dark:text-white font-medium">
+                    {status.products.count}
+                  </span>
+                </div>
+             )}
+             {status.products.message && status.products.status !== 'forbidden' && (
+                 <div className="text-xs text-center text-gray-400">
+                    {status.products.message}
+                 </div>
+             )}
+          </div>
+        </div>
+
+      </div>
+    </div>
+  );
+}

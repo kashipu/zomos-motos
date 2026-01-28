@@ -1,46 +1,69 @@
 # Guía de Despliegue - Zomos Motos (Dokploy)
 
-## Infraestructura Objetivo
-- **Servidor:** VPS (Ubuntu 22.04+ recomendado)
-- **Gestor:** Dokploy (Open Source DevOps Platform)
-- **Reverse Proxy:** Traefik (integrado en Dokploy)
+## 1. Configuración de DNS
+Crea estos registros en tu proveedor de dominio apuntando a la IP de tu VPS:
 
-## Servicios a Desplegar
+| Tipo | Host | Valor | Propósito |
+| :--- | :--- | :--- | :--- |
+| **A** | `@` | `IP_VPS` | Storefront (`zomosmotos.com`) |
+| **A** | `api` | `IP_VPS` | Backend (`api.zomosmotos.com`) |
 
-### 1. Base de Datos (PostgreSQL)
-- **Imagen:** `postgres:16-alpine`
-- **Volumen:** `pg_data_prod` -> `/var/lib/postgresql/data`
-- **Variables de Entorno:**
-  - `POSTGRES_USER`
-  - `POSTGRES_PASSWORD`
-  - `POSTGRES_DB`
+---
 
-### 2. Cache & Mensajería (Redis)
-- **Imagen:** `redis:alpine`
-- **Volumen:** `redis_data` -> `/data`
-- **Configuración:** `appendonly yes` (para persistencia mínima)
+## 2. Base de Datos (PostgreSQL)
+- **Imagen:** `postgres:15` (o la versión seleccionada en Dokploy)
+- **Database Name:** `zomos_db`
+- **User:** `admin` (según configuración en captura)
 
-### 3. Backend (Strapi CMS)
-- **Tipo:** Application (Dockerfile)
-- **Contexto de Build:** `./backend`
-- **Variables de Env:**
-  - `DATABASE_CLIENT`: `postgres`
-  - `DATABASE_URL`: `postgres://user:pass@postgres_service:5432/zomos_db`
-  - `APP_KEYS`, `API_TOKEN_SALT`, `ADMIN_JWT_SECRET`, `TRANSFER_TOKEN_SALT` (Strapi 5 mandatory)
-  - `CORS_ORIGIN`: `https://zomos-motos.com`
-  - `PORT`: `1337`
+---
 
-### 4. Frontend (Astro Storefront)
-- **Tipo:** Application (Dockerfile)
-- **Contexto de Build:** `./storefront`
-- **Variables de Entorno:**
-    - `STRAPI_URL`: `https://api.zomos-motos.com`
-    - `PORT`: `4321`
+## 3. Backend (Strapi v5)
+- **Repo:** `https://github.com/kashipu/zomos-motos.git`
+- **Branch:** `main`
+- **Context Path:** `./backend`
+- **Port:** `1337` (Interno)
+- **Dominio:** `api.zomosmotos.com`
 
-## 4. Dominios y SSL
-Dokploy gestiona automáticamente los certificados con Let's Encrypt:
-- `api.zomos-motos.com` -> Backend Service (Puerto 1337)
-- `tienda.zomos-motos.com` -> Frontend Service (Puerto 4321)
-- `admin.zomos-motos.com` -> Backend Service (Puerto 1337 + ruta /admin)
+### Variables de Entorno (Backend)
+```env
+DATABASE_CLIENT=postgres
+DATABASE_HOST=zomos-motos-zomosdb-rrzqyz
+DATABASE_PORT=5432
+DATABASE_NAME=zomos_db
+DATABASE_USERNAME=postgres
+DATABASE_PASSWORD=...
+DATABASE_SSL=false
 
-Dokploy gestiona automáticamente los certificados SSL (Let's Encrypt).
+# Secretos (Copiar del .env local)
+APP_KEYS=...
+API_TOKEN_SALT=...
+ADMIN_JWT_SECRET=...
+TRANSFER_TOKEN_SALT=...
+JWT_SECRET=...
+
+# App Config
+WHATSAPP_NUMBER=573028336170
+PUBLIC_STRAPI_URL=https://api.zomosmotos.com
+```
+
+---
+
+## 4. Storefront (Astro 5)
+- **Repo:** `https://github.com/kashipu/zomos-motos.git`
+- **Branch:** `main`
+- **Context Path:** `./storefront`
+- **Port:** `4321` (Interno)
+- **Dominio:** `zomosmotos.com`
+
+### Variables de Entorno (Storefront)
+```env
+# Opcional (el Dockerfile ya tiene https://api.zomosmotos.com por defecto)
+PUBLIC_STRAPI_URL=https://api.zomosmotos.com
+```
+
+---
+
+## 5. SSL y Despliegue
+1. Dokploy gestiona **SSL automáticamente** mediante Traefik y Let's Encrypt al asignar el dominio.
+2. Después de configurar las variables, realiza un **Redeploy** para asegurar que el build de Astro tome la URL de producción.
+3. Verifica que `api.zomosmotos.com/admin` sea accesible para la gestión de productos.

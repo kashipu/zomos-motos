@@ -1,0 +1,10 @@
+---
+import StatusDashboard from "../components/StatusDashboard";
+import Layout from "../layouts/Layout.astro";
+---
+
+<Layout title="System Status - Zomos Motos">
+  <main class="min-h-screen bg-gray-50 dark:bg-gray-900 py-12">
+    <StatusDashboard client:load />
+  </main>
+</Layout>

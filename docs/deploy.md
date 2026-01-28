@@ -55,15 +55,21 @@ PUBLIC_STRAPI_URL=https://api.zomosmotos.com
 - **Port:** `4321` (Interno)
 - **Dominio:** `zomosmotos.com`
 
-### Variables de Entorno (Storefront)
-```env
-# Opcional (el Dockerfile ya tiene https://api.zomosmotos.com por defecto)
-PUBLIC_STRAPI_URL=https://api.zomosmotos.com
-```
+### Variables de Entorno y Build Arguments (Storefront)
+
+> [!IMPORTANT]
+> Astro/Vite requiere que las variables `PUBLIC_` estén disponibles durante el **build time**. En Dokploy, no basta con ponerlas en "Environment Variables", deben estar en **Build Arguments**.
+
+1.  En Dokploy, ve al servicio de `frontend`.
+2.  En la pestaña **Environment**, añade:
+    - `PUBLIC_STRAPI_URL`: `https://api.zomosmotos.com`
+    - `PUBLIC_DEBUG_MODE`: `false` (o `true` para diagnóstico)
+3.  **CRÍTICO**: Busca la sección **Build Arguments** (Ajustes de construcción) y añade las mismas variables allí.
+4.  Activa la opción **"Create Environment File"** si está disponible.
 
 ---
 
 ## 5. SSL y Despliegue
 1. Dokploy gestiona **SSL automáticamente** mediante Traefik y Let's Encrypt al asignar el dominio.
-2. Después de configurar las variables, realiza un **Redeploy** para asegurar que el build de Astro tome la URL de producción.
-3. Verifica que `api.zomosmotos.com/admin` sea accesible para la gestión de productos.
+2. Después de configurar las variables y los Build Arguments, realiza un **Redeploy** (Build) para asegurar que Astro inyecte la URL correcta.
+3. Verifica la salud del sistema en `zomosmotos.com/status`.

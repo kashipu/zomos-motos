@@ -1,6 +1,13 @@
 # Build Stage
 FROM oven/bun:1.1.45 as build
 
+# Install build dependencies for native modules
+RUN apt-get update && apt-get install -y \
+    python3 \
+    make \
+    g++ \
+    && rm -rf /var/lib/apt/lists/*
+
 # Set node env
 ARG NODE_ENV=production
 ENV NODE_ENV=${NODE_ENV}

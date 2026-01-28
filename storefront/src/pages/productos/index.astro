@@ -1,25 +1,75 @@
 ---
 import Layout from "@/layouts/Layout.astro";
 import { queryStrapi, getStrapiMedia } from "@/lib/strapi";
+import WhatsAppButton from "@/components/WhatsAppButton";
+
+// Enable dynamic rendering
+export const prerender = false;
+
+const { searchParams } = Astro.url;
+const brand = searchParams.get("brand");
+const model = searchParams.get("model");
+const reference = searchParams.get("reference");
+const categorySlug = searchParams.get("category");
 
 let products: any[] = [];
+let categories: any[] = [];
+
 try {
-  products = await queryStrapi<any[]>("products");
+  const params: any = {};
+  
+  if (brand) params["filters[brand][$containsi]"] = brand;
+  if (model) params["filters[model][$containsi]"] = model;
+  if (reference) params["filters[reference][$containsi]"] = reference;
+  if (categorySlug) params["filters[category][slug][$eq]"] = categorySlug;
+
+  products = await queryStrapi<any[]>("products", { params });
+  categories = await queryStrapi<any[]>("categories");
 } catch (e) {
-  console.error("Failed to fetch products:", e);
+  console.error("Failed to fetch data:", e);
 }
 ---
 
 <Layout title="Catálogo de Productos">
   <div class="container mx-auto px-4 py-24">
-    <div class="mb-12">
-      <h1 class="text-4xl font-bold text-white font-outfit">
-        Nuestro Catálogo
-      </h1>
-      <p class="mt-2 text-slate-400">
-        Encuentra los mejores accesorios para tu moto.
-      </p>
+    <div class="mb-12 flex flex-col md:flex-row md:items-end justify-between gap-8">
+      <div>
+        <h1 class="text-4xl font-bold text-white font-outfit">
+          Nuestro Catálogo
+        </h1>
+        <p class="mt-2 text-slate-400">
+          Encuentra los mejores accesorios para tu moto.
+        </p>
+      </div>
+      
+      <!-- Category Filter -->
+      <nav class="flex flex-wrap gap-2">
+        <a 
+          href="/productos" 
+          class={`px-4 py-2 rounded-full text-sm font-medium transition-all ${!categorySlug ? 'bg-orange-600 text-white' : 'bg-slate-900 text-slate-400 hover:text-white border border-slate-800'}`}
+        >
+          Todos
+        </a>
+        {categories.map((cat) => (
+          <a 
+            href={`/productos?category=${cat.slug}`} 
+            class={`px-4 py-2 rounded-full text-sm font-medium transition-all ${categorySlug === cat.slug ? 'bg-orange-600 text-white' : 'bg-slate-900 text-slate-400 hover:text-white border border-slate-800'}`}
+          >
+            {cat.name}
+          </a>
+        ))}
+      </nav>
     </div>
+
+    { (brand || model || reference) && (
+      <div class="mb-8 p-4 bg-orange-500/10 border border-orange-500/20 rounded-xl flex items-center justify-between">
+        <p class="text-orange-500 text-sm">
+          Resultados para: 
+          {[brand, model, reference].filter(Boolean).join(" | ")}
+        </p>
+        <a href="/productos" class="text-xs font-bold text-orange-500 underline underline-offset-4">Limpiar filtros</a>
+      </div>
+    )}
 
     <div
       class="grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4"
@@ -28,7 +78,7 @@ try {
         products.length > 0 ? (
           products.map((product) => (
             <div class="group relative flex flex-col overflow-hidden rounded-2xl border border-slate-800 bg-slate-900/50 p-4 transition-all hover:border-orange-500/50">
-              <div class="aspect-square overflow-hidden rounded-xl bg-slate-800">
+              <div class="aspect-square overflow-hidden rounded-xl bg-slate-800 relative">
                 {product.images && product.images.length > 0 ? (
                   <img
                     src={getStrapiMedia(product.images[0].url)}
@@ -55,20 +105,34 @@ try {
                     </svg>
                   </div>
                 )}
+                
+                <!-- Quick Brand Tag -->
+                {product.brand && (
+                  <span class="absolute top-2 left-2 px-2 py-1 bg-slate-950/80 backdrop-blur-md border border-slate-800 rounded-md text-[10px] font-bold text-white uppercase tracking-wider">
+                    {product.brand}
+                  </span>
+                )}
               </div>
               <div class="mt-4 flex flex-1 flex-col">
                 <h3 class="text-lg font-semibold text-white group-hover:text-orange-500 transition-colors">
                   <a href={`/productos/${product.documentId}`}>
-                    <span class="absolute inset-0" />
                     {product.name}
                   </a>
                 </h3>
                 <p class="mt-2 text-sm text-slate-400 line-clamp-2">
                   {product.description}
                 </p>
-                <p class="mt-auto pt-4 text-xl font-bold text-white">
-                  ${new Intl.NumberFormat("es-CO").format(product.price)}
-                </p>
+                <div class="mt-auto pt-4 flex items-center justify-between gap-4">
+                  <p class="text-xl font-bold text-white">
+                    ${new Intl.NumberFormat("es-CO").format(product.price)}
+                  </p>
+                  <WhatsAppButton 
+                    client:load 
+                    productName={product.name} 
+                    sku={product.sku}
+                    className="!px-3 !py-2 !text-[10px]"
+                  />
+                </div>
               </div>
             </div>
           ))

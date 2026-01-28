@@ -1,6 +1,7 @@
 ---
 import Layout from "@/layouts/Layout.astro";
 import { queryStrapi, getStrapiMedia } from "@/lib/strapi";
+import SearchBanner from "@/components/SearchBanner";
 
 interface Product {
   id: string;
@@ -26,7 +27,7 @@ try {
     >
     </div>
     <div class="container mx-auto px-4">
-      <div class="max-w-2xl">
+      <div class="max-w-2xl mb-16">
         <h1 class="text-4xl font-bold tracking-tight text-white sm:text-6xl">
           Accesorios que reflejan tu pasión
         </h1>
@@ -35,15 +36,9 @@ try {
           para pilotos que no aceptan compromisos. Calidad premium para cada
           ruta.
         </p>
-        <div class="mt-10 flex items-center gap-x-6">
-          <a
-            href="/productos"
-            class="rounded-full bg-orange-600 px-6 py-3 text-sm font-semibold text-white shadow-xl hover:bg-orange-500 transition-all hover:scale-105 active:scale-95 focus:outline-none focus:ring-2 focus:ring-orange-600 focus:ring-offset-2 focus:ring-offset-slate-950"
-          >
-            Ver Catálogo
-          </a>
-        </div>
       </div>
+
+      <SearchBanner client:load />
     </div>
   </section>
 

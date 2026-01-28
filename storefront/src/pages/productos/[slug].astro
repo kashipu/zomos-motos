@@ -2,6 +2,7 @@
 import Layout from "@/layouts/Layout.astro";
 import { queryStrapi, getStrapiMedia } from "@/lib/strapi";
 import AddToCart from "@/components/AddToCart";
+import WhatsAppButton from "@/components/WhatsAppButton";
 
 export const prerender = false;
 
@@ -94,18 +95,26 @@ if (!product) {
           </div>
         </div>
 
-        <AddToCart
-          client:load
-          product={{
-            id: product.documentId,
-            name: product.name,
-            price: product.price,
-            sku: product.sku,
-            image: product.images?.[0]?.url
-              ? getStrapiMedia(product.images[0].url) || undefined
-              : undefined,
-          }}
-        />
+        <div class="mt-8 flex flex-col gap-4">
+          <AddToCart
+            client:load
+            product={{
+              id: product.documentId,
+              name: product.name,
+              price: product.price,
+              sku: product.sku,
+              image: product.images?.[0]?.url
+                ? getStrapiMedia(product.images[0].url) || undefined
+                : undefined,
+            }}
+          />
+
+          <WhatsAppButton
+            client:load
+            productName={product.name}
+            sku={product.sku}
+          />
+        </div>
 
         <div
           class="mt-12 border-t border-slate-800 pt-10 grid grid-cols-1 sm:grid-cols-2 gap-6"

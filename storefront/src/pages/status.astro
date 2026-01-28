@@ -1,6 +1,15 @@
 ---
 import StatusDashboard from "../components/StatusDashboard";
 import Layout from "../layouts/Layout.astro";
+
+const debugMode = import.meta.env.PUBLIC_DEBUG_MODE === 'true';
+
+if (!debugMode) {
+  return new Response(null, {
+    status: 404,
+    statusText: 'Not Found'
+  });
+}
 ---
 
 <Layout title="System Status - Zomos Motos">

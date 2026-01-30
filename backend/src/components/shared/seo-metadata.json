@@ -1,0 +1,28 @@
+{
+  "collectionName": "components_shared_seo_metadata",
+  "info": {
+    "displayName": "SeoMetadata",
+    "icon": "search",
+    "description": "SEO Metadata for better search engine visibility"
+  },
+  "options": {},
+  "attributes": {
+    "metaTitle": {
+      "type": "string",
+      "maxLength": 60
+    },
+    "metaDescription": {
+      "type": "text",
+      "maxLength": 160
+    },
+    "metaImage": {
+      "type": "media",
+      "multiple": false,
+      "required": false,
+      "allowedTypes": ["images"]
+    },
+    "canonicalUrlOverride": {
+      "type": "string"
+    }
+  }
+}

@@ -19,11 +19,21 @@
       "targetField": "name",
       "required": true
     },
+    "type": {
+      "type": "enumeration",
+      "enum": ["MOTO", "PILOTO"],
+      "required": true
+    },
     "products": {
       "type": "relation",
       "relation": "oneToMany",
       "target": "api::product.product",
       "mappedBy": "category"
+    },
+    "seoMetadata": {
+      "type": "component",
+      "repeatable": false,
+      "component": "shared.seo-metadata"
     }
   }
 }

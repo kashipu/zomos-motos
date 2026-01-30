@@ -17,11 +17,11 @@
     "description": {
       "type": "richtext"
     },
-    "price": {
+    "precio": {
       "type": "decimal",
       "required": true
     },
-    "sku": {
+    "referencia": {
       "type": "string",
       "unique": true
     },
@@ -30,23 +30,41 @@
       "multiple": true,
       "allowedTypes": ["images"]
     },
-    "compatibility": {
-      "type": "json"
-    },
     "category": {
       "type": "relation",
       "relation": "manyToOne",
       "target": "api::category.category",
       "inversedBy": "products"
     },
-    "brand": {
-      "type": "string"
+    "is_generic": {
+      "type": "boolean",
+      "default": false
     },
-    "model": {
-      "type": "string"
+    "slug": {
+      "type": "uid",
+      "targetField": "name",
+      "required": true
     },
-    "reference": {
-      "type": "string"
+    "seoMetadata": {
+      "type": "component",
+      "repeatable": false,
+      "component": "shared.seo-metadata"
+    },
+    "motos_compatibles": {
+      "type": "relation",
+      "relation": "manyToMany",
+      "target": "api::bike-model.bike-model",
+      "inversedBy": "products"
+    },
+    "fitment_detail": {
+      "type": "component",
+      "repeatable": true,
+      "component": "motors.fitment-detail"
+    },
+    "product_variants": {
+      "type": "component",
+      "repeatable": true,
+      "component": "shop.product-variant"
     }
   }
 }

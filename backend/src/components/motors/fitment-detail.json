@@ -1,0 +1,19 @@
+{
+  "collectionName": "components_motors_fitment_details",
+  "info": {
+    "displayName": "FitmentDetail",
+    "icon": "cog",
+    "description": "Detalle de compatibilidad específica (años)"
+  },
+  "options": {},
+  "attributes": {
+    "model": {
+      "type": "string",
+      "required": false
+    },
+    "years": {
+      "type": "string",
+      "required": false
+    }
+  }
+}

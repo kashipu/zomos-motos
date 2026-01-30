@@ -1,0 +1,28 @@
+{
+  "collectionName": "components_shop_product_variants",
+  "info": {
+    "displayName": "ProductVariant",
+    "icon": "shirt",
+    "description": "Variaciones de producto (Talla, Color, etc)"
+  },
+  "options": {},
+  "attributes": {
+    "attribute": {
+      "type": "string",
+      "required": true
+    },
+    "value": {
+      "type": "string",
+      "required": true
+    },
+    "price_modifier": {
+      "type": "decimal",
+      "default": 0
+    },
+    "stock_status": {
+      "type": "enumeration",
+      "enum": ["Disponible", "Agotado"],
+      "default": "Disponible"
+    }
+  }
+}

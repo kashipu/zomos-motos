@@ -1,0 +1,126 @@
+---
+import { Filter, ChevronDown, RotateCcw } from "lucide-react";
+
+interface Props {
+  categorias?: { nombre: string; slug: string }[];
+  marcas?: string[];
+}
+
+const {
+  categorias = [],
+  marcas = ["Alpinestars", "Dainese", "Brembo", "Akrapovič"],
+} = Astro.props;
+---
+
+<aside class="w-full lg:w-72 flex-shrink-0">
+  <div
+    class="sticky top-24 flex flex-col gap-6 bg-card-dark/30 p-6 rounded-2xl border border-white/10 shadow-sm"
+  >
+    <div
+      class="flex items-center justify-between border-b border-white/10 pb-4"
+    >
+      <h3
+        class="text-white text-xl font-bold uppercase tracking-tight font-display"
+      >
+        Filtros
+      </h3>
+      <Filter size={18} className="text-primary" />
+    </div>
+
+    <!-- Categorías -->
+    <div class="space-y-4">
+      <div class="flex items-center justify-between px-1">
+        <span class="text-sm font-bold uppercase tracking-widest text-white"
+          >Categorías</span
+        >
+        <ChevronDown size={16} className="text-gray-500" />
+      </div>
+      <div class="flex flex-col gap-2">
+        {
+          categorias.map((cat) => (
+            <label class="flex items-center justify-between group cursor-pointer">
+              <div class="flex items-center gap-3">
+                <input
+                  type="checkbox"
+                  class="rounded border-white/10 bg-background-dark text-primary focus:ring-primary h-4 w-4 transition-all"
+                />
+                <span class="text-sm text-gray-400 group-hover:text-white transition-colors">
+                  {cat.nombre}
+                </span>
+              </div>
+              <span class="text-[10px] text-gray-600 font-mono">08</span>
+            </label>
+          ))
+        }
+      </div>
+    </div>
+
+    <!-- Marcas -->
+    <div class="space-y-4 pt-4 border-t border-white/10/50">
+      <div class="flex items-center justify-between px-1">
+        <span class="text-sm font-bold uppercase tracking-widest text-white"
+          >Marcas</span
+        >
+        <ChevronDown size={16} className="text-gray-500" />
+      </div>
+      <div class="flex flex-col gap-2">
+        {
+          marcas.map((marca) => (
+            <label class="flex items-center gap-3 cursor-pointer group">
+              <input
+                type="checkbox"
+                class="rounded border-white/10 bg-background-dark text-primary focus:ring-primary h-4 w-4 transition-all"
+              />
+              <span class="text-sm text-gray-400 group-hover:text-white transition-colors">
+                {marca}
+              </span>
+            </label>
+          ))
+        }
+      </div>
+    </div>
+
+    <!-- Rango de Precio (Visual) -->
+    <div class="space-y-4 pt-4 border-t border-white/10/50">
+      <p class="text-sm font-bold uppercase tracking-widest text-white px-1">
+        Precio
+      </p>
+      <div class="px-1 pt-2">
+        <div class="h-1.5 w-full bg-white/10 rounded-full relative">
+          <div
+            class="absolute left-1/4 right-1/4 h-full bg-primary rounded-full"
+          >
+          </div>
+          <div
+            class="absolute left-1/4 top-1/2 -translate-y-1/2 h-4 w-4 bg-white border-2 border-primary rounded-full cursor-pointer shadow-lg hover:scale-110 transition-transform"
+          >
+          </div>
+          <div
+            class="absolute right-1/4 top-1/2 -translate-y-1/2 h-4 w-4 bg-white border-2 border-primary rounded-full cursor-pointer shadow-lg hover:scale-110 transition-transform"
+          >
+          </div>
+        </div>
+        <div
+          class="flex justify-between mt-4 text-[10px] font-bold text-gray-500 uppercase tracking-widest"
+        >
+          <span>$0</span>
+          <span>$5,000+</span>
+        </div>
+      </div>
+    </div>
+
+    <button
+      class="mt-4 flex w-full items-center justify-center gap-2 rounded-xl h-12 bg-white/5 text-gray-300 text-xs font-bold uppercase tracking-[0.2em] hover:bg-primary hover:text-background-dark transition-all active:scale-95 group"
+    >
+      <RotateCcw
+        size={14}
+        className="group-hover:rotate-[-45deg] transition-transform"
+      />
+      Reiniciar Filtros
+    </button>
+  </div>
+</aside>
+
+
+
+

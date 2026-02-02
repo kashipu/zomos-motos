@@ -1,0 +1,91 @@
+---
+export interface Props {
+  product: {
+    name: string;
+    slug: string;
+    description: string;
+    precio: number;
+    currency?: string;
+    referencia?: string;
+    stock_status?: string;
+    manufacturer?: string;
+    images: { url: string }[];
+    seoMetadata?: {
+      metaTitle?: string;
+      metaDescription?: string;
+      metaImage?: {
+        url: string;
+      };
+      canonicalUrlOverride?: string;
+    };
+  };
+}
+
+const { product } = Astro.props;
+
+// Lógica de URL Canónica y SEO
+const siteUrl = Astro.site?.toString() || "http://localhost:4321";
+const canonicalURL = product.seoMetadata?.canonicalUrlOverride
+  ? product.seoMetadata.canonicalUrlOverride
+  : new URL(`/productos/${product.slug}`, siteUrl).toString();
+
+const title = product.seoMetadata?.metaTitle || product.name;
+const description =
+  product.seoMetadata?.metaDescription ||
+  product.description?.substring(0, 160) ||
+  "";
+
+// Imagen: SEO Metadata > Primera imagen del producto > Fallback
+const imagePath =
+  product.seoMetadata?.metaImage?.url || product.images?.[0]?.url;
+const imageUrl = imagePath ? new URL(imagePath, siteUrl).toString() : undefined;
+
+// Schema.org Logic
+const schema = {
+  "@context": "https://schema.org",
+  "@type": "Product",
+  name: product.name,
+  description: description,
+  image: imageUrl,
+  sku: product.referencia,
+  brand: {
+    "@type": "Brand",
+    name: product.manufacturer || "Zomos Motos", // Fallback manufacturer
+  },
+  offers: {
+    "@type": "Offer",
+    url: canonicalURL,
+    priceCurrency: product.currency || "COP", // Defaulting to COP as per user context implies Colombia (price format es-CO)
+    price: product.precio,
+    availability:
+      product.stock_status === "Agotado"
+        ? "https://schema.org/OutOfStock"
+        : "https://schema.org/InStock",
+    itemCondition: "https://schema.org/NewCondition",
+  },
+};
+---
+
+<!-- SEO Tags -->
+<title>{title}</title>
+<meta name="description" content={description} />
+<link rel="canonical" href={canonicalURL} />
+
+<!-- Open Graph / Facebook -->
+<meta property="og:type" content="product" />
+<meta property="og:url" content={canonicalURL} />
+<meta property="og:title" content={`${title} - $${product.precio}`} />
+<meta property="og:description" content={description} />
+{imageUrl && <meta property="og:image" content={imageUrl} />}
+
+<!-- Twitter -->
+<meta property="twitter:card" content="summary_large_image" />
+<meta property="twitter:url" content={canonicalURL} />
+<meta property="twitter:title" content={title} />
+<meta property="twitter:description" content={description} />
+{imageUrl && <meta property="twitter:image" content={imageUrl} />}
+
+<!-- Schema.org JSON-LD -->
+<script type="application/ld+json" set:html={JSON.stringify(schema)} />
+
+

@@ -1,0 +1,73 @@
+---
+import { Settings, CheckCircle2 } from "lucide-react";
+
+interface Props {
+  marca?: string | string[];
+  modelo?: string | string[];
+  anio?: string;
+  garantizado?: boolean;
+}
+
+const {
+  marca = "Universal",
+  modelo = "Todos los modelos",
+  anio = "N/A",
+  garantizado = true,
+} = Astro.props;
+
+const formatList = (val: string | string[]) =>
+  Array.isArray(val) ? val.join(" / ") : val;
+---
+
+<div
+  class="bg-card-dark/50 border border-white/10 rounded-2xl p-6 shadow-inner"
+>
+  <h3
+    class="text-xs font-bold uppercase tracking-[0.2em] text-gray-500 mb-5 flex items-center gap-2"
+  >
+    <Settings size={14} className="text-primary" />
+    Compatibilidad Técnica
+  </h3>
+
+  <div class="grid grid-cols-3 gap-6">
+    <div class="space-y-1">
+      <span class="text-[10px] uppercase text-gray-600 font-bold tracking-wider"
+        >Marca</span
+      >
+      <p class="text-sm font-bold text-white font-display truncate">
+        {formatList(marca)}
+      </p>
+    </div>
+
+    <div class="space-y-1 border-l border-white/10 pl-6">
+      <span class="text-[10px] uppercase text-gray-600 font-bold tracking-wider"
+        >Modelo</span
+      >
+      <p class="text-sm font-bold text-white font-display truncate">
+        {formatList(modelo)}
+      </p>
+    </div>
+
+    <div class="space-y-1 border-l border-white/10 pl-6">
+      <span class="text-[10px] uppercase text-gray-600 font-bold tracking-wider"
+        >Año</span
+      >
+      <p class="text-sm font-bold text-white font-display truncate">{anio}</p>
+    </div>
+  </div>
+
+  {
+    garantizado && (
+      <div class="mt-6 pt-5 border-t border-white/10/50 flex items-center gap-2">
+        <CheckCircle2 size={16} className="text-primary" />
+        <span class="text-[11px] text-primary font-bold uppercase tracking-tighter">
+          Ajuste Perfecto Garantizado
+        </span>
+      </div>
+    )
+  }
+</div>
+
+
+
+

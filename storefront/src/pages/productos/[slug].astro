@@ -3,23 +3,45 @@ import Layout from "@/layouts/Layout.astro";
 import { queryStrapi, getStrapiMedia } from "@/lib/strapi";
 import AddToCart from "@/components/AddToCart";
 import WhatsAppButton from "@/components/WhatsAppButton";
+import ProductSEO from "@/components/ProductSEO.astro";
+import MigasPan from "@/components/MigasPan.astro";
+import GaleriaImagenes from "@/components/GaleriaImagenes.astro";
+import DetalleInfo from "@/components/DetalleInfo.astro";
+import FichaTecnica from "@/components/FichaTecnica.astro";
+import TarjetaProducto from "@/components/TarjetaProducto.astro";
 
 export const prerender = false;
 
 const { slug } = Astro.params;
 
 let product = null;
+let relatedProducts: any[] = [];
 
 try {
   if (!slug) throw new Error("No slug provided");
+
+  // Search for the main product
   const data = await queryStrapi<any[]>("products", {
     params: {
-      "filters[documentId][$eq]": slug,
+      "filters[slug][$eq]": slug,
+      populate: "*",
     },
   });
 
   if (data && data.length > 0) {
     product = data[0];
+
+    // Search for related products (same category)
+    if (product.category) {
+      relatedProducts = await queryStrapi<any[]>("products", {
+        params: {
+          "filters[category][slug][$eq]": product.category.slug,
+          "filters[slug][$ne]": slug,
+          "pagination[limit]": 4,
+          populate: "*",
+        },
+      });
+    }
   }
 } catch (e) {
   console.error(`Failed to fetch product with slug ${slug}:`, e);
@@ -28,152 +50,118 @@ try {
 if (!product) {
   return Astro.redirect("/404");
 }
+
+const breadcrumbs: { nombre: string; href?: string }[] = [
+  { nombre: "Catálogo", href: "/productos" },
+];
+if (product.category) {
+  breadcrumbs.push({
+    nombre: product.category.name || "Categoría",
+    href: `/productos?category=${product.category.slug}`,
+  });
+}
+breadcrumbs.push({ nombre: product.name || "Producto" });
+
+const gallery =
+  product.images?.map((img: any) => ({
+    url: getStrapiMedia(img.url) || undefined,
+    alt: product.name || "Imagen de producto",
+  })) || [];
+
+const compatibility = {
+  marca: product.compatibilities?.[0]?.brand || "Universal",
+  modelo: product.compatibilities?.[0]?.model || "Todos los modelos",
+  anio: product.compatibilities?.[0]?.reference || "N/A",
+};
 ---
 
 <Layout title={product.name}>
-  <div class="container mx-auto px-4 py-12 sm:py-24">
-    <a
-      href="/"
-      class="text-sm font-medium text-slate-500 hover:text-white flex items-center gap-2 mb-8"
-    >
-      &larr; Volver al inicio
-    </a>
+  <ProductSEO
+    slot="head"
+    product={{
+      ...product,
+      name: product.name || "Producto",
+      slug: product.slug || "",
+      description: product.description || "Descripción del producto",
+      precio: product.precio || 0,
+      images: product.images || [],
+    }}
+  />
 
-    <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-24">
-      <div
-        class="aspect-square bg-slate-900 border border-slate-800 rounded-3xl overflow-hidden flex items-center justify-center text-slate-700"
+  <main class="max-w-[1280px] mx-auto px-6 lg:px-10 py-12">
+    <!-- Breadcrumbs -->
+    <MigasPan items={breadcrumbs} />
+
+    <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-20">
+      <!-- Image Gallery -->
+      <GaleriaImagenes imagenes={gallery} />
+
+      <!-- Product Info -->
+      <DetalleInfo
+        nombre={product.name || "Producto"}
+        marca={product.brand || "Zomos Motos"}
+        precio={product.precio || 0}
+        referencia={product.referencia || "REF-000"}
+        compatibilidad={compatibility}
       >
-        {
-          product.images && product.images.length > 0 ? (
-            <img
-              src={getStrapiMedia(product.images[0].url)}
-              alt={product.name}
-              class="h-full w-full object-cover"
-            />
-          ) : (
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              width="120"
-              height="120"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              stroke-width="1"
-              stroke-linecap="round"
-              stroke-linejoin="round"
-              class="lucide lucide-image"
-            >
-              <rect width="18" height="18" x="3" y="3" rx="2" ry="2" />
-              <circle cx="9" cy="9" r="2" />
-              <path d="m21 15-3.086-3.086a2 2 0 0 0-2.828 0L6 21" />
-            </svg>
-          )
-        }
-      </div>
-
-      <div class="flex flex-col">
-        <h1 class="text-4xl font-bold text-white sm:text-5xl font-outfit">
-          {product.name}
-        </h1>
-        <div class="mt-4 flex items-center gap-4">
-          <span
-            class="inline-flex items-center rounded-full bg-orange-500/10 px-3 py-1 text-xs font-medium text-orange-500 ring-1 ring-inset ring-orange-500/20"
-          >
-            En Stock
-          </span>
-          <span class="text-slate-500 text-sm italic">SKU: {product.sku}</span>
-        </div>
-
-        <div class="mt-10 border-t border-slate-800 pt-10">
-          <p class="text-3xl font-bold text-white">
-            ${new Intl.NumberFormat("es-CO").format(product.price)}
-          </p>
-          <div
-            class="mt-6 text-slate-400 space-y-4 prose prose-invert max-w-none"
-          >
-            {product.description}
-          </div>
-        </div>
-
-        <div class="mt-8 flex flex-col gap-4">
+        <div slot="buy-actions" class="flex flex-col gap-4">
           <AddToCart
             client:load
             product={{
               id: product.documentId,
-              name: product.name,
-              price: product.price,
-              sku: product.sku,
-              image: product.images?.[0]?.url
-                ? getStrapiMedia(product.images[0].url) || undefined
-                : undefined,
+              name: product.name || "Producto",
+              price: product.precio || 0,
+              sku: product.referencia || "REF-000",
+              image: gallery[0]?.url,
             }}
           />
 
           <WhatsAppButton
             client:load
             productName={product.name}
-            sku={product.sku}
+            sku={product.referencia}
           />
         </div>
-
-        <div
-          class="mt-12 border-t border-slate-800 pt-10 grid grid-cols-1 sm:grid-cols-2 gap-6"
-        >
-          <div class="flex items-center gap-4">
-            <div
-              class="h-10 w-10 flex items-center justify-center rounded-full bg-slate-900 border border-slate-800 text-orange-500"
-            >
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                width="20"
-                height="20"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                stroke-width="2"
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                class="lucide lucide-shield-check"
-                ><path
-                  d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z"
-                ></path><path d="m9 12 2 2 4-4"></path></svg
-              >
-            </div>
-            <span class="text-sm font-medium text-slate-300"
-              >Garantía Zomos Motos</span
-            >
-          </div>
-          <div class="flex items-center gap-4">
-            <div
-              class="h-10 w-10 flex items-center justify-center rounded-full bg-slate-900 border border-slate-800 text-orange-500"
-            >
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                width="20"
-                height="20"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                stroke-width="2"
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                class="lucide lucide-truck"
-                ><path
-                  d="M14 18V6a2 2 0 0 0-2-2H4a2 2 0 0 0-2 2v11a1 1 0 0 0 1 1h2"
-                ></path><path d="M15 18H9"></path><path
-                  d="M19 18h2a1 1 0 0 0 1-1v-5h-4v5a1 1 0 0 0 1 1Z"></path><path
-                  d="M16 8h3.3a2 2 0 0 1 1.6.8l2.1 2.8H16V8Z"></path><circle
-                  cx="7"
-                  cy="18"
-                  r="2"></circle><circle cx="18" cy="18" r="2"></circle></svg
-              >
-            </div>
-            <span class="text-sm font-medium text-slate-300"
-              >Envíos a todo el país</span
-            >
-          </div>
-        </div>
-      </div>
+      </DetalleInfo>
     </div>
-  </div>
+
+    <!-- Ficha Técnica & Descripción -->
+    <FichaTecnica descripcion={product.description} />
+
+    <!-- Related Products -->
+    {
+      relatedProducts.length > 0 && (
+        <section class="mt-32">
+          <div class="flex items-center justify-between mb-12">
+            <h2 class="text-3xl font-black text-white uppercase tracking-tight font-display">
+              También <span class="text-primario">te puede interesar</span>
+            </h2>
+            <a
+              href="/productos"
+              class="text-gray-500 hover:text-white transition-colors text-xs font-bold uppercase tracking-widest"
+            >
+              Ver catálogo completo
+            </a>
+          </div>
+
+          <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
+            {relatedProducts.map((p) => (
+              <TarjetaProducto
+                nombre={p.name || "Producto"}
+                precio={p.precio || 0}
+                categoria={p.category?.name || "Premium"}
+                imagen={
+                  p.images?.[0]?.url
+                    ? getStrapiMedia(p.images[0].url) || undefined
+                    : undefined
+                }
+                slug={p.slug || undefined}
+                badge={p.is_new ? "Nuevo" : undefined}
+              />
+            ))}
+          </div>
+        </section>
+      )
+    }
+  </main>
 </Layout>

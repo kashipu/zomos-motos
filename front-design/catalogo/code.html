@@ -1,0 +1,415 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="es"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Moto &amp; Pilot Product Catalog</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#f20d0d",
+                        "background-light": "#f8f5f5",
+                        "background-dark": "#181111",
+                        "card-dark": "#221010",
+                        "border-dark": "#392828",
+                    },
+                    fontFamily: {
+                        "display": ["Space Grotesk", "sans-serif"]
+                    },
+                    borderRadius: {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                },
+            },
+        }
+    </script>
+<style>
+        body {
+            font-family: 'Space Grotesk', sans-serif;
+        }
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+    </style>
+</head>
+<body class="bg-background-light dark:bg-background-dark text-slate-900 dark:text-white min-h-screen">
+<!-- Top Navigation -->
+<header class="sticky top-0 z-50 w-full border-b border-solid border-border-dark bg-background-dark/95 backdrop-blur-md px-6 md:px-10 py-3">
+<div class="max-w-[1440px] mx-auto flex items-center justify-between whitespace-nowrap">
+<div class="flex items-center gap-8">
+<div class="flex items-center gap-3 text-white">
+<div class="size-8 text-primary">
+<svg fill="currentColor" viewbox="0 0 48 48" xmlns="http://www.w3.org/2000/svg">
+<path clip-rule="evenodd" d="M12.0799 24L4 19.2479L9.95537 8.75216L18.04 13.4961L18.0446 4H29.9554L29.96 13.4961L38.0446 8.75216L44 19.2479L35.92 24L44 28.7521L38.0446 39.2479L29.96 34.5039L29.9554 44H18.0446L18.04 34.5039L9.95537 39.2479L4 28.7521L12.0799 24Z" fill-rule="evenodd"></path>
+</svg>
+</div>
+<h2 class="text-white text-xl font-bold leading-tight tracking-[-0.015em] uppercase">Moto &amp; Pilot</h2>
+</div>
+<nav class="hidden lg:flex items-center gap-9">
+<a class="text-white/80 hover:text-primary transition-colors text-sm font-medium leading-normal" href="#">Shop</a>
+<a class="text-white/80 hover:text-primary transition-colors text-sm font-medium leading-normal" href="#">Brands</a>
+<a class="text-white/80 hover:text-primary transition-colors text-sm font-medium leading-normal" href="#">Deals</a>
+<a class="text-white/80 hover:text-primary transition-colors text-sm font-medium leading-normal" href="#">Support</a>
+</nav>
+</div>
+<div class="flex flex-1 justify-end gap-6 items-center">
+<label class="hidden md:flex flex-col min-w-40 !h-10 max-w-64">
+<div class="flex w-full flex-1 items-stretch rounded-lg h-full overflow-hidden border border-border-dark">
+<div class="text-[#ba9c9c] flex bg-[#392828] items-center justify-center px-3">
+<span class="material-symbols-outlined text-xl">search</span>
+</div>
+<input class="form-input flex w-full min-w-0 flex-1 resize-none border-none bg-[#392828] text-white focus:outline-0 focus:ring-0 h-full placeholder:text-[#ba9c9c] px-4 pl-1 text-sm font-normal" placeholder="Búsqueda de partes..." value=""/>
+</div>
+</label>
+<div class="flex gap-3">
+<button class="flex items-center justify-center rounded-lg h-10 w-10 bg-border-dark text-white hover:bg-primary transition-all">
+<span class="material-symbols-outlined">shopping_cart</span>
+</button>
+<button class="flex items-center justify-center rounded-lg h-10 w-10 bg-border-dark text-white hover:bg-primary transition-all">
+<span class="material-symbols-outlined">person</span>
+</button>
+</div>
+</div>
+</div>
+</header>
+<main class="max-w-[1440px] mx-auto px-6 md:px-10 py-6 flex flex-col gap-6">
+<!-- Breadcrumbs -->
+<nav class="flex flex-wrap gap-2 text-sm">
+<a class="text-[#ba9c9c] hover:text-white transition-colors" href="#">Home</a>
+<span class="text-[#ba9c9c]">/</span>
+<span class="text-white">Product Catalog</span>
+</nav>
+<!-- Page Heading -->
+<div class="flex flex-col md:flex-row md:items-end justify-between gap-6">
+<div class="flex flex-col gap-2">
+<h1 class="text-white text-5xl font-black leading-tight tracking-tight uppercase">Premium Catalog</h1>
+<p class="text-[#ba9c9c] text-lg max-w-xl font-light">High-performance racing gear and precision engineering for the elite rider.</p>
+</div>
+<!-- Category Tabs -->
+<div class="flex border-b-2 border-border-dark/50 gap-10">
+<a class="flex flex-col items-center justify-center border-b-[3px] border-b-primary text-white pb-3 px-2 group" href="#">
+<p class="text-white text-lg font-bold tracking-wider uppercase group-hover:text-primary transition-colors">Piloto</p>
+</a>
+<a class="flex flex-col items-center justify-center border-b-[3px] border-b-transparent text-[#ba9c9c] pb-3 px-2 group" href="#">
+<p class="text-[#ba9c9c] text-lg font-bold tracking-wider uppercase group-hover:text-white transition-colors">Moto</p>
+</a>
+</div>
+</div>
+<div class="flex flex-col lg:flex-row gap-10 mt-4">
+<!-- Sidebar Filter -->
+<aside class="w-full lg:w-72 flex-shrink-0">
+<div class="sticky top-24 flex flex-col gap-6 bg-card-dark/30 p-6 rounded-xl border border-border-dark">
+<div class="flex items-center justify-between">
+<h3 class="text-white text-xl font-bold uppercase tracking-tight">Filtros</h3>
+<span class="material-symbols-outlined text-primary">tune</span>
+</div>
+<div class="flex flex-col gap-2">
+<!-- Filter Item -->
+<div class="group">
+<button class="flex w-full items-center justify-between px-3 py-3 rounded-lg bg-border-dark/50 text-white hover:bg-border-dark transition-colors">
+<span class="text-sm font-semibold uppercase tracking-wide">Marcas</span>
+<span class="material-symbols-outlined text-primary group-hover:rotate-180 transition-transform">expand_more</span>
+</button>
+<div class="mt-2 pl-4 flex flex-col gap-2">
+<label class="flex items-center gap-3 cursor-pointer">
+<input class="rounded border-border-dark bg-background-dark text-primary focus:ring-primary h-4 w-4" type="checkbox"/>
+<span class="text-sm text-[#ba9c9c]">Alpinestars</span>
+</label>
+<label class="flex items-center gap-3 cursor-pointer">
+<input checked="" class="rounded border-border-dark bg-background-dark text-primary focus:ring-primary h-4 w-4" type="checkbox"/>
+<span class="text-sm text-white">Dainese</span>
+</label>
+<label class="flex items-center gap-3 cursor-pointer">
+<input class="rounded border-border-dark bg-background-dark text-primary focus:ring-primary h-4 w-4" type="checkbox"/>
+<span class="text-sm text-[#ba9c9c]">Brembo</span>
+</label>
+</div>
+</div>
+<!-- Filter Item -->
+<div class="mt-2">
+<button class="flex w-full items-center justify-between px-3 py-3 rounded-lg text-[#ba9c9c] hover:bg-border-dark hover:text-white transition-colors">
+<span class="text-sm font-semibold uppercase tracking-wide">Categoría</span>
+<span class="material-symbols-outlined">expand_more</span>
+</button>
+</div>
+<!-- Filter Item -->
+<div class="mt-2">
+<button class="flex w-full items-center justify-between px-3 py-3 rounded-lg text-[#ba9c9c] hover:bg-border-dark hover:text-white transition-colors">
+<span class="text-sm font-semibold uppercase tracking-wide">Talla / Size</span>
+<span class="material-symbols-outlined">expand_more</span>
+</button>
+</div>
+<!-- Filter Item -->
+<div class="mt-2">
+<button class="flex w-full items-center justify-between px-3 py-3 rounded-lg text-[#ba9c9c] hover:bg-border-dark hover:text-white transition-colors">
+<span class="text-sm font-semibold uppercase tracking-wide">Bike Model</span>
+<span class="material-symbols-outlined">expand_more</span>
+</button>
+</div>
+<!-- Price Range -->
+<div class="mt-4 px-3">
+<p class="text-sm font-semibold uppercase tracking-wide text-white mb-4">Rango de Precio</p>
+<div class="h-1 w-full bg-border-dark rounded-full relative">
+<div class="absolute left-1/4 right-1/4 h-full bg-primary rounded-full"></div>
+<div class="absolute left-1/4 top-1/2 -translate-y-1/2 h-4 w-4 bg-white border-2 border-primary rounded-full cursor-pointer"></div>
+<div class="absolute right-1/4 top-1/2 -translate-y-1/2 h-4 w-4 bg-white border-2 border-primary rounded-full cursor-pointer"></div>
+</div>
+<div class="flex justify-between mt-4 text-xs font-mono text-[#ba9c9c]">
+<span>$0</span>
+<span>$5,000+</span>
+</div>
+</div>
+</div>
+<button class="mt-6 flex w-full cursor-pointer items-center justify-center rounded-lg h-12 bg-primary text-white text-sm font-bold uppercase tracking-widest hover:brightness-110 active:scale-95 transition-all">
+<span>Reset All</span>
+</button>
+</div>
+</aside>
+<!-- Product Grid Area -->
+<div class="flex-1 flex flex-col gap-6">
+<!-- Sorting & Stats -->
+<div class="flex items-center justify-between bg-card-dark/30 p-4 rounded-lg border border-border-dark">
+<p class="text-[#ba9c9c] text-sm"><span class="text-white font-bold">124</span> productos encontrados</p>
+<div class="flex items-center gap-4">
+<span class="text-xs uppercase text-[#ba9c9c] font-bold">Ordenar por:</span>
+<select class="bg-background-dark border-border-dark text-white rounded-lg text-sm focus:ring-primary focus:border-primary">
+<option>Recomendados</option>
+<option>Precio: Bajo a Alto</option>
+<option>Precio: Alto a Bajo</option>
+<option>Nuevos</option>
+</select>
+</div>
+</div>
+<!-- Grid -->
+<div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
+<!-- Product Card 1 -->
+<div class="group relative flex flex-col bg-card-dark rounded-xl border border-border-dark overflow-hidden hover:border-primary/50 transition-all duration-300">
+<div class="aspect-square w-full overflow-hidden bg-[#2a1a1a] relative">
+<img alt="Carbon Fiber Racing Helmet" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" data-alt="Aerodynamic full-face carbon fiber motorcycle helmet with red accents" src="https://lh3.googleusercontent.com/aida-public/AB6AXuD4Y5XkaSgyFLXMH-ZQxcchB753jnFtsD12Xx9hjekz_NtTs9Jt3TCTpziBpDMwK2SSn_kn4aryHoA_UTTtH9UrOuQkECw2ST2U1f9DQZIkdLOL6A4BUc6eGtNdmP4cpAcwOytRFM_LR49ndJf0V3nfGp4B7vaDL2Iuq2WXFa1VHzrfvC4phkPt2w0Z2Ek9GC1njwnrnjrQcFN1D4RM2Cxc0I7GNkBk-m3RaXmEkKAcVa0rxbDewLyZtI_0VcnBEnxcu-jTw7MxtJAE"/>
+<div class="absolute top-3 left-3 flex flex-col gap-2">
+<span class="bg-primary text-white text-[10px] font-black uppercase px-2 py-1 rounded tracking-tighter">Nuevo</span>
+<span class="bg-white/10 backdrop-blur-md text-white text-[10px] font-bold uppercase px-2 py-1 rounded">Premium</span>
+</div>
+<button class="absolute top-3 right-3 h-8 w-8 rounded-full bg-background-dark/80 text-white flex items-center justify-center hover:text-primary transition-colors">
+<span class="material-symbols-outlined text-lg">favorite</span>
+</button>
+</div>
+<div class="p-5 flex flex-col gap-3">
+<div>
+<h3 class="text-white text-lg font-bold leading-tight group-hover:text-primary transition-colors">AGV Pista GP RR Carbon</h3>
+<p class="text-[#ba9c9c] text-xs font-medium uppercase mt-1">Full-Face / Race-Spec</p>
+</div>
+<div class="flex items-center justify-between mt-auto">
+<p class="text-2xl font-black text-white">$1,450.00</p>
+<div class="flex items-center gap-1 text-primary">
+<span class="material-symbols-outlined text-sm">star</span>
+<span class="text-white text-xs font-bold">4.9</span>
+</div>
+</div>
+<button class="w-full mt-2 py-3 bg-white/5 hover:bg-primary text-white font-bold uppercase tracking-widest rounded-lg transition-all duration-300 flex items-center justify-center gap-2 group/btn">
+<span>Ver Detalle</span>
+<span class="material-symbols-outlined text-sm group-hover/btn:translate-x-1 transition-transform">arrow_forward</span>
+</button>
+</div>
+</div>
+<!-- Product Card 2 -->
+<div class="group relative flex flex-col bg-card-dark rounded-xl border border-border-dark overflow-hidden hover:border-primary/50 transition-all duration-300">
+<div class="aspect-square w-full overflow-hidden bg-[#2a1a1a] relative">
+<img alt="Professional Racing Suit" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" data-alt="One piece professional leather motorcycle racing suit in black and red" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAWg7nFv6ZoHR27_jzZ-Y0IqAcczZwdKj3_aBFBk9_i77Deim0AzaMhZSG3ifXhavFRzvNgy0KlcC4UF-9M-Op78yj9VBb7dveL2ZqskEicd1PiyFtZp1X32viEmuxkparnPLh8YlFQ5L9wY9yFc7_8vqw5522lW-K1f8MpJ1MfI6SWp5te2DN9E0Fxp4OLxsiPncOkdlxShZhLiAWki2notRf81TJiLOLtaXZbxvGJsr3bhsTvYfgYlDVbl_hryMAi4anx5udnGUMU"/>
+<div class="absolute top-3 left-3 flex flex-col gap-2">
+<span class="bg-primary text-white text-[10px] font-black uppercase px-2 py-1 rounded tracking-tighter">Universal</span>
+</div>
+</div>
+<div class="p-5 flex flex-col gap-3">
+<div>
+<h3 class="text-white text-lg font-bold leading-tight group-hover:text-primary transition-colors">Dainese Misano 2 D-Air</h3>
+<p class="text-[#ba9c9c] text-xs font-medium uppercase mt-1">One-Piece Leather / Airbag</p>
+</div>
+<div class="flex items-center justify-between mt-auto">
+<p class="text-2xl font-black text-white">$2,890.00</p>
+<div class="flex items-center gap-1 text-primary">
+<span class="material-symbols-outlined text-sm">star</span>
+<span class="text-white text-xs font-bold">5.0</span>
+</div>
+</div>
+<button class="w-full mt-2 py-3 bg-white/5 hover:bg-primary text-white font-bold uppercase tracking-widest rounded-lg transition-all duration-300 flex items-center justify-center gap-2 group/btn">
+<span>Ver Detalle</span>
+<span class="material-symbols-outlined text-sm group-hover/btn:translate-x-1 transition-transform">arrow_forward</span>
+</button>
+</div>
+</div>
+<!-- Product Card 3 -->
+<div class="group relative flex flex-col bg-card-dark rounded-xl border border-border-dark overflow-hidden hover:border-primary/50 transition-all duration-300">
+<div class="aspect-square w-full overflow-hidden bg-[#2a1a1a] relative">
+<img alt="High Performance Exhaust" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" data-alt="Titanium motorcycle exhaust system for superbike with carbon tip" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCfHJfE5uk758DznKZGC-jLDqBywDF1UHDFwio8zqAOQZgoGCzy7i_QL1bNz0bNi6pIaNIziaUdu_yWDie1F9yQoli4jbT_kVBBU-FtPxNIkCwesmEziXphmbu7MziL1WU_2uLx9jGzP2yvpv1zIgjw38GjLv_gaac76lvbQrbd_COHlekT-8CjdFjLFT0Gkur4Lisnp8kN6qjMPLuTZRYJw4LcwA2bTa5pRCfF-aeySKtlMKVlu-u-lOM8XhicPjwRC8yXCpHMl8aG"/>
+<div class="absolute top-3 left-3 flex flex-col gap-2">
+<span class="bg-primary text-white text-[10px] font-black uppercase px-2 py-1 rounded tracking-tighter">Nuevo</span>
+</div>
+</div>
+<div class="p-5 flex flex-col gap-3">
+<div>
+<h3 class="text-white text-lg font-bold leading-tight group-hover:text-primary transition-colors">Akrapovič Titanium Slip-On</h3>
+<p class="text-[#ba9c9c] text-xs font-medium uppercase mt-1">Performance Exhaust / BMW S1000RR</p>
+</div>
+<div class="flex items-center justify-between mt-auto">
+<p class="text-2xl font-black text-white">$1,120.00</p>
+<div class="flex items-center gap-1 text-primary">
+<span class="material-symbols-outlined text-sm">star</span>
+<span class="text-white text-xs font-bold">4.8</span>
+</div>
+</div>
+<button class="w-full mt-2 py-3 bg-white/5 hover:bg-primary text-white font-bold uppercase tracking-widest rounded-lg transition-all duration-300 flex items-center justify-center gap-2 group/btn">
+<span>Ver Detalle</span>
+<span class="material-symbols-outlined text-sm group-hover/btn:translate-x-1 transition-transform">arrow_forward</span>
+</button>
+</div>
+</div>
+<!-- Product Card 4 -->
+<div class="group relative flex flex-col bg-card-dark rounded-xl border border-border-dark overflow-hidden hover:border-primary/50 transition-all duration-300">
+<div class="aspect-square w-full overflow-hidden bg-[#2a1a1a] relative">
+<img alt="Carbon Fiber Wheels" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" data-alt="Lightweight carbon fiber motorcycle wheels for racing" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDfPNEBbU-weXQ9OUhK9_HX205c-U0N3ie9Y-kbFPMLxISCNpzmoSj9bres1onxUytMgjDXGxDdVRgyc6549xY7636mUA1nhw64R_FkyuJ-TJWUzBRGo8xiDCKvNGLastZGbvWmJkLmM6pLY47DiHu0SxdlA0jRvLhPLbfYgJp-P0qsFN3NC-pyih7UrZzv8gU2LbrpVDYlgrlXLvWSkFRIb8FfjPG9OFVr_lr1oTG8o02_eoX4qh30j11GLW3VoiBLx7DVIxaq6w7p"/>
+</div>
+<div class="p-5 flex flex-col gap-3">
+<div>
+<h3 class="text-white text-lg font-bold leading-tight group-hover:text-primary transition-colors">BST Rapid TEK Carbon Wheels</h3>
+<p class="text-[#ba9c9c] text-xs font-medium uppercase mt-1">Ultra-Light / Performance</p>
+</div>
+<div class="flex items-center justify-between mt-auto">
+<p class="text-2xl font-black text-white">$3,999.00</p>
+<div class="flex items-center gap-1 text-primary">
+<span class="material-symbols-outlined text-sm">star</span>
+<span class="text-white text-xs font-bold">5.0</span>
+</div>
+</div>
+<button class="w-full mt-2 py-3 bg-white/5 hover:bg-primary text-white font-bold uppercase tracking-widest rounded-lg transition-all duration-300 flex items-center justify-center gap-2 group/btn">
+<span>Ver Detalle</span>
+<span class="material-symbols-outlined text-sm group-hover/btn:translate-x-1 transition-transform">arrow_forward</span>
+</button>
+</div>
+</div>
+<!-- Product Card 5 -->
+<div class="group relative flex flex-col bg-card-dark rounded-xl border border-border-dark overflow-hidden hover:border-primary/50 transition-all duration-300">
+<div class="aspect-square w-full overflow-hidden bg-[#2a1a1a] relative">
+<img alt="Racing Gloves" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" data-alt="Professional leather and carbon fiber motorcycle racing gloves" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCWCVCl2w5fxTyNCDeO3RZInFzBCEwzDrqVIX2cAkOjxCm1xT7UZSDiJChHJL3-YPd_HgHl_cD5uQsF4QfkR-eWuKY4e_m4pTMvWRas-WEyKux1tjrEYUVb0HhQHXaXoaJurNzdTEXBx6IP5g14Up5claQBx5rfvsIedbhLLj95bfpw7hnmKu5n-SQm0lraiO6hFvVchNSN4KpcOncfyycmnDAI_yK7-6PXIiXBPClyQ8vH616OhSU4zcpSYWXhgDKW5Jtn94ih24oM"/>
+</div>
+<div class="p-5 flex flex-col gap-3">
+<div>
+<h3 class="text-white text-lg font-bold leading-tight group-hover:text-primary transition-colors">Alpinestars Supertech Gloves</h3>
+<p class="text-[#ba9c9c] text-xs font-medium uppercase mt-1">Full-Grain Leather / Carbon Armor</p>
+</div>
+<div class="flex items-center justify-between mt-auto">
+<p class="text-2xl font-black text-white">$449.95</p>
+<div class="flex items-center gap-1 text-primary">
+<span class="material-symbols-outlined text-sm">star</span>
+<span class="text-white text-xs font-bold">4.7</span>
+</div>
+</div>
+<button class="w-full mt-2 py-3 bg-white/5 hover:bg-primary text-white font-bold uppercase tracking-widest rounded-lg transition-all duration-300 flex items-center justify-center gap-2 group/btn">
+<span>Ver Detalle</span>
+<span class="material-symbols-outlined text-sm group-hover/btn:translate-x-1 transition-transform">arrow_forward</span>
+</button>
+</div>
+</div>
+<!-- Product Card 6 -->
+<div class="group relative flex flex-col bg-card-dark rounded-xl border border-border-dark overflow-hidden hover:border-primary/50 transition-all duration-300">
+<div class="aspect-square w-full overflow-hidden bg-[#2a1a1a] relative">
+<img alt="Brembo Brake System" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" data-alt="High performance Brembo GP4-RS monoblock brake calipers in gold" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDuRLLihS5xeohvPF3kPrzMR_CwtKb6gI9H2tkebuCSDFaWn62pE3nwTUTD8ldFs65TyyHNdloOz1dm7o7pywwQiqBi7mwCTEc-qjyrXQAWMH2mSikpMM6s-G0OiUmAHvZuEcMsMMgW1gAjNjZEuxAVmUTK9mkT6IvsKbBUUBN8dEjlMXW8DV0SKnracD6ZoTjkbMMY4W2tTXdbrNGn68Bo8XT-V77QCoLnFXPxnmZ4A6dU6yowcwip7vl61kzCIv9ZHO5P9tVIQkgu"/>
+</div>
+<div class="p-5 flex flex-col gap-3">
+<div>
+<h3 class="text-white text-lg font-bold leading-tight group-hover:text-primary transition-colors">Brembo GP4-RS Calipers</h3>
+<p class="text-[#ba9c9c] text-xs font-medium uppercase mt-1">Monoblock / Racing Brake System</p>
+</div>
+<div class="flex items-center justify-between mt-auto">
+<p class="text-2xl font-black text-white">$899.00</p>
+<div class="flex items-center gap-1 text-primary">
+<span class="material-symbols-outlined text-sm">star</span>
+<span class="text-white text-xs font-bold">4.9</span>
+</div>
+</div>
+<button class="w-full mt-2 py-3 bg-white/5 hover:bg-primary text-white font-bold uppercase tracking-widest rounded-lg transition-all duration-300 flex items-center justify-center gap-2 group/btn">
+<span>Ver Detalle</span>
+<span class="material-symbols-outlined text-sm group-hover/btn:translate-x-1 transition-transform">arrow_forward</span>
+</button>
+</div>
+</div>
+</div>
+<!-- Pagination -->
+<div class="flex justify-center items-center gap-4 mt-8 py-6">
+<button class="h-10 w-10 flex items-center justify-center rounded-lg border border-border-dark text-[#ba9c9c] hover:bg-border-dark transition-colors">
+<span class="material-symbols-outlined">chevron_left</span>
+</button>
+<div class="flex gap-2">
+<button class="h-10 w-10 flex items-center justify-center rounded-lg bg-primary text-white font-bold">1</button>
+<button class="h-10 w-10 flex items-center justify-center rounded-lg border border-border-dark text-[#ba9c9c] hover:bg-border-dark transition-colors">2</button>
+<button class="h-10 w-10 flex items-center justify-center rounded-lg border border-border-dark text-[#ba9c9c] hover:bg-border-dark transition-colors">3</button>
+<span class="text-[#ba9c9c] self-end pb-2">...</span>
+<button class="h-10 w-10 flex items-center justify-center rounded-lg border border-border-dark text-[#ba9c9c] hover:bg-border-dark transition-colors">12</button>
+</div>
+<button class="h-10 w-10 flex items-center justify-center rounded-lg border border-border-dark text-[#ba9c9c] hover:bg-border-dark transition-colors">
+<span class="material-symbols-outlined">chevron_right</span>
+</button>
+</div>
+</div>
+</div>
+</main>
+<!-- Footer -->
+<footer class="mt-20 border-t border-border-dark bg-background-dark py-12 px-6">
+<div class="max-w-[1440px] mx-auto grid grid-cols-1 md:grid-cols-4 gap-10">
+<div class="flex flex-col gap-6">
+<div class="flex items-center gap-3 text-white">
+<div class="size-6 text-primary">
+<svg fill="currentColor" viewbox="0 0 48 48" xmlns="http://www.w3.org/2000/svg">
+<path clip-rule="evenodd" d="M12.0799 24L4 19.2479L9.95537 8.75216L18.04 13.4961L18.0446 4H29.9554L29.96 13.4961L38.0446 8.75216L44 19.2479L35.92 24L44 28.7521L38.0446 39.2479L29.96 34.5039L29.9554 44H18.0446L18.04 34.5039L9.95537 39.2479L4 28.7521L12.0799 24Z" fill-rule="evenodd"></path>
+</svg>
+</div>
+<h2 class="text-white text-lg font-bold uppercase">Moto &amp; Pilot</h2>
+</div>
+<p class="text-[#ba9c9c] text-sm">The world's leading destination for premium motorcycle apparel and performance components.</p>
+</div>
+<div class="flex flex-col gap-4">
+<h4 class="text-white font-bold uppercase text-xs tracking-widest">Shop</h4>
+<a class="text-[#ba9c9c] text-sm hover:text-white transition-colors" href="#">Cascos</a>
+<a class="text-[#ba9c9c] text-sm hover:text-white transition-colors" href="#">Trajes de piel</a>
+<a class="text-[#ba9c9c] text-sm hover:text-white transition-colors" href="#">Escapes</a>
+<a class="text-[#ba9c9c] text-sm hover:text-white transition-colors" href="#">Frenos</a>
+</div>
+<div class="flex flex-col gap-4">
+<h4 class="text-white font-bold uppercase text-xs tracking-widest">Support</h4>
+<a class="text-[#ba9c9c] text-sm hover:text-white transition-colors" href="#">Envíos</a>
+<a class="text-[#ba9c9c] text-sm hover:text-white transition-colors" href="#">Devoluciones</a>
+<a class="text-[#ba9c9c] text-sm hover:text-white transition-colors" href="#">Guía de tallas</a>
+<a class="text-[#ba9c9c] text-sm hover:text-white transition-colors" href="#">Contacto</a>
+</div>
+<div class="flex flex-col gap-6">
+<h4 class="text-white font-bold uppercase text-xs tracking-widest">Newsletter</h4>
+<div class="flex gap-2">
+<input class="bg-border-dark border-none rounded-lg text-white text-sm flex-1 focus:ring-primary" placeholder="Email" type="email"/>
+<button class="bg-primary text-white px-4 py-2 rounded-lg text-sm font-bold uppercase">OK</button>
+</div>
+<div class="flex gap-4">
+<a class="text-[#ba9c9c] hover:text-primary" href="#"><span class="material-symbols-outlined">public</span></a>
+<a class="text-[#ba9c9c] hover:text-primary" href="#"><span class="material-symbols-outlined">share</span></a>
+<a class="text-[#ba9c9c] hover:text-primary" href="#"><span class="material-symbols-outlined">alternate_email</span></a>
+</div>
+</div>
+</div>
+<div class="max-w-[1440px] mx-auto mt-12 pt-8 border-t border-border-dark flex flex-col md:flex-row justify-between items-center gap-4 text-[#ba9c9c] text-xs">
+<p>© 2024 Moto &amp; Pilot SL. Reservados todos los derechos.</p>
+<div class="flex gap-6">
+<a class="hover:text-white transition-colors" href="#">Términos y Condiciones</a>
+<a class="hover:text-white transition-colors" href="#">Privacidad</a>
+</div>
+</div>
+</footer>
+</body></html>

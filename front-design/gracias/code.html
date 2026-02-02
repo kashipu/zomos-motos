@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="es"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>MOTO LUXE | Confirmación de Pedido</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#0df233",
+                        "background-light": "#f5f8f6",
+                        "background-dark": "#0a0d0a",
+                        "card-dark": "#161d17",
+                    },
+                    fontFamily: {
+                        "display": ["Space Grotesk", "sans-serif"]
+                    },
+                    borderRadius: {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                },
+            },
+        }
+    </script>
+<style>
+        body {
+            font-family: 'Space Grotesk', sans-serif;
+        }
+        .racing-gradient {
+            background: linear-gradient(180deg, rgba(13, 242, 51, 0.05) 0%, rgba(10, 13, 10, 0) 100%);
+        }
+        .glass-panel {
+            background: rgba(22, 29, 23, 0.6);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(40, 57, 43, 0.5);
+        }
+    </style>
+</head>
+<body class="bg-background-light dark:bg-background-dark text-white min-h-screen flex flex-col">
+<!-- Header / Nav -->
+<header class="w-full border-b border-solid border-[#28392b] bg-background-dark/80 backdrop-blur-md sticky top-0 z-50">
+<div class="max-w-[1200px] mx-auto px-6 h-20 flex items-center justify-between">
+<div class="flex items-center gap-3">
+<div class="text-primary">
+<svg class="size-8" fill="none" viewbox="0 0 48 48" xmlns="http://www.w3.org/2000/svg">
+<path d="M44 11.2727C44 14.0109 39.8386 16.3957 33.69 17.6364C39.8386 18.877 44 21.2618 44 24C44 26.7382 39.8386 29.123 33.69 30.3636C39.8386 31.6043 44 33.9891 44 36.7273C44 40.7439 35.0457 44 24 44C12.9543 44 4 40.7439 4 36.7273C4 33.9891 8.16144 31.6043 14.31 30.3636C8.16144 29.123 4 26.7382 4 24C4 21.2618 8.16144 18.877 14.31 17.6364C8.16144 16.3957 4 14.0109 4 11.2727C4 7.25611 12.9543 4 24 4C35.0457 4 44 7.25611 44 11.2727Z" fill="currentColor"></path>
+</svg>
+</div>
+<h2 class="text-white text-xl font-bold tracking-tighter uppercase">Moto Luxe</h2>
+</div>
+<nav class="hidden md:flex items-center gap-10">
+<a class="text-gray-400 hover:text-primary transition-colors text-sm font-medium" href="#">Catálogo</a>
+<a class="text-gray-400 hover:text-primary transition-colors text-sm font-medium" href="#">Performance</a>
+<a class="text-gray-400 hover:text-primary transition-colors text-sm font-medium" href="#">Custom</a>
+<a class="text-gray-400 hover:text-primary transition-colors text-sm font-medium" href="#">Racing</a>
+</nav>
+<div class="flex items-center gap-4">
+<button class="flex items-center justify-center rounded-lg h-10 w-10 bg-[#28392b] text-white hover:bg-[#344b38] transition-colors">
+<span class="material-symbols-outlined text-[20px]">shopping_bag</span>
+</button>
+<div class="bg-center bg-no-repeat aspect-square bg-cover rounded-full size-10 border border-primary/20" data-alt="perfil de usuario piloto de carreras" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuCZzZBTOu0z6zp8raXFLTYkicZoJHu2C7KAgHeAJXTDEuYDd6sOOh3mlNLKAeoRFQFPatpfyOv0V9E4d81Zk3OJ_kI18Ny1yvyiKK4ijx_F7pF7B49y0zytgFybzxFXHF0Zq-sTGLCZIu0mjhK4qA_ge-7aXNYnZupQ9Csnz7IsYhZFO6i3R-WFgJAGYakd5ZYZ7NysGghv3kmopRA7iDCVg33pQXKudfRu-9DPiGgUe40MsBZaXXU-PVLxThUShzX08r39FuWdCxXt");'></div>
+</div>
+</div>
+</header>
+<main class="flex-1 flex flex-col items-center justify-center px-4 py-12 racing-gradient">
+<div class="w-full max-w-[640px] flex flex-col items-center">
+<!-- Success Icon -->
+<div class="mb-8 flex items-center justify-center">
+<div class="relative">
+<div class="absolute inset-0 bg-primary/20 blur-2xl rounded-full scale-150"></div>
+<div class="relative bg-primary text-background-dark rounded-full p-6 flex items-center justify-center">
+<span class="material-symbols-outlined text-5xl font-bold">check_circle</span>
+</div>
+</div>
+</div>
+<!-- Headline -->
+<h1 class="text-white tracking-tight text-4xl md:text-5xl font-bold leading-tight text-center mb-4">
+                ¡Gracias por tu pasión!
+            </h1>
+<!-- Body Text -->
+<p class="text-gray-400 text-lg font-normal leading-relaxed text-center mb-10 max-w-[500px]">
+                Tu configuración personalizada ha sido registrada. Nuestros especialistas están listos para ajustar los detalles finales de tu máquina.
+            </p>
+<!-- Order Summary Card -->
+<div class="w-full mb-10 px-4">
+<div class="glass-panel overflow-hidden rounded-xl shadow-2xl relative group">
+<div class="absolute top-0 right-0 w-32 h-32 bg-primary/5 rounded-full -mr-16 -mt-16 blur-3xl"></div>
+<div class="bg-cover bg-center h-48 flex flex-col justify-end" data-alt="primer plano de motor de motocicleta de alta gama" style='background-image: linear-gradient(0deg, rgba(10, 13, 10, 1) 0%, rgba(10, 13, 10, 0.4) 60%, rgba(10, 13, 10, 0.2) 100%), url("https://lh3.googleusercontent.com/aida-public/AB6AXuCJLmL_vUrVkfVgHCyUSuviHJZ8cTUcKZ2-S4UvR-QQHyaPE18XjItoFzg4XR-YEnsTrjoBbkxVCFoJLMHpIp6K6LzRAApPBE9LfGuq_bwRfY6WRczNPQgXJakS4KNIIjDNSe59DR6nsV2J4xg9MM_CBg2nQlUI4zUk7jhi-ujR7snXGd0Szh5ojg2IKxFgYgSQ27L1aFMI3b5hkCf3SdmU4qNPSlJGlYt2I2BgP1QZ8TAF0avD7ciakO3ou4p3mZVdz5RYiZ7g35tX");'>
+<div class="p-6">
+<span class="text-primary text-xs font-bold tracking-[0.2em] uppercase mb-1 block">Configuración Guardada</span>
+<h3 class="text-white text-2xl font-bold">Resumen de Pedido</h3>
+</div>
+</div>
+<div class="p-8 flex flex-col md:flex-row md:items-center justify-between gap-6 border-t border-[#28392b]/50">
+<div>
+<p class="text-gray-500 text-sm font-medium uppercase tracking-wider mb-1">Total Estimado</p>
+<p class="text-white text-4xl font-bold tracking-tight">€12,450.00</p>
+</div>
+<div class="flex flex-col gap-2">
+<div class="flex items-center gap-2 text-sm text-gray-400">
+<span class="material-symbols-outlined text-primary text-sm">verified</span>
+<span>Piezas de competición certificadas</span>
+</div>
+<div class="flex items-center gap-2 text-sm text-gray-400">
+<span class="material-symbols-outlined text-primary text-sm">settings_suggest</span>
+<span>Ajuste técnico incluido</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- CTA Area -->
+<div class="w-full max-w-[480px] flex flex-col gap-4 px-4">
+<button class="w-full flex items-center justify-center overflow-hidden rounded-lg h-16 bg-primary text-background-dark gap-3 text-lg font-bold transition-all hover:scale-[1.02] active:scale-95 shadow-[0_0_20px_rgba(13,242,51,0.3)]">
+<span class="material-symbols-outlined text-[28px]">chat</span>
+<span>Contactar por WhatsApp</span>
+</button>
+<p class="text-center text-gray-500 text-sm mt-2">
+                    Haz clic para finalizar los detalles y coordinar la entrega con un experto.
+                </p>
+<div class="flex justify-center mt-6">
+<a class="group flex items-center gap-2 text-white hover:text-primary transition-colors font-medium text-base" href="#">
+<span>Seguir explorando piezas</span>
+<span class="material-symbols-outlined group-hover:translate-x-1 transition-transform">arrow_forward</span>
+</a>
+</div>
+</div>
+</div>
+</main>
+<!-- Footer -->
+<footer class="w-full py-8 border-t border-[#28392b]">
+<div class="max-w-[1200px] mx-auto px-6 flex flex-col md:flex-row justify-between items-center gap-4">
+<p class="text-gray-500 text-xs">© 2024 MOTO LUXE PERFORMANCE. Todos los derechos reservados.</p>
+<div class="flex items-center gap-8">
+<a class="text-gray-500 hover:text-white text-xs transition-colors" href="#">Términos y Condiciones</a>
+<a class="text-gray-500 hover:text-white text-xs transition-colors" href="#">Política de Privacidad</a>
+<a class="text-gray-500 hover:text-white text-xs transition-colors" href="#">Ayuda</a>
+</div>
+</div>
+</footer>
+</body></html>

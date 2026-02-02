@@ -1,0 +1,89 @@
+---
+import { Eye, ShoppingCart } from "lucide-react";
+
+interface Props {
+  nombre?: string;
+  precio?: number;
+  categoria?: string;
+  imagen?: string;
+  badge?: "Nuevo" | "Agotado" | "Oferta" | null;
+  slug?: string;
+  rating?: number;
+}
+
+const {
+  nombre = "Producto Premium",
+  precio = 0,
+  categoria = "Accesorios",
+  imagen = "https://images.unsplash.com/photo-1558981403-c5f9899a28bc?auto=format&fit=crop&q=80&w=400",
+  badge = null,
+  slug = "#",
+  rating = 5,
+} = Astro.props;
+---
+
+<article
+  class="bg-card-dark rounded-xl border border-white/5 overflow-hidden group hover:border-primary/50 transition-all duration-500 flex flex-col h-full"
+>
+  <!-- Contenedor de Imagen -->
+  <div class="aspect-square relative overflow-hidden bg-zinc-900">
+    <img
+      src={imagen ||
+        "https://images.unsplash.com/photo-1558981403-c5f91cbba527?auto=format&fit=crop&q=80&w=800"}
+      alt={nombre}
+      class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
+    />
+
+    <!-- Badge (Novedad, Oferta, etc) -->
+    {
+      badge && (
+        <div class="absolute top-4 right-4 bg-primary text-white text-[10px] font-bold px-2 py-1 rounded uppercase tracking-tighter z-10 animate-fade-in">
+          {badge}
+        </div>
+      )
+    }
+
+    <!-- Botón Rápido (Solo visible en hover para mobile o siempre en desktop) -->
+    <div
+      class="absolute inset-0 bg-background-dark/40 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center gap-3"
+    >
+      <a
+        href={`/productos/${slug}`}
+        class="p-3 bg-white text-background-dark rounded-full hover:bg-primary hover:text-white transition-all transform translate-y-4 group-hover:translate-y-0 duration-300"
+      >
+        <Eye size={20} />
+      </a>
+    </div>
+  </div>
+
+  <!-- Información -->
+  <div class="p-5 flex flex-col flex-1 space-y-3">
+    <div>
+      <h3
+        class="text-white text-lg font-bold leading-tight line-clamp-2 group-hover:text-primary transition-colors duration-300 font-display"
+      >
+        {nombre}
+      </h3>
+      <p
+        class="text-zinc-500 text-[10px] font-bold uppercase tracking-widest mt-1"
+      >
+        {categoria}
+      </p>
+    </div>
+
+    <div
+      class="mt-auto pt-4 flex items-center justify-between border-t border-white/5"
+    >
+      <span class="text-xl font-bold text-white tracking-tighter"
+        >${(precio || 0).toLocaleString("es-ES")}</span
+      >
+      <button
+        class="size-10 rounded-lg bg-white/5 flex items-center justify-center hover:bg-primary transition-colors active:scale-90"
+      >
+        <ShoppingCart size={18} />
+      </button>
+    </div>
+  </div>
+</article>
+
+

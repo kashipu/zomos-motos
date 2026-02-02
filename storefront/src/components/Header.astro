@@ -1,0 +1,80 @@
+---
+import { Search, User, Bike, ShoppingCart } from "lucide-react";
+
+const navItems = [
+  { name: "Catálogo", href: "/productos" },
+  { name: "Performance", href: "#" },
+  { name: "Custom", href: "#" },
+  { name: "Racing", href: "#" },
+];
+---
+
+<header
+  class="fixed top-0 w-full z-50 border-b border-white/10 bg-background-dark/80 backdrop-blur-md px-6 lg:px-20 py-4"
+>
+  <div class="max-w-7xl mx-auto flex items-center justify-between font-display">
+    <div class="flex items-center gap-12">
+      <!-- Logo -->
+      <a href="/" class="flex items-center gap-3 group">
+        <div class="text-primary group-hover:scale-110 transition-transform">
+        </div>
+        <h2
+          class="text-xl font-bold tracking-tighter uppercase italic text-white"
+        >
+          Moto<span class="text-primary">Premium</span>
+        </h2>
+      </a>
+
+      <!-- Navegación Desktop -->
+      <nav class="hidden md:flex items-center gap-8">
+        {
+          navItems.map((item) => (
+            <a
+              href={item.href}
+              class="text-sm font-medium text-zinc-400 hover:text-primary transition-colors"
+            >
+              {item.name}
+            </a>
+          ))
+        }
+      </nav>
+    </div>
+
+    <!-- Acciones -->
+    <div class="flex items-center gap-6">
+      <!-- Search Input -->
+      <div
+        class="hidden lg:flex items-center bg-white/5 rounded-lg px-3 py-1.5 border border-white/10"
+      >
+        <Search size={18} className="text-zinc-400" />
+        <input
+          class="bg-transparent border-none focus:ring-0 text-sm w-48 placeholder:text-zinc-500 text-white outline-none ml-2"
+          placeholder="Buscar piezas..."
+          type="text"
+        />
+      </div>
+
+      <!-- Cart Button -->
+      <button
+        class="bg-primary hover:bg-red-700 text-white px-6 py-2 rounded-lg text-sm font-bold uppercase tracking-wider transition-all flex items-center gap-2 shadow-[0_0_15px_rgba(242,13,13,0.3)] cart-toggle-btn"
+      >
+        <ShoppingCart size={18} />
+        <span class="hidden sm:inline">Tienda</span>
+        <span class="cart-count-badge hidden ml-1">0</span>
+      </button>
+
+      <!-- User Avatar -->
+      <div
+        class="size-10 rounded-full border border-primary/50 overflow-hidden cursor-pointer hover:border-primary transition-colors"
+      >
+        <img
+          class="w-full h-full object-cover"
+          src="https://lh3.googleusercontent.com/aida-public/AB6AXuDPKqsfBVPrE4wj7N841QaYG6VlrC3N24mJ9HMse2RDWVrr2ot34no7_Dd9EBTBWO00TnQIQLzgdKlqsIkIOXaNO5a7bA_3P5alQ9jl2fA9fSaT0LuUiTAXPctt34yLkZGfTi_N6g9Rz0n_72_kB9aXilYAdXKzANFLYiz-kU_VOXv8QQFiLH_SvQpVByh2hDw9n_KgBaAnLdgrnVasCakgGPOdVnOmtZF6x6paT8WWmypEXaicYFEDV8XIKPQp2fLaUuChOHP3XrWn"
+          alt="Avatar"
+        />
+      </div>
+    </div>
+  </div>
+</header>
+
+

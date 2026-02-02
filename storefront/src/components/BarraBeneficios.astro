@@ -1,0 +1,49 @@
+---
+import { Truck, Award, Wrench } from "lucide-react";
+
+const beneficios = [
+  {
+    titulo: "Envío Nacional",
+    subtitulo: "Rápido y Seguro",
+    Icono: Truck,
+  },
+  {
+    titulo: "Calidad Premium",
+    subtitulo: "100% Auténtico",
+    Icono: Award,
+  },
+  {
+    titulo: "Soporte Especializado",
+    subtitulo: "Expertos Mecánicos",
+    Icono: Wrench,
+  },
+];
+---
+
+<section class="bg-card-dark border-y border-white/5 py-10">
+  <div class="max-w-7xl mx-auto px-6 lg:px-20">
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+      {
+        beneficios.map((ben, i) => (
+          <div
+            class={`flex items-center gap-5 p-4 rounded-xl hover:bg-white/5 transition-colors group ${i === 1 ? "md:border-x md:border-white/5" : ""}`}
+          >
+            <div class="size-14 rounded-lg bg-primary/10 flex items-center justify-center text-primary transition-all group-hover:scale-105">
+              <ben.Icono size={28} />
+            </div>
+            <div>
+              <p class="text-zinc-400 text-sm font-medium uppercase tracking-wider">
+                {ben.titulo}
+              </p>
+              <p class="text-white text-xl font-bold">{ben.subtitulo}</p>
+            </div>
+          </div>
+        ))
+      }
+    </div>
+  </div>
+</section>
+
+
+
+

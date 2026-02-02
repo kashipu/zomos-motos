@@ -1,0 +1,42 @@
+---
+import { Info, ChevronDown } from "lucide-react";
+
+interface Props {
+  descripcion?: string;
+  especificaciones?: { label: string; value: string }[];
+}
+
+const {
+  descripcion = "No hay descripción detallada disponible.",
+  especificaciones = [
+    { label: "Material", value: "Aleación de grado aeroespacial" },
+    { label: "Peso", value: "Ligero / Optimizado" },
+    { label: "Certificación", value: "CE / Racing Standards" },
+  ],
+} = Astro.props;
+---
+
+<div class="mt-12 border-t border-white/10/50 pt-10">
+  <div class="grid grid-cols-1 lg:grid-cols-12 gap-12">
+    <!-- Descripción Larga -->
+    <div class="lg:col-span-12">
+      <h3
+        class="text-xl font-bold text-white mb-6 flex items-center gap-3 font-display"
+      >
+        <Info size={18} className="text-primary" />
+        Descripción Detallada
+      </h3>
+      <div
+        class="prose prose-invert max-w-none text-gray-400 leading-relaxed text-base"
+      >
+        {descripcion}
+      </div>
+    </div>
+
+    {/* if needed, could add a sidebar for technical specs here */}
+  </div>
+</div>
+
+
+
+

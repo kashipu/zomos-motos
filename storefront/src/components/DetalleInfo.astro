@@ -1,0 +1,128 @@
+---
+import { Star, ShieldCheck, Truck, Headphones } from "lucide-react";
+import TablaCompatibilidad from "./TablaCompatibilidad.astro";
+
+interface Props {
+  nombre: string;
+  marca?: string;
+  precio: number;
+  referencia: string;
+  categoria?: string;
+  compatibilidad?: {
+    marca?: string;
+    modelo?: string;
+    anio?: string;
+  };
+}
+
+const {
+  nombre,
+  marca = "Premium Brand",
+  precio,
+  referencia,
+  categoria = "Accesorios",
+  compatibilidad,
+} = Astro.props;
+---
+
+<div class="flex flex-col gap-8 lg:col-span-5">
+  <div class="space-y-4">
+    <div class="flex items-center gap-2">
+      <span class="text-primary font-bold text-xs tracking-[0.3em] uppercase"
+        >{marca}</span
+      >
+      <div class="h-px flex-1 bg-white/10"></div>
+    </div>
+
+    <h1
+      class="text-white text-4xl md:text-5xl font-bold leading-tight tracking-tight font-display"
+    >
+      {nombre}
+    </h1>
+
+    <div class="flex items-center gap-6">
+      <div class="flex items-center gap-1">
+        {
+          [...Array(5)].map((_) => (
+            <Star size={14} className="fill-primary text-primary" />
+          ))
+        }
+        <span class="text-white text-xs font-bold ml-1">5.0</span>
+      </div>
+      <span class="text-gray-600 text-xs font-bold uppercase tracking-widest"
+        >REF: {referencia}</span
+      >
+    </div>
+  </div>
+
+  <div class="space-y-6">
+    <div class="flex items-baseline gap-4">
+      <span class="text-4xl font-bold text-white tracking-tighter">
+        ${(precio || 0).toLocaleString("es-ES", { minimumFractionDigits: 2 })}
+      </span>
+      <span
+        class="px-3 py-1 bg-primary/10 text-primary text-[10px] font-bold rounded-full border border-primary/20 uppercase tracking-tighter"
+      >
+        En Stock
+      </span>
+    </div>
+
+    <!-- Componente de Compatibilidad -->
+    {
+      compatibilidad && (
+        <TablaCompatibilidad
+          marca={compatibilidad.marca}
+          modelo={compatibilidad.modelo}
+          anio={compatibilidad.anio}
+        />
+      )
+    }
+  </div>
+
+  <!-- Slots para botones de compra (React components en la página) -->
+  <div class="flex flex-col gap-4 pt-4">
+    <slot name="buy-actions" />
+  </div>
+
+  <!-- Beneficios Rápidos -->
+  <div class="grid grid-cols-3 gap-2 pt-6 border-t border-white/10">
+    <div
+      class="flex flex-col items-center justify-center p-4 bg-card-dark/40 rounded-xl border border-white/10 text-center group hover:border-primary/30 transition-all"
+    >
+      <Truck
+        size={20}
+        className="text-primary mb-2 group-hover:scale-110 transition-transform"
+      />
+      <span
+        class="text-[9px] font-bold text-gray-500 uppercase tracking-tighter"
+        >Envío Global</span
+      >
+    </div>
+    <div
+      class="flex flex-col items-center justify-center p-4 bg-card-dark/40 rounded-xl border border-white/10 text-center group hover:border-primary/30 transition-all"
+    >
+      <ShieldCheck
+        size={20}
+        className="text-primary mb-2 group-hover:scale-110 transition-transform"
+      />
+      <span
+        class="text-[9px] font-bold text-gray-500 uppercase tracking-tighter"
+        >100% Original</span
+      >
+    </div>
+    <div
+      class="flex flex-col items-center justify-center p-4 bg-card-dark/40 rounded-xl border border-white/10 text-center group hover:border-primary/30 transition-all"
+    >
+      <Headphones
+        size={20}
+        className="text-primary mb-2 group-hover:scale-110 transition-transform"
+      />
+      <span
+        class="text-[9px] font-bold text-gray-500 uppercase tracking-tighter"
+        >Soporte Pro</span
+      >
+    </div>
+  </div>
+</div>
+
+

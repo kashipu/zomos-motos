@@ -1,0 +1,332 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="es"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Product Detail | MotoElite Parts</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#f20d0d",
+                        "background-light": "#f8f5f5",
+                        "background-dark": "#181111",
+                        "surface-dark": "#221010",
+                        "border-dark": "#392828",
+                    },
+                    fontFamily: {
+                        "display": ["Space Grotesk", "sans-serif"]
+                    },
+                    borderRadius: {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                },
+            },
+        }
+    </script>
+<style>
+        body {
+            font-family: 'Space Grotesk', sans-serif;
+        }
+        .custom-scrollbar::-webkit-scrollbar {
+            width: 4px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-track {
+            background: #181111;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background: #392828;
+            border-radius: 10px;
+        }
+    </style>
+</head>
+<body class="bg-background-light dark:bg-background-dark text-slate-900 dark:text-white min-h-screen">
+<!-- Top Navigation Bar -->
+<header class="sticky top-0 z-50 w-full border-b border-solid border-border-dark bg-background-dark/95 backdrop-blur supports-[backdrop-filter]:bg-background-dark/60">
+<div class="max-w-[1280px] mx-auto flex h-16 items-center justify-between px-6 lg:px-10">
+<div class="flex items-center gap-10">
+<a class="flex items-center gap-3 group" href="#">
+<div class="bg-primary p-1.5 rounded text-white group-hover:scale-105 transition-transform">
+<span class="material-symbols-outlined text-2xl">sports_motorsports</span>
+</div>
+<h2 class="text-white text-xl font-bold tracking-tight">MotoElite <span class="text-primary">Parts</span></h2>
+</a>
+<nav class="hidden md:flex items-center gap-8">
+<a class="text-white/70 hover:text-white text-sm font-medium transition-colors" href="#">Racing Line</a>
+<a class="text-white/70 hover:text-white text-sm font-medium transition-colors" href="#">Accessories</a>
+<a class="text-white/70 hover:text-white text-sm font-medium transition-colors" href="#">Garage Services</a>
+</nav>
+</div>
+<div class="flex items-center gap-4">
+<div class="hidden lg:flex items-center bg-border-dark rounded-lg px-3 py-1.5">
+<span class="material-symbols-outlined text-white/50 text-xl">search</span>
+<input class="bg-transparent border-none focus:ring-0 text-sm text-white placeholder:text-white/30 w-48" placeholder="Search components..." type="text"/>
+</div>
+<div class="flex gap-2">
+<button class="flex items-center justify-center rounded-lg h-10 w-10 bg-border-dark text-white hover:bg-primary transition-colors">
+<span class="material-symbols-outlined text-[20px]">shopping_cart</span>
+</button>
+<button class="flex items-center justify-center rounded-lg h-10 w-10 bg-border-dark text-white hover:bg-primary transition-colors">
+<span class="material-symbols-outlined text-[20px]">person</span>
+</button>
+</div>
+</div>
+</div>
+</header>
+<main class="max-w-[1280px] mx-auto px-6 lg:px-10 py-8">
+<!-- Breadcrumbs -->
+<nav class="flex items-center gap-2 mb-8 text-sm font-medium">
+<a class="text-white/50 hover:text-white transition-colors" href="#">Home</a>
+<span class="text-white/30 material-symbols-outlined text-sm">chevron_right</span>
+<a class="text-white/50 hover:text-white transition-colors" href="#">Exhaust Systems</a>
+<span class="text-white/30 material-symbols-outlined text-sm">chevron_right</span>
+<span class="text-white">Racing Titanium G-05</span>
+</nav>
+<div class="grid grid-cols-1 lg:grid-cols-12 gap-12">
+<!-- Left: Image Gallery -->
+<div class="lg:col-span-7 flex flex-col md:flex-row gap-4">
+<!-- Thumbnail Column -->
+<div class="order-2 md:order-1 flex md:flex-col gap-3 max-h-[600px] overflow-y-auto custom-scrollbar">
+<div class="w-20 h-20 bg-surface-dark border-2 border-primary rounded-lg flex-shrink-0 cursor-pointer overflow-hidden">
+<div class="w-full h-full bg-center bg-cover" data-alt="high quality motorcycle titanium exhaust system side view" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuDFynU6QAS85qYgCUVafz9jvp00PvNB9hl4giBH5CozWl3JD45oZCmpwZeHXSuJtFBFLEQs8PG2M1NPDVe9f4nEUgKr5zsp7dLyIUVbq_UdgyzJWWaq-SwVHOgXNrVBeBJkSxB2hcCqOk1zwPKPGbW94pOBTtJRTNX-s4RRMrt0XZdcUj7TouKaw7yzSqxCYO5Oyh3eRFOSWP3EioT_bEaAwZeHvYyi8bkc7snxx33ackAM1G-dtclH4HVSLf-_BYk6iJZV4CaEGcHs");'></div>
+</div>
+<div class="w-20 h-20 bg-surface-dark border-2 border-transparent hover:border-white/20 rounded-lg flex-shrink-0 cursor-pointer overflow-hidden transition-all">
+<div class="w-full h-full bg-center bg-cover" data-alt="close up of titanium welding on exhaust" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuDR27a2MpYpEkvVOlWEZYpDPLX1D0RJsQt6kq2LWuvWHnFE5jb4YQAqLI1V7wLOWOEsTWir1NtpAtIOQHcWvKWq_de7y9hlQcwHPI8rBaeMU7b6bQxkgaHRR7_x0W4FKa1phnNn7MQzV9xNtz8KcMVjAyDqcPOBFlxXoCHtglqFUFNYWIKBkJgh_k2MVN29kr7k1-5fdn2RA-9T8nxxnlS8YQVc5gvnLdDktCq2OGcrXdZnLSHG9Onr42-el_8GK7Xjl15YjURT2XWk");'></div>
+</div>
+<div class="w-20 h-20 bg-surface-dark border-2 border-transparent hover:border-white/20 rounded-lg flex-shrink-0 cursor-pointer overflow-hidden transition-all">
+<div class="w-full h-full bg-center bg-cover" data-alt="motorcycle performance exhaust installed on racing bike" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuBIXzSsMZ30jykphcqZZWfzl7W9rH-esO6JGMRYnKIxunDYA4TQjHaDKtfGIOHGZ5Bz8yo9gV7yXucUv9tm56y8TnueYErHyR4Z7ZGf_3j_5EqnghACxJ-8q08HYTKtBgTKlSpclrlnPdj6zMjt2YsKbjUzWM2OBVmcOa57E3KRZKlwWkU1_YaVggGlZwyL2Syn4-MQvl4RuyDENQFh01XFIJ2AuB8fMIHZmPzc8Df_a34FtHp2ndX6zRfrV8w8lopXe1mTQ5AIlPBd");'></div>
+</div>
+<div class="w-20 h-20 bg-surface-dark border-2 border-transparent hover:border-white/20 rounded-lg flex-shrink-0 cursor-pointer overflow-hidden transition-all">
+<div class="w-full h-full bg-center bg-cover" data-alt="back view of exhaust muffler" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuDJ80wYr14_8o2VKzLeIuftchQJ7GQ7wKc-uwFsj6TlC7ffmindPdTpAYZueXLb4XH3myk9jDnNNz5hDFo0EIzeG6EsGQ5Of_n_SQlK4KKH6O71mqZ7Gqfs7Kc9SLvAPoUKknY8__yj4T1XUlxcVgrC9tmBsTfDnYkDiamTB2WPqZ_fWJiiDpy6zJFvikzLkZpqyMJc0tSzauVhY0XjhYPEgDE2hi0bovKgtYsIvg3mEgzQwrsRJyFnC7Cz45IRUmi8rA0PA8ZZIg5o");'></div>
+</div>
+</div>
+<!-- Main Hero Image -->
+<div class="order-1 md:order-2 flex-1 bg-surface-dark rounded-xl overflow-hidden aspect-[4/5] md:aspect-auto border border-border-dark group relative">
+<div class="w-full h-full bg-center bg-cover transition-transform duration-700 group-hover:scale-105" data-alt="Frontal shot of Akrapovič Racing Line Titanium Exhaust System" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuC2FDEt28B4heT_lMRaif1CREbYbtmI5Oc7LiwTp3XstLZDw4xDPGJCyu_JzFqM1JPJjUSR9eLJ8LnElGwd9GwiMuIcN--sZU0qCWdpKVRCRGNZLxT7MWAsbubz44DU35UMcF0qAgyWrpH0m2-pcdwtz5jqc6PoviRvdS-A0sT55qaiNkZveYXniiaxCtdrth2BlGZmu_GunTOUnxbsBZYgHDhk4rn-4HJJ2ml6E54lz2PeuINFvPCQM9hHk-m8IPWVyVjmVtsq6MEA");'></div>
+<div class="absolute top-4 right-4 bg-background-dark/80 backdrop-blur px-3 py-1.5 rounded-full border border-primary/30 flex items-center gap-2">
+<span class="w-2 h-2 rounded-full bg-primary animate-pulse"></span>
+<span class="text-[10px] font-bold tracking-widest uppercase">High Performance</span>
+</div>
+</div>
+</div>
+<!-- Right: Product Info & Commerce -->
+<div class="lg:col-span-5 flex flex-col gap-8">
+<div>
+<span class="text-primary font-bold text-sm tracking-widest uppercase">Akrapovič Performance</span>
+<h1 class="text-white text-4xl font-bold leading-tight mt-2 mb-4">Racing Line Titanium Exhaust System G-05</h1>
+<div class="flex items-center gap-4">
+<span class="text-3xl font-bold text-white">$2,499.00</span>
+<span class="px-2 py-1 bg-primary/10 text-primary text-xs font-bold rounded border border-primary/20">IN STOCK</span>
+</div>
+</div>
+<!-- Compatibility Matrix -->
+<div class="bg-surface-dark border border-border-dark rounded-xl p-5">
+<h3 class="text-sm font-bold uppercase tracking-wider text-white/50 mb-4 flex items-center gap-2">
+<span class="material-symbols-outlined text-sm">settings_input_component</span>
+                        Compatibility Info
+                    </h3>
+<div class="grid grid-cols-3 gap-4">
+<div class="flex flex-col">
+<span class="text-[10px] uppercase text-white/30">Brand</span>
+<span class="text-sm font-medium text-white">Ducati / BMW</span>
+</div>
+<div class="flex flex-col border-l border-border-dark pl-4">
+<span class="text-[10px] uppercase text-white/30">Model</span>
+<span class="text-sm font-medium text-white">Panigale / S1000RR</span>
+</div>
+<div class="flex flex-col border-l border-border-dark pl-4">
+<span class="text-[10px] uppercase text-white/30">Year</span>
+<span class="text-sm font-medium text-white">2020 - 2024</span>
+</div>
+</div>
+<div class="mt-4 pt-4 border-t border-border-dark flex items-center gap-2">
+<span class="material-symbols-outlined text-green-500 text-sm">verified</span>
+<span class="text-xs text-green-500/80 font-medium tracking-tight">Guaranteed Perfect Fitment</span>
+</div>
+</div>
+<!-- Variants -->
+<div class="flex flex-col gap-4">
+<div>
+<span class="text-sm font-bold text-white/70 block mb-3 uppercase tracking-tighter">Finish Options</span>
+<div class="flex gap-3">
+<button class="px-4 py-2 bg-primary text-white text-xs font-bold rounded-lg border border-primary transition-all">Brushed Titanium</button>
+<button class="px-4 py-2 bg-border-dark text-white/70 text-xs font-bold rounded-lg border border-border-dark hover:border-white/20 transition-all">Satin Black</button>
+<button class="px-4 py-2 bg-border-dark text-white/70 text-xs font-bold rounded-lg border border-border-dark hover:border-white/20 transition-all">Carbon Matte</button>
+</div>
+</div>
+</div>
+<!-- Action Button -->
+<div class="flex flex-col gap-3 pt-4">
+<button class="w-full bg-primary hover:bg-red-700 text-white py-5 rounded-xl font-bold text-lg transition-all active:scale-[0.98] flex items-center justify-center gap-3 shadow-lg shadow-primary/20">
+<span class="material-symbols-outlined">add_shopping_cart</span>
+                        Agregar al carrito
+                    </button>
+<div class="grid grid-cols-2 gap-3">
+<button class="flex items-center justify-center gap-2 py-3 bg-border-dark hover:bg-white/10 rounded-lg text-sm font-bold transition-all border border-transparent hover:border-white/10">
+<span class="material-symbols-outlined text-lg">favorite</span>
+                            Wishlist
+                        </button>
+<button class="flex items-center justify-center gap-2 py-3 bg-border-dark hover:bg-white/10 rounded-lg text-sm font-bold transition-all border border-transparent hover:border-white/10">
+<span class="material-symbols-outlined text-lg">share</span>
+                            Share
+                        </button>
+</div>
+</div>
+<!-- Ficha Técnica Section -->
+<div class="mt-4 border-t border-border-dark pt-6">
+<button class="flex items-center justify-between w-full group mb-4">
+<h3 class="text-lg font-bold text-white flex items-center gap-2">
+<span class="material-symbols-outlined text-primary">description</span>
+                            Ficha Técnica
+                        </h3>
+<span class="material-symbols-outlined text-white/50 group-hover:text-white">keyboard_arrow_down</span>
+</button>
+<div class="grid grid-cols-2 gap-y-4 gap-x-8">
+<div class="flex flex-col pb-2 border-b border-border-dark/50">
+<span class="text-xs text-white/40 uppercase">Weight Reduction</span>
+<span class="text-sm font-medium text-white">-4.2 kg (vs stock)</span>
+</div>
+<div class="flex flex-col pb-2 border-b border-border-dark/50">
+<span class="text-xs text-white/40 uppercase">Power Gain</span>
+<span class="text-sm font-medium text-white">+7.2 HP @ 11,000 RPM</span>
+</div>
+<div class="flex flex-col pb-2 border-b border-border-dark/50">
+<span class="text-xs text-white/40 uppercase">Material</span>
+<span class="text-sm font-medium text-white">Ultra-light Titanium</span>
+</div>
+<div class="flex flex-col pb-2 border-b border-border-dark/50">
+<span class="text-xs text-white/40 uppercase">Certifications</span>
+<span class="text-sm font-medium text-white">Euro 5 / EC / ECE</span>
+</div>
+</div>
+</div>
+<!-- Trust Badges -->
+<div class="grid grid-cols-3 gap-2 mt-4">
+<div class="flex flex-col items-center justify-center p-3 bg-surface-dark rounded-lg text-center border border-border-dark">
+<span class="material-symbols-outlined text-primary mb-1">local_shipping</span>
+<span class="text-[10px] font-bold text-white/60">WORLDWIDE SHIPPING</span>
+</div>
+<div class="flex flex-col items-center justify-center p-3 bg-surface-dark rounded-lg text-center border border-border-dark">
+<span class="material-symbols-outlined text-primary mb-1">workspace_premium</span>
+<span class="text-[10px] font-bold text-white/60">ORIGINAL PART</span>
+</div>
+<div class="flex flex-col items-center justify-center p-3 bg-surface-dark rounded-lg text-center border border-border-dark">
+<span class="material-symbols-outlined text-primary mb-1">security</span>
+<span class="text-[10px] font-bold text-white/60">5-YEAR WARRANTY</span>
+</div>
+</div>
+</div>
+</div>
+<!-- Related/Grid Preview Section -->
+<section class="mt-20">
+<div class="flex items-center justify-between mb-8">
+<h2 class="text-2xl font-bold text-white">Frequently Bought Together</h2>
+<a class="text-primary text-sm font-bold flex items-center gap-1 hover:underline" href="#">View All <span class="material-symbols-outlined text-sm">arrow_forward</span></a>
+</div>
+<div class="grid grid-cols-2 md:grid-cols-4 gap-6">
+<!-- Related Item 1 -->
+<div class="group cursor-pointer">
+<div class="aspect-square bg-surface-dark rounded-xl overflow-hidden border border-border-dark group-hover:border-primary/50 transition-all mb-3 relative">
+<div class="w-full h-full bg-center bg-cover" data-alt="carbon fiber heat shield for exhaust" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuB5scNvaYFEc6VQnVSIZ_5K8EXJ9ezDGEyAav7XpoZFtrwZOsSwMa253xfyl_-FRZ_ehB2pSk8Nl2aCcqMAl50BlLYUPa4jCKGZj_67b94RZ0RYr_CmBQ_T8thqkjM0jsYxH-wxZD6xIrI-jcmutMXkRwYox6tJclV6TLHl0F54BGMnjnfqYygszPPlwYW1G9dVKDp91Ulvaqq56tOLbfV4MYJCHaDyp8AnnFr1BomFy905CYC55mzClYWwecsBX1ue-_Zn8-ZfEuer");'></div>
+<button class="absolute bottom-3 right-3 bg-primary w-8 h-8 rounded-full text-white opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
+<span class="material-symbols-outlined text-lg">add</span>
+</button>
+</div>
+<h4 class="text-sm font-bold text-white/90 truncate">Carbon Heat Shield</h4>
+<p class="text-primary text-sm font-bold">$189.00</p>
+</div>
+<!-- Related Item 2 -->
+<div class="group cursor-pointer">
+<div class="aspect-square bg-surface-dark rounded-xl overflow-hidden border border-border-dark group-hover:border-primary/50 transition-all mb-3 relative">
+<div class="w-full h-full bg-center bg-cover" data-alt="high quality racing air filter" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuDUvKNR23KMXX5uO6YEn8tklgP2PDVNXu9nD9bRBCGF23B8VvaY2LD_wfnhYxDDANE7-JZIMexENctDxhKh6PlOiVlbiwXjBe22DuGQufGOPR_PEGFSYoaakPBUA77jxQB6HLrKRmnjBQnkh--YqOAsv0pbjJ704SUrIKQb3YGDRGmZcdpm49oiWNbKxZJd-YBeTlbJOqZyt5lhh-Wlr4sZ24InE97zvmG01xjvSxOT3ocsS46CwprRkCjpBS0MFUQ-sADIvWhCa7vv");'></div>
+<button class="absolute bottom-3 right-3 bg-primary w-8 h-8 rounded-full text-white opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
+<span class="material-symbols-outlined text-lg">add</span>
+</button>
+</div>
+<h4 class="text-sm font-bold text-white/90 truncate">Sprint Racing Air Filter</h4>
+<p class="text-primary text-sm font-bold">$125.00</p>
+</div>
+<!-- Related Item 3 -->
+<div class="group cursor-pointer">
+<div class="aspect-square bg-surface-dark rounded-xl overflow-hidden border border-border-dark group-hover:border-primary/50 transition-all mb-3 relative">
+<div class="w-full h-full bg-center bg-cover" data-alt="titanium bolts for engine components" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuBLIzGwifvJjYTaCBcsvX0oR0mFqjg-tBPLOF4F0SPsyLE5sH5pMxYSZM2witTLHqsHhlblfsd-qSt4UxzZzt005zPxIgUEMP_6OWa50Lji9XfbXyVyOJ4nGnRMRUnS-QN_pz0Zclp5eQYb2-SzwrizdXLqTA6uBo8OfZtj32vlZ1X3uIi87w07YaN9W27l5MOwuiV4-LRImdMNUdQGGd_EMM75AgJRtqGu1mJJCPi88r2cZ75VvSZJOlYrB57mqlSMfoqpKjpxXcLr");'></div>
+<button class="absolute bottom-3 right-3 bg-primary w-8 h-8 rounded-full text-white opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
+<span class="material-symbols-outlined text-lg">add</span>
+</button>
+</div>
+<h4 class="text-sm font-bold text-white/90 truncate">Titanium Bolt Kit (24pcs)</h4>
+<p class="text-primary text-sm font-bold">$99.00</p>
+</div>
+<!-- Related Item 4 -->
+<div class="group cursor-pointer">
+<div class="aspect-square bg-surface-dark rounded-xl overflow-hidden border border-border-dark group-hover:border-primary/50 transition-all mb-3 relative">
+<div class="w-full h-full bg-center bg-cover" data-alt="black leather riding gloves" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuDvZL6F11djQrnE4bcOF7UHWQ6SAthccFVdcXJfIAEjRcbGt-Y2uxK2nuuAD9PB7e_pj_8z_d5jMOJmLDdKka87130AlMjm359JsGRr3_SqL804_GdavdH2SGQTL9icfmYEkmDvd8OEqC5iZnNV8237yJu5jYUztToC3clnjav7M5cTyMi-sFDM5hHiY6Pm7_tmSpl9dLv8PW7MjGBn5LRHd8CKCdwefWk7MTrHpUhu8RA-kf9Hdjiw3R88rKX7VetrI6ueXbbheRPi");'></div>
+<button class="absolute bottom-3 right-3 bg-primary w-8 h-8 rounded-full text-white opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
+<span class="material-symbols-outlined text-lg">add</span>
+</button>
+</div>
+<h4 class="text-sm font-bold text-white/90 truncate">Tech-Air Racing Gloves</h4>
+<p class="text-primary text-sm font-bold">$210.00</p>
+</div>
+</div>
+</section>
+</main>
+<footer class="mt-20 border-t border-border-dark bg-surface-dark py-12">
+<div class="max-w-[1280px] mx-auto px-6 lg:px-10 grid grid-cols-1 md:grid-cols-4 gap-12">
+<div class="col-span-1 md:col-span-1">
+<a class="flex items-center gap-3 mb-6" href="#">
+<div class="bg-primary p-1.5 rounded text-white">
+<span class="material-symbols-outlined text-2xl">sports_motorsports</span>
+</div>
+<h2 class="text-white text-xl font-bold tracking-tight">MotoElite</h2>
+</a>
+<p class="text-white/40 text-sm leading-relaxed">
+                    Premium racing components for high-performance motorcycles. Built for the track, refined for the street.
+                </p>
+</div>
+<div>
+<h4 class="text-white font-bold mb-6 uppercase text-xs tracking-widest">Products</h4>
+<ul class="flex flex-col gap-4 text-sm text-white/50">
+<li><a class="hover:text-primary transition-colors" href="#">Racing Exhausts</a></li>
+<li><a class="hover:text-primary transition-colors" href="#">Brake Systems</a></li>
+<li><a class="hover:text-primary transition-colors" href="#">Carbon Bodywork</a></li>
+<li><a class="hover:text-primary transition-colors" href="#">Engine Tuning</a></li>
+</ul>
+</div>
+<div>
+<h4 class="text-white font-bold mb-6 uppercase text-xs tracking-widest">Support</h4>
+<ul class="flex flex-col gap-4 text-sm text-white/50">
+<li><a class="hover:text-primary transition-colors" href="#">Fitment Guide</a></li>
+<li><a class="hover:text-primary transition-colors" href="#">Shipping Policy</a></li>
+<li><a class="hover:text-primary transition-colors" href="#">Technical Support</a></li>
+<li><a class="hover:text-primary transition-colors" href="#">Warranty Info</a></li>
+</ul>
+</div>
+<div>
+<h4 class="text-white font-bold mb-6 uppercase text-xs tracking-widest">Newsletter</h4>
+<p class="text-white/40 text-xs mb-4">Get early access to racing drops and technical tips.</p>
+<div class="flex gap-2">
+<input class="flex-1 bg-background-dark border-border-dark rounded-lg text-xs focus:ring-primary focus:border-primary text-white" placeholder="Email address" type="email"/>
+<button class="bg-primary px-3 py-2 rounded-lg text-white font-bold text-xs uppercase tracking-tighter">Join</button>
+</div>
+</div>
+</div>
+<div class="max-w-[1280px] mx-auto px-6 lg:px-10 mt-12 pt-8 border-t border-border-dark/50 flex flex-col md:flex-row justify-between items-center gap-4">
+<span class="text-white/30 text-xs">© 2024 MotoElite Parts. Engineered for Excellence.</span>
+<div class="flex gap-6 grayscale opacity-40">
+<span class="material-symbols-outlined">payments</span>
+<span class="material-symbols-outlined">credit_card</span>
+<span class="material-symbols-outlined">account_balance_wallet</span>
+</div>
+</div>
+</footer>
+</body></html>

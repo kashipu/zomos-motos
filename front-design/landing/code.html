@@ -1,0 +1,667 @@
+<!doctype html>
+
+<html class="dark" lang="es">
+  <head>
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <title>Premium Moto Showcase | Domina el Asfalto</title>
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap"
+      rel="stylesheet"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&amp;display=swap"
+      rel="stylesheet"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap"
+      rel="stylesheet"
+    />
+    <script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            colors: {
+              primary: "#f20d0d",
+              "background-light": "#f8f5f5",
+              "background-dark": "#0a0505",
+              "card-dark": "#1a0f0f",
+            },
+            fontFamily: {
+              display: ["Space Grotesk", "sans-serif"],
+            },
+            borderRadius: {
+              DEFAULT: "0.25rem",
+              lg: "0.5rem",
+              xl: "0.75rem",
+              full: "9999px",
+            },
+          },
+        },
+      };
+    </script>
+    <style>
+      .material-symbols-outlined {
+        font-variation-settings:
+          "FILL" 0,
+          "wght" 400,
+          "GRAD" 0,
+          "opsz" 24;
+      }
+      body {
+        font-family: "Space Grotesk", sans-serif;
+      }
+    </style>
+  </head>
+  <body
+    class="bg-background-light dark:bg-background-dark text-slate-900 dark:text-white transition-colors duration-300"
+  >
+    <!-- Top Navigation Bar -->
+    <header
+      class="fixed top-0 w-full z-50 border-b border-white/10 bg-background-dark/80 backdrop-blur-md px-6 lg:px-20 py-4"
+    >
+      <div class="max-w-7xl mx-auto flex items-center justify-between">
+        <div class="flex items-center gap-12">
+          <div class="flex items-center gap-3">
+            <div class="text-primary">
+              <span class="material-symbols-outlined text-4xl"
+                >sports_motorsports</span
+              >
+            </div>
+            <h2 class="text-xl font-bold tracking-tighter uppercase italic">
+              Moto<span class="text-primary">Premium</span>
+            </h2>
+          </div>
+          <nav class="hidden md:flex items-center gap-8">
+            <a
+              class="text-sm font-medium hover:text-primary transition-colors"
+              href="#"
+              >Equipamiento</a
+            >
+            <a
+              class="text-sm font-medium hover:text-primary transition-colors"
+              href="#"
+              >Lujos</a
+            >
+            <a
+              class="text-sm font-medium hover:text-primary transition-colors"
+              href="#"
+              >Recambios</a
+            >
+            <a
+              class="text-sm font-medium hover:text-primary transition-colors"
+              href="#"
+              >Taller</a
+            >
+          </nav>
+        </div>
+        <div class="flex items-center gap-6">
+          <div
+            class="hidden lg:flex items-center bg-white/5 rounded-lg px-3 py-1.5 border border-white/10"
+          >
+            <span class="material-symbols-outlined text-zinc-400 text-xl"
+              >search</span
+            >
+            <input
+              class="bg-transparent border-none focus:ring-0 text-sm w-48 placeholder:text-zinc-500"
+              placeholder="Buscar piezas..."
+              type="text"
+            />
+          </div>
+          <button
+            class="bg-primary hover:bg-red-700 text-white px-6 py-2 rounded-lg text-sm font-bold uppercase tracking-wider transition-all flex items-center gap-2 shadow-[0_0_15px_rgba(242,13,13,0.3)]"
+          >
+            <span class="material-symbols-outlined text-lg">shopping_cart</span>
+            Tienda
+          </button>
+          <div
+            class="size-10 rounded-full border border-primary/50 overflow-hidden"
+          >
+            <img
+              class="w-full h-full object-cover"
+              data-alt="User profile avatar of a motorcyclist"
+              src="https://lh3.googleusercontent.com/aida-public/AB6AXuDPKqsfBVPrE4wj7N841QaYG6VlrC3N24mJ9HMse2RDWVrr2ot34no7_Dd9EBTBWO00TnQIQLzgdKlqsIkIOXaNO5a7bA_3P5alQ9jl2fA9fSaT0LuUiTAXPctt34yLkZGfTi_N6g9Rz0n_72_kB9aXilYAdXKxANFLYiz-kU_VOXv8QQFiLH_SvQpVByh2hDw9n_KgBaAnLdgrnVasCakgGPOdVnOmtZF6x6paT8WWmypEXaicYFEDV8XIKPQp2fLaUuChOHP3XrWn"
+            />
+          </div>
+        </div>
+      </div>
+    </header>
+    <main class="pt-20">
+      <!-- Hero Section -->
+      <section
+        class="relative h-[85vh] w-full flex items-center overflow-hidden"
+      >
+        <div class="absolute inset-0 z-0">
+          <div
+            class="absolute inset-0 bg-gradient-to-r from-background-dark via-background-dark/60 to-transparent z-10"
+          ></div>
+          <img
+            class="w-full h-full object-cover"
+            data-alt="Aggressive black sportbike parked in a modern industrial setting"
+            src="https://lh3.googleusercontent.com/aida-public/AB6AXuC0QcAi6LXKIwNDnQ9eZAJWHfQpRjqCsp_lqyPVYBsZmrb-fq01Fe_aW3MpSs9H-iWCFJbZh04UVf2O4aFm9NxDby8Z9V5JALvTzfnzVKtUxJBheM4hD5o_UmVK9Bi7JK0eHW8wOidzNA_66Ccpj1yBgzkztHK_GVhT9oCRyWPciwAIvOXVMeX0GCt20FW9jY8iBpTJtgxdrw4wljOKksJhNJxDi55cw4929wZ-Wxn8RPFft58sApHEJgg2p7_foZUIuZ914xMDoLTe"
+          />
+        </div>
+        <div class="relative z-20 max-w-7xl mx-auto px-6 lg:px-20 w-full">
+          <div class="max-w-2xl space-y-8">
+            <div class="space-y-4">
+              <span
+                class="text-primary font-bold tracking-[0.3em] uppercase text-sm block"
+                >Rendimiento de Élite</span
+              >
+              <h1
+                class="text-6xl lg:text-8xl font-black leading-none tracking-tighter uppercase italic"
+              >
+                DOMINA EL <br /><span class="text-primary">ASFALTO</span>
+              </h1>
+              <p class="text-zinc-400 text-lg max-w-md">
+                Equipamiento de alto rendimiento y piezas de lujo seleccionadas
+                para los entusiastas más exigentes del mundo del motor.
+              </p>
+            </div>
+            <div class="flex flex-wrap gap-4">
+              <button
+                class="bg-primary hover:bg-red-700 text-white px-10 py-4 rounded-lg font-bold uppercase tracking-widest transition-all"
+              >
+                Ver Equipamiento
+              </button>
+              <button
+                class="bg-white/10 hover:bg-white/20 backdrop-blur-md border border-white/20 text-white px-10 py-4 rounded-lg font-bold uppercase tracking-widest transition-all"
+              >
+                Explorar Lujos
+              </button>
+            </div>
+          </div>
+        </div>
+      </section>
+      <!-- Stats / Benefits Bar -->
+      <section class="bg-card-dark border-y border-white/5 py-10">
+        <div class="max-w-7xl mx-auto px-6 lg:px-20">
+          <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+            <div
+              class="flex items-center gap-5 p-4 rounded-xl hover:bg-white/5 transition-colors"
+            >
+              <div
+                class="size-14 rounded-lg bg-primary/10 flex items-center justify-center text-primary"
+              >
+                <span class="material-symbols-outlined text-3xl"
+                  >local_shipping</span
+                >
+              </div>
+              <div>
+                <p
+                  class="text-zinc-400 text-sm font-medium uppercase tracking-wider"
+                >
+                  Envío Nacional
+                </p>
+                <p class="text-white text-xl font-bold">Rápido y Seguro</p>
+              </div>
+            </div>
+            <div
+              class="flex items-center gap-5 p-4 rounded-xl hover:bg-white/5 transition-colors border-x border-white/5"
+            >
+              <div
+                class="size-14 rounded-lg bg-primary/10 flex items-center justify-center text-primary"
+              >
+                <span class="material-symbols-outlined text-3xl">verified</span>
+              </div>
+              <div>
+                <p
+                  class="text-zinc-400 text-sm font-medium uppercase tracking-wider"
+                >
+                  Calidad Premium
+                </p>
+                <p class="text-white text-xl font-bold">100% Auténtico</p>
+              </div>
+            </div>
+            <div
+              class="flex items-center gap-5 p-4 rounded-xl hover:bg-white/5 transition-colors"
+            >
+              <div
+                class="size-14 rounded-lg bg-primary/10 flex items-center justify-center text-primary"
+              >
+                <span class="material-symbols-outlined text-3xl"
+                  >engineering</span
+                >
+              </div>
+              <div>
+                <p
+                  class="text-zinc-400 text-sm font-medium uppercase tracking-wider"
+                >
+                  Soporte Especializado
+                </p>
+                <p class="text-white text-xl font-bold">Expertos Mecánicos</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+      <!-- Categories Section -->
+      <section class="py-20 max-w-7xl mx-auto px-6 lg:px-20">
+        <div class="flex items-end justify-between mb-10">
+          <div>
+            <span
+              class="text-primary font-bold uppercase tracking-widest text-xs"
+              >Explora la colección</span
+            >
+            <h2 class="text-4xl font-bold tracking-tight">
+              Categorías Principales
+            </h2>
+          </div>
+          <a
+            class="text-zinc-400 hover:text-primary flex items-center gap-2 text-sm font-bold uppercase tracking-wider"
+            href="#"
+          >
+            Ver todo
+            <span class="material-symbols-outlined">trending_flat</span>
+          </a>
+        </div>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <!-- Category 1 -->
+          <div
+            class="group relative aspect-[16/9] overflow-hidden rounded-xl cursor-pointer"
+          >
+            <img
+              class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
+              data-alt="Professional carbon fiber motorcycle helmet and leather racing suit"
+              src="https://lh3.googleusercontent.com/aida-public/AB6AXuA7DBTLUBpHaRnIC2daSz4pbMZMk64j99hL2wE-HouH9Ej1GYZZNzqdhQX6FeJCbOCKgOruGCZJWV1N8JDR3WbiNhuXLZ5Zr_faH99BLQW7RRXppZWVSkAFZ729LqteUSUH5OcxPCdIMJLsMMdaZOQepv1tljVMbGiyL4oyv3zi-zX3A5Cvaam07olocGkdjkYc2Q_N_spks18LnxnRpkPJwI7hQFZU6bEkOmr9oI6ORCslDbpoBhj7bvPaoL8zvSeCGPsQktwWdGiS"
+            />
+            <div
+              class="absolute inset-0 bg-gradient-to-t from-black/90 via-black/20 to-transparent flex flex-col justify-end p-8"
+            >
+              <h3 class="text-2xl font-black uppercase italic tracking-tighter">
+                Equipamiento para el Piloto
+              </h3>
+              <p class="text-zinc-300 mt-2 max-w-xs text-sm">
+                Protección de élite para la máxima velocidad. Cascos, trajes y
+                guantes profesionales.
+              </p>
+              <div
+                class="mt-4 flex items-center gap-2 text-primary font-bold text-sm uppercase"
+              >
+                Explorar catálogo
+                <span class="material-symbols-outlined text-sm"
+                  >arrow_forward</span
+                >
+              </div>
+            </div>
+          </div>
+          <!-- Category 2 -->
+          <div
+            class="group relative aspect-[16/9] overflow-hidden rounded-xl cursor-pointer"
+          >
+            <img
+              class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
+              data-alt="Detailed close up of an Akrapovič carbon fiber motorcycle exhaust"
+              src="https://lh3.googleusercontent.com/aida-public/AB6AXuB5qeWlzJ_Qxisr-2Vo6twDbjtxR0NztXRDDszVrwa-eaIlbkev77OW7T2WUrA6xWau2iD6LZMgEk_n9APvyRtjbdqVRn1Ad76FK4HHP6a9ZGj44A-F8aJT_fXIRoEZLKN3rS3Q61Yu7ORWXLhH7kycOE0f6Qx850HNTWJ-iG-uinI3iflwryjD5o-P48WtZ_swgrHCyfzlDjgGZeiHZcI9h5JR98o6Pcxqgqojo_CvbVOwnIvvPWe4hBscWstAyhmgS4Hnfgq4jVS0"
+            />
+            <div
+              class="absolute inset-0 bg-gradient-to-t from-black/90 via-black/20 to-transparent flex flex-col justify-end p-8"
+            >
+              <h3 class="text-2xl font-black uppercase italic tracking-tighter">
+                Lujos para Moto
+              </h3>
+              <p class="text-zinc-300 mt-2 max-w-xs text-sm">
+                Sistemas de escape, piezas CNC y mejoras de rendimiento de
+                primer nivel.
+              </p>
+              <div
+                class="mt-4 flex items-center gap-2 text-primary font-bold text-sm uppercase"
+              >
+                Explorar piezas
+                <span class="material-symbols-outlined text-sm"
+                  >arrow_forward</span
+                >
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+      <!-- Featured Products -->
+      <section class="py-20 bg-white/[0.02]">
+        <div class="max-w-7xl mx-auto px-6 lg:px-20">
+          <div class="flex items-center justify-between mb-12">
+            <h2 class="text-3xl font-bold tracking-tight">Piezas Destacadas</h2>
+            <div class="flex gap-2">
+              <button
+                class="size-10 flex items-center justify-center rounded-lg border border-white/10 hover:border-primary text-zinc-400 hover:text-primary transition-all"
+              >
+                <span class="material-symbols-outlined">chevron_left</span>
+              </button>
+              <button
+                class="size-10 flex items-center justify-center rounded-lg border border-white/10 hover:border-primary text-zinc-400 hover:text-primary transition-all"
+              >
+                <span class="material-symbols-outlined">chevron_right</span>
+              </button>
+            </div>
+          </div>
+          <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+            <!-- Product 1 -->
+            <div
+              class="bg-card-dark rounded-xl border border-white/5 overflow-hidden group hover:border-primary/50 transition-all"
+            >
+              <div class="aspect-square relative overflow-hidden bg-zinc-900">
+                <img
+                  class="w-full h-full object-cover transition-transform group-hover:scale-105"
+                  data-alt="High performance motorcycle braking system gold Brembo caliper"
+                  src="https://lh3.googleusercontent.com/aida-public/AB6AXuCNEUiZ6wSdx48NaFtVjh__53mb9Pd9C15a71l5xogBd_1xAomMQ_ckpXqzm3-RtnIJ64POvOGFTArErMFcj40JsUoSVJE7sX3ygtEAgLZPKF2euXQhR779OkABjvH6tOtifQfBF3baf75L0JezmVHfY5U8r5K5FB3bwL4HtpDzvs6NrE1T8mnkDki-dDczepNrrTDety2Ave3nhY7PLG1KjIg1Hi0MyUCq_RCzpYVHCZTuz05caNjRIBNGwDWhbGE5plOCCkfWUSiC"
+                />
+                <div
+                  class="absolute top-4 right-4 bg-primary text-white text-[10px] font-bold px-2 py-1 rounded uppercase tracking-tighter"
+                >
+                  New Arrival
+                </div>
+              </div>
+              <div class="p-5 space-y-3">
+                <div>
+                  <h4
+                    class="font-bold text-lg leading-tight group-hover:text-primary transition-colors"
+                  >
+                    Sistema de Frenado Brembo GP4-RS
+                  </h4>
+                  <p class="text-zinc-500 text-xs mt-1 uppercase">
+                    Rendimiento Pro
+                  </p>
+                </div>
+                <div class="flex items-center justify-between pt-2">
+                  <span class="text-xl font-black text-white">$1,299.00</span>
+                  <button
+                    class="size-10 rounded-lg bg-white/5 flex items-center justify-center hover:bg-primary transition-colors"
+                  >
+                    <span class="material-symbols-outlined text-xl"
+                      >add_shopping_cart</span
+                    >
+                  </button>
+                </div>
+              </div>
+            </div>
+            <!-- Product 2 -->
+            <div
+              class="bg-card-dark rounded-xl border border-white/5 overflow-hidden group hover:border-primary/50 transition-all"
+            >
+              <div class="aspect-square relative overflow-hidden bg-zinc-900">
+                <img
+                  class="w-full h-full object-cover transition-transform group-hover:scale-105"
+                  data-alt="Carbon fiber full face racing helmet with dark visor"
+                  src="https://lh3.googleusercontent.com/aida-public/AB6AXuCyoVhPzUCAT9tgrtJe7AgrtZx49x7l0R_iUsplVwIyrA3IsWKdwZHfxA7_10L-Et27nD-LqObOnKoUK-XamS9MCiEwZDj67W1u0jDBx2ExDTp2KPJJ1L4ABQU3CnvwyPgShnZOifmcw9FOJYqQhLdyBLF4GJu8kx9DSZ44ywZ-IxrXOjnJre8FPgo3qPkLdxKpNai7iEfoRS0QM5t9FcD-ytK50BhSCjWSkObZUZq1qMAlntxwGY0C4-4fs_v2Mxx96XhmzAsGBT0l"
+                />
+              </div>
+              <div class="p-5 space-y-3">
+                <div>
+                  <h4
+                    class="font-bold text-lg leading-tight group-hover:text-primary transition-colors"
+                  >
+                    Casco Carbon Ghost X-1
+                  </h4>
+                  <p class="text-zinc-500 text-xs mt-1 uppercase">
+                    Equipamiento
+                  </p>
+                </div>
+                <div class="flex items-center justify-between pt-2">
+                  <span class="text-xl font-black text-white">$850.00</span>
+                  <button
+                    class="size-10 rounded-lg bg-white/5 flex items-center justify-center hover:bg-primary transition-colors"
+                  >
+                    <span class="material-symbols-outlined text-xl"
+                      >add_shopping_cart</span
+                    >
+                  </button>
+                </div>
+              </div>
+            </div>
+            <!-- Product 3 -->
+            <div
+              class="bg-card-dark rounded-xl border border-white/5 overflow-hidden group hover:border-primary/50 transition-all"
+            >
+              <div class="aspect-square relative overflow-hidden bg-zinc-900">
+                <img
+                  class="w-full h-full object-cover transition-transform group-hover:scale-105"
+                  data-alt="Titanium and carbon fiber motorcycle exhaust system"
+                  src="https://lh3.googleusercontent.com/aida-public/AB6AXuAm-BhDk7PRYhtQZVh3-OZxvvHnd9Ue_tDinOCaTw_EY687EkJesWl2eA6NPwRQiYipVS6p6dtmxBQX9If1fvPZLLhSjkKxBD8pXP9UnIR7OUVE7RhPO5aFI4Byrkn2G7RaGaZNvIaK2e2p8pANZOhUvDjBgVFn0dKpXyHc8uDkoaDxBRyvek6Nunu32I1k6hhtbmE4RWh8jkeTJSUatS0WGz9Y7Sm5OEhAGwoTC3geVSwdLpCP3Nqf2ykaTQ-21W-25C3g4gkdKxb5"
+                />
+                <div
+                  class="absolute top-4 right-4 bg-primary text-white text-[10px] font-bold px-2 py-1 rounded uppercase tracking-tighter"
+                >
+                  Best Seller
+                </div>
+              </div>
+              <div class="p-5 space-y-3">
+                <div>
+                  <h4
+                    class="font-bold text-lg leading-tight group-hover:text-primary transition-colors"
+                  >
+                    Escape Akrapovič Racing Line
+                  </h4>
+                  <p class="text-zinc-500 text-xs mt-1 uppercase">
+                    Lujos para Moto
+                  </p>
+                </div>
+                <div class="flex items-center justify-between pt-2">
+                  <span class="text-xl font-black text-white">$2,450.00</span>
+                  <button
+                    class="size-10 rounded-lg bg-white/5 flex items-center justify-center hover:bg-primary transition-colors"
+                  >
+                    <span class="material-symbols-outlined text-xl"
+                      >add_shopping_cart</span
+                    >
+                  </button>
+                </div>
+              </div>
+            </div>
+            <!-- Product 4 -->
+            <div
+              class="bg-card-dark rounded-xl border border-white/5 overflow-hidden group hover:border-primary/50 transition-all"
+            >
+              <div class="aspect-square relative overflow-hidden bg-zinc-900">
+                <img
+                  class="w-full h-full object-cover transition-transform group-hover:scale-105"
+                  data-alt="Racing motorcycle footpegs CNC machined aluminum"
+                  src="https://lh3.googleusercontent.com/aida-public/AB6AXuCTO-ENXO8lvo1DRXLGnK3nxutwQ6v1GTccqaBbyTReV4fWiiulM-GxFDcuSfpF0yAgzUI-jwQN4ndjxGvAT2URts9a-dy3_pNB0jS4j68UWcGkJG5GOSo1Ti8qG1wVT-l8rv16YDCavGumw-7dBACetkoCmE9K1XEgofeZGLPmfjViSOTMEx3qBZZ5mGQNPT3Dy7I68mtwtuVq9gzhfFiK_410R0ZyiLSD-LaIjNXXEJm2vNp0wlOEKeq6PwtMsdZW2bBLX86W6bU-"
+                />
+              </div>
+              <div class="p-5 space-y-3">
+                <div>
+                  <h4
+                    class="font-bold text-lg leading-tight group-hover:text-primary transition-colors"
+                  >
+                    Estriberas CNC Pro Series
+                  </h4>
+                  <p class="text-zinc-500 text-xs mt-1 uppercase">
+                    Performance
+                  </p>
+                </div>
+                <div class="flex items-center justify-between pt-2">
+                  <span class="text-xl font-black text-white">$420.00</span>
+                  <button
+                    class="size-10 rounded-lg bg-white/5 flex items-center justify-center hover:bg-primary transition-colors"
+                  >
+                    <span class="material-symbols-outlined text-xl"
+                      >add_shopping_cart</span
+                    >
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+      <!-- Newsletter Section -->
+      <section
+        class="py-20 max-w-7xl mx-auto px-6 lg:px-20 border-t border-white/5"
+      >
+        <div
+          class="bg-primary/10 border border-primary/20 rounded-2xl p-10 flex flex-col lg:flex-row items-center justify-between gap-10"
+        >
+          <div class="max-w-md space-y-4">
+            <h2
+              class="text-3xl font-bold italic uppercase tracking-tighter italic"
+            >
+              Únete al <span class="text-primary">Moto Club</span>
+            </h2>
+            <p class="text-zinc-400">
+              Recibe ofertas exclusivas, lanzamientos anticipados y consejos de
+              expertos mecánicos directamente en tu bandeja.
+            </p>
+          </div>
+          <div class="w-full max-w-md flex flex-col sm:flex-row gap-3">
+            <input
+              class="flex-1 bg-background-dark border border-white/10 rounded-lg px-4 py-3 text-white focus:border-primary focus:ring-1 focus:ring-primary outline-none transition-all"
+              placeholder="Tu correo electrónico"
+              type="email"
+            />
+            <button
+              class="bg-primary hover:bg-red-700 text-white font-bold uppercase tracking-widest px-8 py-3 rounded-lg transition-all"
+            >
+              Suscribirse
+            </button>
+          </div>
+        </div>
+      </section>
+    </main>
+    <!-- Footer -->
+    <footer class="bg-black py-20 border-t border-white/5">
+      <div class="max-w-7xl mx-auto px-6 lg:px-20">
+        <div class="grid grid-cols-1 md:grid-cols-4 gap-12">
+          <div class="space-y-6">
+            <div class="flex items-center gap-3">
+              <span class="material-symbols-outlined text-3xl text-primary"
+                >sports_motorsports</span
+              >
+              <h2 class="text-xl font-bold uppercase tracking-tighter">
+                Moto Premium
+              </h2>
+            </div>
+            <p class="text-zinc-500 text-sm leading-relaxed">
+              La tienda definitiva para el piloto que no acepta compromisos.
+              Calidad, velocidad y exclusividad en cada pieza.
+            </p>
+            <div class="flex gap-4">
+              <a
+                class="size-10 rounded-lg bg-white/5 flex items-center justify-center hover:bg-primary transition-colors text-zinc-400 hover:text-white"
+                href="#"
+              >
+                <span class="material-symbols-outlined text-xl">share</span>
+              </a>
+              <a
+                class="size-10 rounded-lg bg-white/5 flex items-center justify-center hover:bg-primary transition-colors text-zinc-400 hover:text-white"
+                href="#"
+              >
+                <span class="material-symbols-outlined text-xl"
+                  >photo_camera</span
+                >
+              </a>
+              <a
+                class="size-10 rounded-lg bg-white/5 flex items-center justify-center hover:bg-primary transition-colors text-zinc-400 hover:text-white"
+                href="#"
+              >
+                <span class="material-symbols-outlined text-xl"
+                  >play_circle</span
+                >
+              </a>
+            </div>
+          </div>
+          <div>
+            <h4
+              class="font-bold uppercase tracking-widest text-xs mb-6 text-white/50"
+            >
+              Explorar
+            </h4>
+            <ul class="space-y-4 text-sm text-zinc-400">
+              <li>
+                <a class="hover:text-primary transition-colors" href="#"
+                  >Equipamiento Piloto</a
+                >
+              </li>
+              <li>
+                <a class="hover:text-primary transition-colors" href="#"
+                  >Piezas de Lujo</a
+                >
+              </li>
+              <li>
+                <a class="hover:text-primary transition-colors" href="#"
+                  >Nuevas Llegadas</a
+                >
+              </li>
+              <li>
+                <a class="hover:text-primary transition-colors" href="#"
+                  >Outlet de Carreras</a
+                >
+              </li>
+            </ul>
+          </div>
+          <div>
+            <h4
+              class="font-bold uppercase tracking-widest text-xs mb-6 text-white/50"
+            >
+              Comunidad
+            </h4>
+            <ul class="space-y-4 text-sm text-zinc-400">
+              <li>
+                <a class="hover:text-primary transition-colors" href="#"
+                  >Eventos Track Day</a
+                >
+              </li>
+              <li>
+                <a class="hover:text-primary transition-colors" href="#"
+                  >Sobre Nosotros</a
+                >
+              </li>
+              <li>
+                <a class="hover:text-primary transition-colors" href="#"
+                  >Blog de Motores</a
+                >
+              </li>
+              <li>
+                <a class="hover:text-primary transition-colors" href="#"
+                  >Patrocinios</a
+                >
+              </li>
+            </ul>
+          </div>
+          <div>
+            <h4
+              class="font-bold uppercase tracking-widest text-xs mb-6 text-white/50"
+            >
+              Contacto
+            </h4>
+            <ul class="space-y-4 text-sm text-zinc-400">
+              <li class="flex items-center gap-2">
+                <span class="material-symbols-outlined text-sm text-primary"
+                  >location_on</span
+                >
+                Madrid, España
+              </li>
+              <li class="flex items-center gap-2">
+                <span class="material-symbols-outlined text-sm text-primary"
+                  >call</span
+                >
+                +34 900 123 456
+              </li>
+              <li class="flex items-center gap-2">
+                <span class="material-symbols-outlined text-sm text-primary"
+                  >mail</span
+                >
+                info@motopremium.com
+              </li>
+            </ul>
+          </div>
+        </div>
+        <div
+          class="mt-20 pt-8 border-t border-white/5 flex flex-col md:flex-row justify-between items-center gap-4"
+        >
+          <p class="text-zinc-500 text-xs">
+            © 2024 MOTO PREMIUM. Todos los derechos reservados.
+          </p>
+          <div
+            class="flex gap-6 text-xs text-zinc-500 uppercase font-bold tracking-widest"
+          >
+            <a class="hover:text-white" href="#">Privacidad</a>
+            <a class="hover:text-white" href="#">Términos</a>
+            <a class="hover:text-white" href="#">Cookies</a>
+          </div>
+        </div>
+      </div>
+    </footer>
+  </body>
+</html>

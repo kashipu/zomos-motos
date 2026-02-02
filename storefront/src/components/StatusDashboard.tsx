@@ -9,6 +9,11 @@ interface StatusState {
     count: number;
     message?: string;
   };
+  categories: {
+    status: 'ok' | 'error' | 'forbidden' | 'empty' | 'loading';
+    count: number;
+    message?: string;
+  };
   latency: number | null;
   lastChecked: string | null;
   error?: string;
@@ -19,6 +24,7 @@ export default function StatusDashboard() {
     backend: 'loading',
     database: 'unknown',
     products: { status: 'loading', count: 0 },
+    categories: { status: 'loading', count: 0 },
     latency: null,
     lastChecked: null
   });
@@ -28,6 +34,7 @@ export default function StatusDashboard() {
         ...prev, 
         backend: 'loading', 
         products: { ...prev.products, status: 'loading' },
+        categories: { ...prev.categories, status: 'loading' },
         error: undefined 
     }));
     const startTime = Date.now();
@@ -81,11 +88,33 @@ export default function StatusDashboard() {
         productStatus = { status: 'error', count: 0, message: 'Fetch Failed' };
       }
 
+      // 3. Check Categories
+      let categoryStatus: StatusState['categories'] = { status: 'ok', count: 0 };
+      try {
+        const catResponse = await fetch(`${apiUrl}/api/categories`);
+        if (catResponse.status === 403 || catResponse.status === 401) {
+          categoryStatus = { status: 'forbidden', count: 0, message: 'Missing Public Permissions' };
+        } else if (!catResponse.ok) {
+          categoryStatus = { status: 'error', count: 0, message: `HTTP ${catResponse.status}` };
+        } else {
+          const catData = await catResponse.json();
+          const count = catData.data?.length || 0;
+          categoryStatus = { 
+            status: count > 0 ? 'ok' : 'empty', 
+            count,
+            message: count === 0 ? 'No categories found' : undefined
+          };
+        }
+      } catch (catErr) {
+        categoryStatus = { status: 'error', count: 0, message: 'Fetch Failed' };
+      }
+
       if (response.ok && data.status === 'ok') {
         setStatus({
           backend: 'connected',
           database: data.database || 'unknown',
           products: productStatus,
+          categories: categoryStatus,
           latency: data.latency || latency,
           lastChecked: new Date().toLocaleTimeString()
         });
@@ -100,6 +129,7 @@ export default function StatusDashboard() {
         backend: 'disconnected',
         database: 'disconnected',
         products: { status: 'error', count: 0, message: 'Unreachable' },
+        categories: { status: 'error', count: 0, message: 'Unreachable' },
         latency: null,
         lastChecked: new Date().toLocaleTimeString(),
         error: 'Failed to connect to backend'
@@ -276,7 +306,7 @@ export default function StatusDashboard() {
              {status.products.status === 'forbidden' ? (
                 <div className="p-3 bg-red-50 text-red-600 text-sm rounded-lg border border-red-100">
                     <strong>Action Required:</strong><br/>
-                    Enable <code>find</code> permission for <code>Product</code> in Strapi Admin (Settings &gt; Roles &gt; Public).
+                    Enable <code>find</code> permission for <code>Product</code> in Strapi Admin.
                 </div>
              ) : (
                 <div className="flex items-center justify-between p-3 bg-gray-50 dark:bg-gray-700/30 rounded-lg">
@@ -288,10 +318,55 @@ export default function StatusDashboard() {
                   </span>
                 </div>
              )}
-             {status.products.message && status.products.status !== 'forbidden' && (
-                 <div className="text-xs text-center text-gray-400">
-                    {status.products.message}
-                 </div>
+          </div>
+        </div>
+
+        {/* Categories API Status Card */}
+        <div className="bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-100 dark:border-gray-700 p-6">
+          <div className="flex items-start justify-between mb-4">
+            <div className="flex items-center gap-3">
+              <div className="p-3 bg-indigo-50 dark:bg-indigo-900/20 rounded-lg">
+                <Database className="w-6 h-6 text-indigo-600 dark:text-indigo-400" />
+              </div>
+              <div>
+                <h3 className="font-semibold text-gray-900 dark:text-white">Categories API</h3>
+                <p className="text-sm text-gray-500">Classification Groups</p>
+              </div>
+            </div>
+            {status.categories.status === 'ok' ? (
+              <span className="flex items-center gap-1.5 px-3 py-1 bg-green-100 text-green-700 text-sm font-medium rounded-full">
+                <CheckCircle className="w-4 h-4" /> Accessible
+              </span>
+            ) : status.categories.status === 'forbidden' ? (
+              <span className="flex items-center gap-1.5 px-3 py-1 bg-red-100 text-red-700 text-sm font-medium rounded-full">
+                <Lock className="w-4 h-4" /> Forbidden
+              </span>
+            ) : status.categories.status === 'empty' ? (
+              <span className="flex items-center gap-1.5 px-3 py-1 bg-yellow-100 text-yellow-700 text-sm font-medium rounded-full">
+                <AlertCircle className="w-4 h-4" /> Empty
+              </span>
+            ) : (
+               <span className="flex items-center gap-1.5 px-3 py-1 bg-gray-100 text-gray-500 text-sm font-medium rounded-full">
+                <XCircle className="w-4 h-4" /> Error
+              </span>
+            )}
+          </div>
+          
+          <div className="space-y-4">
+             {status.categories.status === 'forbidden' ? (
+                <div className="p-3 bg-red-50 text-red-600 text-sm rounded-lg border border-red-100">
+                    <strong>Action Required:</strong><br/>
+                    Enable <code>find</code> permission for <code>Category</code> in Strapi Admin.
+                </div>
+             ) : (
+                <div className="flex items-center justify-between p-3 bg-gray-50 dark:bg-gray-700/30 rounded-lg">
+                  <span className="text-gray-600 dark:text-gray-400 text-sm flex items-center gap-2">
+                    <Database className="w-4 h-4" /> Total Categories
+                  </span>
+                  <span className="font-mono text-gray-900 dark:text-white font-medium">
+                    {status.categories.count}
+                  </span>
+                </div>
              )}
           </div>
         </div>

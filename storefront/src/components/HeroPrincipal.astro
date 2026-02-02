@@ -1,0 +1,157 @@
+---
+import { ChevronRight, Play } from "lucide-react";
+
+interface Props {
+  titulo?: string;
+  subtitulo?: string;
+  ctaPrincipal?: string;
+  ctaSecundario?: string;
+  imagenDesktop?: string; // 1920x1080
+  imagenTablet?: string; // 1024x1280
+  imagenMobile?: string; // 640x960
+}
+
+const {
+  titulo = "Domina el Asfalto con Estilo",
+  subtitulo = "Equipamiento de alta gama y lujos exclusivos para los verdaderos amantes de las dos ruedas.",
+  ctaPrincipal = "Explorar Colección",
+  ctaSecundario = "Ver Performance",
+  imagenDesktop = "https://images.unsplash.com/photo-1558981403-c5f9899a28bc?auto=format&fit=crop&q=80&w=1920",
+  imagenTablet = "https://images.unsplash.com/photo-1558981403-c5f9899a28bc?auto=format&fit=crop&q=80&w=1024",
+  imagenMobile = "https://images.unsplash.com/photo-1558981403-c5f9899a28bc?auto=format&fit=crop&q=80&w=640",
+} = Astro.props;
+---
+
+<section
+  class="relative min-h-[85vh] flex items-center overflow-hidden bg-background-dark"
+>
+  <!-- Fondo Responsivo -->
+  <div class="absolute inset-0 z-0">
+    <picture>
+      <source media="(min-width: 1024px)" srcset={imagenDesktop} />
+      <source media="(min-width: 768px)" srcset={imagenTablet} />
+      <img
+        src={imagenMobile}
+        alt="Hero Background"
+        class="w-full h-full object-cover opacity-60"
+      />
+    </picture>
+    <!-- Overlay Gradiente Racing -->
+    <div
+      class="absolute inset-0 bg-gradient-to-r from-background-dark via-background-dark/80 to-transparent"
+    >
+    </div>
+    <div
+      class="absolute inset-0 bg-gradient-to-t from-background-dark via-transparent to-transparent"
+    >
+    </div>
+  </div>
+
+  <div class="container mx-auto px-6 relative z-10">
+    <div class="max-w-4xl">
+      <!-- Badge de Novedad -->
+      <div
+        class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-primary/10 border border-primary/20 text-primary text-[10px] font-bold uppercase tracking-widest mb-6 animate-fade-in"
+      >
+        <span class="relative flex h-2 w-2">
+          <span
+            class="animate-ping absolute inline-flex h-full w-full rounded-full bg-primary opacity-75"
+          ></span>
+          <span class="relative inline-flex rounded-full h-2 w-2 bg-primary"
+          ></span>
+        </span>
+        Nueva Colección 2026
+      </div>
+
+      <h1
+        class="text-6xl lg:text-8xl font-bold text-white leading-none tracking-tighter uppercase italic mb-8 font-display"
+      >
+        {
+          titulo
+            .split(" ")
+            .map((word, i) =>
+              i === 1 ? (
+                <span class="text-primary">{word} </span>
+              ) : (
+                <span>{word} </span>
+              ),
+            )
+        }
+      </h1>
+
+      <p
+        class="text-lg md:text-xl text-zinc-400 font-medium mb-10 max-w-md leading-relaxed"
+      >
+        {subtitulo}
+      </p>
+
+      <div class="flex flex-wrap gap-4">
+        <a
+          href="/productos"
+          class="bg-primary hover:bg-red-700 text-white px-10 py-4 rounded-lg font-bold uppercase tracking-widest transition-all shadow-[0_0_20px_rgba(242,13,13,0.3)] flex items-center gap-2"
+        >
+          {ctaPrincipal}
+        </a>
+
+        <button
+          class="bg-white/10 hover:bg-white/20 backdrop-blur-md border border-white/20 text-white px-10 py-4 rounded-lg font-bold uppercase tracking-widest transition-all"
+        >
+          {ctaSecundario}
+        </button>
+      </div>
+
+      <!-- Stats / Trust -->
+      <div class="mt-16 flex items-center gap-8 border-t border-white/5 pt-8">
+        <div>
+          <p class="text-white text-2xl font-bold">500+</p>
+          <p
+            class="text-zinc-500 text-[10px] uppercase font-bold tracking-[0.2em]"
+          >
+            Piezas Únicas
+          </p>
+        </div>
+        <div class="h-8 w-px bg-white/10"></div>
+        <div>
+          <p class="text-white text-2xl font-bold">100%</p>
+          <p
+            class="text-zinc-500 text-[10px] uppercase font-bold tracking-[0.2em]"
+          >
+            Garantía Racing
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Decoración Lateral -->
+  <div
+    class="hidden lg:block absolute right-0 bottom-0 top-0 w-1/3 z-0 pointer-events-none"
+  >
+    <div class="h-full w-full flex items-center justify-center opacity-10">
+      <span
+        class="text-[20rem] font-bold text-primary rotate-90 whitespace-nowrap select-none font-display"
+      >
+        RACING
+      </span>
+    </div>
+  </div>
+</section>
+
+<style>
+  .animate-fade-in {
+    animation: fadeIn 0.8s ease-out forwards;
+  }
+
+  @keyframes fadeIn {
+    from {
+      opacity: 0;
+      transform: translateY(20px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+</style>
+
+

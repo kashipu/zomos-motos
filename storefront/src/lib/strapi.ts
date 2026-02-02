@@ -15,14 +15,14 @@ export async function queryStrapi<T>(
   const { params, ...init } = options;
   const url = new URL(`${import.meta.env.PUBLIC_STRAPI_URL}/api/${endpoint}`);
 
-  if (!url.searchParams.has("populate")) {
-    url.searchParams.append("populate", "images");
-  }
-
   if (params) {
     Object.entries(params).forEach(([key, value]) => {
       url.searchParams.append(key, String(value));
     });
+  }
+
+  if (import.meta.env.PUBLIC_DEBUG_MODE === "true") {
+    console.log(`[queryStrapi] Fetching: ${url.toString()}`);
   }
 
   const response = await fetch(url.toString(), {

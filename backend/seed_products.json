@@ -1,16 +1,144 @@
-[
-  {
-    "name": "Casco Airoh Aviator 3",
-    "price": 2800000,
-    "description": "Casco Off-Road de alta gama en fibra de carbono. Máxima ventilación y ligereza.",
-    "sku": "CAS-ARH-A3",
-    "status": "published"
-  },
-  {
-    "name": "Guantes Alpinestars SMX-1 Air V2",
-    "price": 320000,
-    "description": "Guantes de calle ligeros con malla técnica y protección de nudillos.",
-    "sku": "GUA-AST-SMX1",
-    "status": "published"
+{
+  "seed": {
+    "marcas": [
+      {
+        "nombre": "Yamaha",
+        "slug": "yamaha"
+      },
+      {
+        "nombre": "Honda",
+        "slug": "honda"
+      }
+    ],
+    "modelos_moto": [
+      {
+        "nombre": "MT-09",
+        "slug": "mt-09",
+        "marca": "Yamaha"
+      },
+      {
+        "nombre": "CB500F",
+        "slug": "cb500f",
+        "marca": "Honda"
+      }
+    ],
+    "categorias": [
+      {
+        "nombre": "Repuestos",
+        "slug": "repuestos",
+        "tipo": "MOTO",
+        "descripcion": "Repuestos originales y de calidad para motocicletas"
+      },
+      {
+        "nombre": "Cascos",
+        "slug": "cascos",
+        "tipo": "PILOTO",
+        "descripcion": "Cascos integrales y modulares de protección premium"
+      }
+    ],
+    "productos_moto": [
+      {
+        "nombre": "Leva de Lujo Yamaha MT-09",
+        "slug": "leva-lujo-yamaha-mt09",
+        "precio": 45.99,
+        "referencia": "LEVA-YAM-MT09-001",
+        "descripcion": "<p>Leva de alta calidad para Yamaha MT-09. Fabricada con materiales premium garantizando durabilidad y rendimiento óptimo.</p>",
+        "categoria": "Repuestos",
+        "marca_moto": "Yamaha",
+        "modelo_moto": "MT-09",
+        "metadatos_seo": {
+          "titulo_meta": "Leva de Lujo para Yamaha MT-09 | Zomos Motos",
+          "descripcion_meta": "Leva premium para Yamaha MT-09. Durabilidad garantizada y máximo rendimiento. Envío rápido en Colombia."
+        }
+      },
+      {
+        "nombre": "Filtro de Aire Premium Honda CB500F",
+        "slug": "filtro-aire-honda-cb500f",
+        "precio": 32.50,
+        "referencia": "FILTRO-HON-CB500-001",
+        "descripcion": "<p>Filtro de aire de alto flujo para Honda CB500F. Aumenta la eficiencia del motor y mejora la respuesta del acelerador.</p>",
+        "categoria": "Repuestos",
+        "marca_moto": "Honda",
+        "modelo_moto": "CB500F",
+        "metadatos_seo": {
+          "titulo_meta": "Filtro de Aire Premium Honda CB500F | Zomos Motos",
+          "descripcion_meta": "Filtro de aire de alto flujo para Honda CB500F. Mejor eficiencia y respuesta del motor. Envío garantizado."
+        }
+      }
+    ],
+    "productos_piloto": [
+      {
+        "nombre": "Casco Integral Bell Moto-9",
+        "slug": "casco-bell-moto-9",
+        "precio": 350.00,
+        "referencia": "CASCO-BELL-MOTO9-001",
+        "descripcion": "<p>Casco integral Bell Moto-9 con certificación DOT y ECE. Diseño aerodinámico con excelente ventilación y comodidad para largas jornadas.</p>",
+        "categoria": "Cascos",
+        "marca_generico": false,
+        "variantes_piloto": [
+          {
+            "talla": "M",
+            "color": "Negro",
+            "marca_piloto": "BELL",
+            "modificador_precio": 0,
+            "cantidad_stock": 12
+          },
+          {
+            "talla": "L",
+            "color": "Rojo",
+            "marca_piloto": "BELL",
+            "modificador_precio": 5.00,
+            "cantidad_stock": 8
+          },
+          {
+            "talla": "XL",
+            "color": "Blanco",
+            "marca_piloto": "BELL",
+            "modificador_precio": 5.00,
+            "cantidad_stock": 5
+          }
+        ],
+        "metadatos_seo": {
+          "titulo_meta": "Casco Bell Moto-9 - Protección Premium | Zomos Motos",
+          "descripcion_meta": "Casco integral Bell Moto-9 con certificación DOT/ECE. Máxima protección y comodidad para pilotos exigentes."
+        }
+      },
+      {
+        "nombre": "Chaqueta de Moto Alpinestars GP Pro",
+        "slug": "chaqueta-alpinestars-gp-pro",
+        "precio": 450.00,
+        "referencia": "CHAQ-ALPI-GPPRO-001",
+        "descripcion": "<p>Chaqueta de cuero premium Alpinestars GP Pro. Protección máxima con tecnología de absorción de impactos y ventilación estratégica.</p>",
+        "categoria": "Cascos",
+        "marca_generico": false,
+        "variantes_piloto": [
+          {
+            "talla": "S",
+            "color": "Negro",
+            "marca_piloto": "ALPINESTARS",
+            "modificador_precio": 0,
+            "cantidad_stock": 6
+          },
+          {
+            "talla": "M",
+            "color": "Negro",
+            "marca_piloto": "ALPINESTARS",
+            "modificador_precio": 0,
+            "cantidad_stock": 10
+          },
+          {
+            "talla": "L",
+            "color": "Rojo/Negro",
+            "marca_piloto": "ALPINESTARS",
+            "modificador_precio": 15.00,
+            "cantidad_stock": 3
+          }
+        ],
+        "metadatos_seo": {
+          "titulo_meta": "Chaqueta Alpinestars GP Pro - Cuero Premium | Zomos Motos",
+          "descripcion_meta": "Chaqueta de cuero Alpinestars GP Pro. Máxima protección y comodidad para pilotos profesionales y aficionados."
+        }
+      }
+    ]
   }
-]
+}

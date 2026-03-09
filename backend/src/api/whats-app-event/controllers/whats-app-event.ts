@@ -66,8 +66,11 @@ export default factories.createCoreController(
         },
       });
 
+      const baseUrl =
+        process.env.PUBLIC_STRAPI_URL || ctx.request.origin;
+
       return {
-        redirect_url: `${process.env.PUBLIC_STRAPI_URL || "http://localhost:1338"}/api/wa/${trackingId}`,
+        redirect_url: `${baseUrl}/api/wa/${trackingId}`,
         tracking_id: trackingId,
       };
     },

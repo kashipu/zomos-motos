@@ -6,59 +6,75 @@ interface Props {
 const { imagenes = [] } = Astro.props;
 
 // Imagen por defecto si no hay nada
-const defaultImage =
-  "https://images.unsplash.com/photo-1558981403-c5f9899a28bc?auto=format&fit=crop&q=80&w=800";
+const defaultImage = "/assets/placeholder-product.svg";
 const mainImage = imagenes[0]?.url || defaultImage;
+const hasMultiple = imagenes.length > 1;
 ---
 
-<div class="flex flex-col md:flex-row gap-4 lg:col-span-7">
-  <!-- Thumbnails -->
+<div class="flex flex-col gap-4 lg:col-span-7" id="gallery-container">
+  <!-- Main Image -->
   <div
-    class="order-2 md:order-1 flex md:flex-col gap-3 max-h-[600px] overflow-y-auto custom-scrollbar"
+    class="w-full bg-card-dark rounded-2xl overflow-hidden aspect-[3/4] md:aspect-square border border-white/10 group relative"
   >
-    {
-      imagenes.map((img, i) => (
+    <img
+      id="gallery-main"
+      src={mainImage}
+      alt={imagenes[0]?.alt || "Producto Principal"}
+      loading="eager"
+      decoding="async"
+      class="w-full h-full object-cover transition-all duration-500"
+    />
+  </div>
+
+  <!-- Thumbnails (solo si hay más de 1 imagen) -->
+  {hasMultiple && (
+    <div class="flex gap-3 overflow-x-auto custom-scrollbar pb-1">
+      {imagenes.map((img, i) => (
         <button
-          class={`w-20 h-20 bg-background-dark border-2 rounded-xl flex-shrink-0 cursor-pointer overflow-hidden transition-all hover:scale-105 active:scale-95 ${i === 0 ? "border-primary" : "border-transparent hover:border-white/10"}`}
+          data-gallery-thumb={i}
+          data-src={img.url}
+          class={`w-20 h-20 flex-shrink-0 bg-background-dark border-2 rounded-xl cursor-pointer overflow-hidden transition-all hover:scale-105 active:scale-95 ${i === 0 ? "border-primary" : "border-transparent hover:border-white/10"}`}
         >
           <img
             src={img.url}
             alt={img.alt || `Miniatura ${i + 1}`}
+            loading="lazy"
+            decoding="async"
             class="w-full h-full object-cover"
           />
         </button>
-      ))
-    }
-
-    {/* Placeholder si hay pocas imágenes */}
-    {
-      imagenes.length < 4 &&
-        [...Array(4 - imagenes.length)].map((_, i) => (
-          <div class="w-20 h-20 bg-card-dark/50 border-2 border-transparent rounded-xl flex-shrink-0 opacity-20" />
-        ))
-    }
-  </div>
-
-  <!-- Main Image -->
-  <div
-    class="order-1 md:order-2 flex-1 bg-card-dark rounded-2xl overflow-hidden aspect-[4/5] md:aspect-auto border border-white/10 group relative"
-  >
-    <img
-      src={mainImage}
-      alt="Producto Principal"
-      class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
-    />
-
-    <div
-      class="absolute top-4 right-4 bg-background-dark/80 backdrop-blur px-4 py-2 rounded-full border border-primary/30 flex items-center gap-2"
-    >
-      <span class="w-2 h-2 rounded-full bg-primary animate-pulse"></span>
-      <span class="text-[10px] font-bold tracking-widest uppercase text-white"
-        >Performance Edition</span
-      >
+      ))}
     </div>
-  </div>
+  )}
 </div>
+
+<script>
+  function setupGallery() {
+    const container = document.getElementById("gallery-container");
+    if (!container || container.dataset.init === "1") return;
+    container.dataset.init = "1";
+
+    const main = container.querySelector("#gallery-main") as HTMLImageElement | null;
+    const thumbs = container.querySelectorAll<HTMLButtonElement>("[data-gallery-thumb]");
+
+    thumbs.forEach((thumb) => {
+      thumb.addEventListener("click", () => {
+        const src = thumb.dataset.src;
+        if (!main || !src) return;
+        main.src = src;
+        // Update active border
+        thumbs.forEach((t) => {
+          t.classList.remove("border-primary");
+          t.classList.add("border-transparent");
+        });
+        thumb.classList.remove("border-transparent");
+        thumb.classList.add("border-primary");
+      });
+    });
+  }
+  setupGallery();
+  document.addEventListener("astro:after-swap", setupGallery);
+</script>
 
 <style>
   .custom-scrollbar::-webkit-scrollbar {
@@ -73,5 +89,3 @@ const mainImage = imagenes[0]?.url || defaultImage;
     border-radius: 10px;
   }
 </style>
-
-

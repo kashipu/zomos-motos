@@ -4,24 +4,18 @@
  * Uso:
  *   npm run seed
  *
- * Este script carga datos iniciales en todas las colecciones:
- * - marcas
- * - modelos_moto
- * - categorias
- * - productos_moto
- * - productos_piloto
- *
- * Ejecución:
- *   desde la carpeta backend: npm run seed
+ * Carga datos iniciales en todas las colecciones:
+ * - marcas_moto (fabricantes de motos)
+ * - marcas (equipamiento: cascos, ropa, accesorios)
+ * - modelos_moto (con anio_desde/anio_hasta)
+ * - categorias (MOTO, PILOTO, UNIVERSAL)
+ * - productos_moto (con compatibilidades componente repetible)
+ * - productos_piloto (con variantes_piloto componente repetible)
  */
 
 const fs = require('fs');
 const path = require('path');
 
-/**
- * Función principal de seed
- * @param {Object} strapi - Instancia de Strapi
- */
 async function seedDatabase(strapi) {
   console.log('\n🌱 Iniciando seed de datos para Zomos Motos...\n');
 
@@ -30,8 +24,28 @@ async function seedDatabase(strapi) {
     const seedData = JSON.parse(fs.readFileSync(seedFile, 'utf8'));
     const { seed } = seedData;
 
-    // 1. Crear Marcas
-    console.log('📍 Creando marcas...');
+    // 1. Crear Marcas de Moto (fabricantes)
+    console.log('🏭 Creando marcas de moto...');
+    const marcasMotoMap = {};
+    for (const marca of seed.marcas_moto) {
+      const existing = await strapi.db.query('api::marca-moto.marca-moto').findOne({
+        where: { nombre: marca.nombre },
+      });
+
+      if (!existing) {
+        const created = await strapi.db.query('api::marca-moto.marca-moto').create({
+          data: marca,
+        });
+        marcasMotoMap[marca.nombre] = created.id;
+        console.log(`  ✓ Marca moto creada: ${marca.nombre}`);
+      } else {
+        marcasMotoMap[marca.nombre] = existing.id;
+        console.log(`  → Marca moto ya existe: ${marca.nombre}`);
+      }
+    }
+
+    // 2. Crear Marcas de Equipamiento
+    console.log('\n🏷️ Creando marcas de equipamiento...');
     const marcasMap = {};
     for (const marca of seed.marcas) {
       const existing = await strapi.db.query('api::marca.marca').findOne({
@@ -50,7 +64,7 @@ async function seedDatabase(strapi) {
       }
     }
 
-    // 2. Crear Modelos de Moto
+    // 3. Crear Modelos de Moto
     console.log('\n🏍️ Creando modelos de moto...');
     const modelosMap = {};
     for (const modelo of seed.modelos_moto) {
@@ -63,18 +77,20 @@ async function seedDatabase(strapi) {
           data: {
             nombre: modelo.nombre,
             slug: modelo.slug,
-            marca: marcasMap[modelo.marca],
+            marca: marcasMotoMap[modelo.marca_moto],
+            anio_desde: modelo.anio_desde || null,
+            anio_hasta: modelo.anio_hasta || null,
           },
         });
-        modelosMap[modelo.slug] = created.id;
+        modelosMap[modelo.nombre] = created.id;
         console.log(`  ✓ Modelo creado: ${modelo.nombre}`);
       } else {
-        modelosMap[modelo.slug] = existing.id;
+        modelosMap[modelo.nombre] = existing.id;
         console.log(`  → Modelo ya existe: ${modelo.nombre}`);
       }
     }
 
-    // 3. Crear Categorías
+    // 4. Crear Categorías
     console.log('\n📂 Creando categorías...');
     const categoriasMap = {};
     for (const categoria of seed.categorias) {
@@ -94,7 +110,7 @@ async function seedDatabase(strapi) {
       }
     }
 
-    // 4. Crear Productos de Moto
+    // 5. Crear Productos de Moto (con compatibilidades como componente repetible)
     console.log('\n🔧 Creando productos de moto...');
     for (const producto of seed.productos_moto) {
       const existing = await strapi.db.query('api::producto-moto.producto-moto').findOne({
@@ -102,16 +118,21 @@ async function seedDatabase(strapi) {
       });
 
       if (!existing) {
+        const compatibilidades = (producto.compatibilidades || []).map((comp) => ({
+          marca_moto: marcasMotoMap[comp.marca_moto] || null,
+          modelo_moto: modelosMap[comp.modelo_moto] || null,
+        }));
+
         await strapi.db.query('api::producto-moto.producto-moto').create({
           data: {
             nombre: producto.nombre,
             slug: producto.slug,
-            precio: producto.precio,
             referencia: producto.referencia,
+            precio: producto.precio,
             descripcion: producto.descripcion,
             categoria: categoriasMap[producto.categoria],
-            marca_moto: marcasMap[producto.marca_moto],
-            modelo_moto: modelosMap[producto.modelo_moto],
+            marca: marcasMap[producto.marca] || null,
+            compatibilidades,
             metadatos_seo: producto.metadatos_seo,
           },
         });
@@ -121,8 +142,8 @@ async function seedDatabase(strapi) {
       }
     }
 
-    // 5. Crear Productos de Piloto
-    console.log('\n👨‍🏫 Creando productos de piloto...');
+    // 6. Crear Productos de Piloto (con variantes_piloto como componente repetible)
+    console.log('\n🧑‍✈️ Creando productos de piloto...');
     for (const producto of seed.productos_piloto) {
       const existing = await strapi.db.query('api::producto-piloto.producto-piloto').findOne({
         where: { slug: producto.slug },
@@ -133,11 +154,11 @@ async function seedDatabase(strapi) {
           data: {
             nombre: producto.nombre,
             slug: producto.slug,
-            precio: producto.precio,
             referencia: producto.referencia,
+            precio: producto.precio,
             descripcion: producto.descripcion,
             categoria: categoriasMap[producto.categoria],
-            marca_generico: producto.marca_generico,
+            marca: marcasMap[producto.marca] || null,
             variantes_piloto: producto.variantes_piloto,
             metadatos_seo: producto.metadatos_seo,
           },

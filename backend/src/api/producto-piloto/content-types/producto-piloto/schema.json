@@ -1,0 +1,67 @@
+{
+  "kind": "collectionType",
+  "collectionName": "productos_piloto",
+  "info": {
+    "singularName": "producto-piloto",
+    "pluralName": "productos-pilotos",
+    "displayName": "Productos para Piloto",
+    "description": "Equipo y accesorios para el piloto (cascos, guantes, chaquetas, botas...)"
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "attributes": {
+    "nombre": {
+      "type": "string",
+      "required": true
+    },
+    "slug": {
+      "type": "uid",
+      "targetField": "nombre",
+      "required": true
+    },
+    "referencia": {
+      "type": "string",
+      "unique": true
+    },
+    "categoria": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "api::categoria.categoria",
+      "required": true
+    },
+    "marca": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "api::marca.marca"
+    },
+    "precio": {
+      "type": "decimal",
+      "required": true
+    },
+    "descuento": {
+      "type": "integer",
+      "min": 0,
+      "max": 100,
+      "default": 0
+    },
+    "imagenes": {
+      "type": "media",
+      "multiple": true,
+      "allowedTypes": ["images"]
+    },
+    "descripcion": {
+      "type": "richtext"
+    },
+    "variantes_piloto": {
+      "type": "component",
+      "repeatable": true,
+      "component": "tienda.variante-piloto"
+    },
+    "metadatos_seo": {
+      "type": "component",
+      "repeatable": false,
+      "component": "compartido.metadatos-seo"
+    }
+  }
+}

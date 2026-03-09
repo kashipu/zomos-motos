@@ -430,96 +430,34 @@ export interface AdminUser extends Struct.CollectionTypeSchema {
   };
 }
 
-export interface ApiBikeModelBikeModel extends Struct.CollectionTypeSchema {
-  collectionName: 'bike_models';
+export interface ApiCategoriaCategoria extends Struct.CollectionTypeSchema {
+  collectionName: 'categorias';
   info: {
-    description: 'Modelos de Motos';
-    displayName: 'BikeModel';
-    pluralName: 'bike-models';
-    singularName: 'bike-model';
+    description: 'Clasificaci\u00F3n de productos por tipo (Moto, Piloto o Universal)';
+    displayName: 'Categor\u00EDas';
+    pluralName: 'categorias';
+    singularName: 'categoria';
   };
   options: {
     draftAndPublish: true;
   };
   attributes: {
-    brand: Schema.Attribute.Relation<'manyToOne', 'api::brand.brand'>;
     createdAt: Schema.Attribute.DateTime;
     createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
       Schema.Attribute.Private;
+    descripcion: Schema.Attribute.Text;
     locale: Schema.Attribute.String & Schema.Attribute.Private;
     localizations: Schema.Attribute.Relation<
       'oneToMany',
-      'api::bike-model.bike-model'
+      'api::categoria.categoria'
     > &
       Schema.Attribute.Private;
-    name: Schema.Attribute.String & Schema.Attribute.Required;
-    products: Schema.Attribute.Relation<'manyToMany', 'api::product.product'>;
+    nombre: Schema.Attribute.String &
+      Schema.Attribute.Required &
+      Schema.Attribute.Unique;
     publishedAt: Schema.Attribute.DateTime;
-    slug: Schema.Attribute.UID<'name'> & Schema.Attribute.Required;
-    updatedAt: Schema.Attribute.DateTime;
-    updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
-      Schema.Attribute.Private;
-  };
-}
-
-export interface ApiBrandBrand extends Struct.CollectionTypeSchema {
-  collectionName: 'brands';
-  info: {
-    description: 'Fabricantes de Motos';
-    displayName: 'Brand';
-    pluralName: 'brands';
-    singularName: 'brand';
-  };
-  options: {
-    draftAndPublish: true;
-  };
-  attributes: {
-    bike_models: Schema.Attribute.Relation<
-      'oneToMany',
-      'api::bike-model.bike-model'
-    >;
-    createdAt: Schema.Attribute.DateTime;
-    createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
-      Schema.Attribute.Private;
-    locale: Schema.Attribute.String & Schema.Attribute.Private;
-    localizations: Schema.Attribute.Relation<'oneToMany', 'api::brand.brand'> &
-      Schema.Attribute.Private;
-    logo: Schema.Attribute.Media<'images'>;
-    name: Schema.Attribute.String & Schema.Attribute.Required;
-    publishedAt: Schema.Attribute.DateTime;
-    slug: Schema.Attribute.UID<'name'> & Schema.Attribute.Required;
-    updatedAt: Schema.Attribute.DateTime;
-    updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
-      Schema.Attribute.Private;
-  };
-}
-
-export interface ApiCategoryCategory extends Struct.CollectionTypeSchema {
-  collectionName: 'categories';
-  info: {
-    displayName: 'Category';
-    pluralName: 'categories';
-    singularName: 'category';
-  };
-  options: {
-    draftAndPublish: true;
-  };
-  attributes: {
-    createdAt: Schema.Attribute.DateTime;
-    createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
-      Schema.Attribute.Private;
-    locale: Schema.Attribute.String & Schema.Attribute.Private;
-    localizations: Schema.Attribute.Relation<
-      'oneToMany',
-      'api::category.category'
-    > &
-      Schema.Attribute.Private;
-    name: Schema.Attribute.String & Schema.Attribute.Required;
-    products: Schema.Attribute.Relation<'oneToMany', 'api::product.product'>;
-    publishedAt: Schema.Attribute.DateTime;
-    seoMetadata: Schema.Attribute.Component<'shared.seo-metadata', false>;
-    slug: Schema.Attribute.UID<'name'> & Schema.Attribute.Required;
-    type: Schema.Attribute.Enumeration<['MOTO', 'PILOTO']> &
+    slug: Schema.Attribute.UID<'nombre'> & Schema.Attribute.Required;
+    tipo: Schema.Attribute.Enumeration<['MOTO', 'PILOTO', 'UNIVERSAL']> &
       Schema.Attribute.Required;
     updatedAt: Schema.Attribute.DateTime;
     updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
@@ -527,45 +465,274 @@ export interface ApiCategoryCategory extends Struct.CollectionTypeSchema {
   };
 }
 
-export interface ApiProductProduct extends Struct.CollectionTypeSchema {
-  collectionName: 'products';
+export interface ApiMarcaMotoMarcaMoto extends Struct.CollectionTypeSchema {
+  collectionName: 'marcas_moto';
   info: {
-    displayName: 'Product';
-    pluralName: 'products';
-    singularName: 'product';
+    description: 'Fabricantes de motocicletas (Yamaha, Honda, Bajaj, AKT, Suzuki...)';
+    displayName: 'Marcas de Motos';
+    pluralName: 'marcas-motos';
+    singularName: 'marca-moto';
   };
   options: {
     draftAndPublish: true;
   };
   attributes: {
-    category: Schema.Attribute.Relation<'manyToOne', 'api::category.category'>;
     createdAt: Schema.Attribute.DateTime;
     createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
       Schema.Attribute.Private;
-    description: Schema.Attribute.RichText;
-    fitment_detail: Schema.Attribute.Component<'motors.fitment-detail', true>;
-    images: Schema.Attribute.Media<'images', true>;
-    is_generic: Schema.Attribute.Boolean & Schema.Attribute.DefaultTo<false>;
     locale: Schema.Attribute.String & Schema.Attribute.Private;
     localizations: Schema.Attribute.Relation<
       'oneToMany',
-      'api::product.product'
+      'api::marca-moto.marca-moto'
     > &
       Schema.Attribute.Private;
-    motos_compatibles: Schema.Attribute.Relation<
-      'manyToMany',
-      'api::bike-model.bike-model'
+    logo: Schema.Attribute.Media<'images'>;
+    modelos: Schema.Attribute.Relation<
+      'oneToMany',
+      'api::modelo-moto.modelo-moto'
     >;
-    name: Schema.Attribute.String & Schema.Attribute.Required;
-    precio: Schema.Attribute.Decimal & Schema.Attribute.Required;
-    product_variants: Schema.Attribute.Component<'shop.product-variant', true>;
+    nombre: Schema.Attribute.String &
+      Schema.Attribute.Required &
+      Schema.Attribute.Unique;
     publishedAt: Schema.Attribute.DateTime;
-    referencia: Schema.Attribute.String & Schema.Attribute.Unique;
-    seoMetadata: Schema.Attribute.Component<'shared.seo-metadata', false>;
-    slug: Schema.Attribute.UID<'name'> & Schema.Attribute.Required;
+    slug: Schema.Attribute.UID<'nombre'> & Schema.Attribute.Required;
     updatedAt: Schema.Attribute.DateTime;
     updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
       Schema.Attribute.Private;
+  };
+}
+
+export interface ApiMarcaMarca extends Struct.CollectionTypeSchema {
+  collectionName: 'marcas';
+  info: {
+    description: 'Marcas de cascos, ropa, accesorios y partes (AGV, Alpinestars, Akrapovic, Brembo...)';
+    displayName: 'Marcas de Equipamiento';
+    pluralName: 'marcas';
+    singularName: 'marca';
+  };
+  options: {
+    draftAndPublish: true;
+  };
+  attributes: {
+    createdAt: Schema.Attribute.DateTime;
+    createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+    locale: Schema.Attribute.String & Schema.Attribute.Private;
+    localizations: Schema.Attribute.Relation<'oneToMany', 'api::marca.marca'> &
+      Schema.Attribute.Private;
+    logo: Schema.Attribute.Media<'images'>;
+    nombre: Schema.Attribute.String &
+      Schema.Attribute.Required &
+      Schema.Attribute.Unique;
+    publishedAt: Schema.Attribute.DateTime;
+    slug: Schema.Attribute.UID<'nombre'> & Schema.Attribute.Required;
+    updatedAt: Schema.Attribute.DateTime;
+    updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+  };
+}
+
+export interface ApiModeloMotoModeloMoto extends Struct.CollectionTypeSchema {
+  collectionName: 'modelos_moto';
+  info: {
+    description: 'Modelos espec\u00EDficos de motocicletas (Pulsar NS 200, Nmax 155, MT-09...)';
+    displayName: 'Modelos de Motos';
+    pluralName: 'modelos-motos';
+    singularName: 'modelo-moto';
+  };
+  options: {
+    draftAndPublish: true;
+  };
+  attributes: {
+    anio_desde: Schema.Attribute.Integer;
+    anio_hasta: Schema.Attribute.Integer;
+    createdAt: Schema.Attribute.DateTime;
+    createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+    locale: Schema.Attribute.String & Schema.Attribute.Private;
+    localizations: Schema.Attribute.Relation<
+      'oneToMany',
+      'api::modelo-moto.modelo-moto'
+    > &
+      Schema.Attribute.Private;
+    marca: Schema.Attribute.Relation<
+      'manyToOne',
+      'api::marca-moto.marca-moto'
+    > &
+      Schema.Attribute.Required;
+    nombre: Schema.Attribute.String & Schema.Attribute.Required;
+    publishedAt: Schema.Attribute.DateTime;
+    slug: Schema.Attribute.UID<'nombre'> & Schema.Attribute.Required;
+    updatedAt: Schema.Attribute.DateTime;
+    updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+  };
+}
+
+export interface ApiPedidoPedido extends Struct.CollectionTypeSchema {
+  collectionName: 'pedidos';
+  info: {
+    description: 'Pedidos realizados v\u00EDa WhatsApp con datos del cliente';
+    displayName: 'Pedidos';
+    pluralName: 'pedidos';
+    singularName: 'pedido';
+  };
+  options: {
+    draftAndPublish: false;
+  };
+  attributes: {
+    autorizacion_datos: Schema.Attribute.Boolean &
+      Schema.Attribute.Required &
+      Schema.Attribute.DefaultTo<false>;
+    cliente_cedula: Schema.Attribute.String & Schema.Attribute.Required;
+    cliente_correo: Schema.Attribute.String;
+    cliente_direccion: Schema.Attribute.Text & Schema.Attribute.Required;
+    cliente_nombre: Schema.Attribute.String & Schema.Attribute.Required;
+    cliente_telefono: Schema.Attribute.String & Schema.Attribute.Required;
+    createdAt: Schema.Attribute.DateTime;
+    createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+    estado: Schema.Attribute.Enumeration<
+      ['PENDIENTE', 'CONTACTADO', 'COMPLETADO', 'CANCELADO']
+    > &
+      Schema.Attribute.Required &
+      Schema.Attribute.DefaultTo<'PENDIENTE'>;
+    fecha_pedido: Schema.Attribute.DateTime & Schema.Attribute.Required;
+    fecha_whatsapp: Schema.Attribute.DateTime;
+    items: Schema.Attribute.JSON & Schema.Attribute.Required;
+    locale: Schema.Attribute.String & Schema.Attribute.Private;
+    localizations: Schema.Attribute.Relation<
+      'oneToMany',
+      'api::pedido.pedido'
+    > &
+      Schema.Attribute.Private;
+    marcas_moto_meta: Schema.Attribute.JSON;
+    monto_total: Schema.Attribute.Decimal & Schema.Attribute.Required;
+    publishedAt: Schema.Attribute.DateTime;
+    tracking_id: Schema.Attribute.String &
+      Schema.Attribute.Required &
+      Schema.Attribute.Unique;
+    updatedAt: Schema.Attribute.DateTime;
+    updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+    whatsapp_enviado: Schema.Attribute.Boolean &
+      Schema.Attribute.DefaultTo<false>;
+  };
+}
+
+export interface ApiProductoMotoProductoMoto
+  extends Struct.CollectionTypeSchema {
+  collectionName: 'productos_moto';
+  info: {
+    description: 'Repuestos y accesorios para motocicletas (escapes, frenos, sliders...)';
+    displayName: 'Productos para Moto';
+    pluralName: 'productos-motos';
+    singularName: 'producto-moto';
+  };
+  options: {
+    draftAndPublish: true;
+  };
+  attributes: {
+    categoria: Schema.Attribute.Relation<
+      'manyToOne',
+      'api::categoria.categoria'
+    > &
+      Schema.Attribute.Required;
+    compatibilidades: Schema.Attribute.Component<
+      'tienda.compatibilidad-moto',
+      true
+    >;
+    createdAt: Schema.Attribute.DateTime;
+    createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+    descripcion: Schema.Attribute.RichText;
+    descuento: Schema.Attribute.Integer &
+      Schema.Attribute.SetMinMax<
+        {
+          max: 100;
+          min: 0;
+        },
+        number
+      > &
+      Schema.Attribute.DefaultTo<0>;
+    imagenes: Schema.Attribute.Media<'images', true>;
+    locale: Schema.Attribute.String & Schema.Attribute.Private;
+    localizations: Schema.Attribute.Relation<
+      'oneToMany',
+      'api::producto-moto.producto-moto'
+    > &
+      Schema.Attribute.Private;
+    marca: Schema.Attribute.Relation<'manyToOne', 'api::marca.marca'>;
+    metadatos_seo: Schema.Attribute.Component<
+      'compartido.metadatos-seo',
+      false
+    >;
+    nombre: Schema.Attribute.String & Schema.Attribute.Required;
+    precio: Schema.Attribute.Decimal & Schema.Attribute.Required;
+    publishedAt: Schema.Attribute.DateTime;
+    referencia: Schema.Attribute.String & Schema.Attribute.Unique;
+    slug: Schema.Attribute.UID<'nombre'> & Schema.Attribute.Required;
+    updatedAt: Schema.Attribute.DateTime;
+    updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+  };
+}
+
+export interface ApiProductoPilotoProductoPiloto
+  extends Struct.CollectionTypeSchema {
+  collectionName: 'productos_piloto';
+  info: {
+    description: 'Equipo y accesorios para el piloto (cascos, guantes, chaquetas, botas...)';
+    displayName: 'Productos para Piloto';
+    pluralName: 'productos-pilotos';
+    singularName: 'producto-piloto';
+  };
+  options: {
+    draftAndPublish: true;
+  };
+  attributes: {
+    categoria: Schema.Attribute.Relation<
+      'manyToOne',
+      'api::categoria.categoria'
+    > &
+      Schema.Attribute.Required;
+    createdAt: Schema.Attribute.DateTime;
+    createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+    descripcion: Schema.Attribute.RichText;
+    descuento: Schema.Attribute.Integer &
+      Schema.Attribute.SetMinMax<
+        {
+          max: 100;
+          min: 0;
+        },
+        number
+      > &
+      Schema.Attribute.DefaultTo<0>;
+    imagenes: Schema.Attribute.Media<'images', true>;
+    locale: Schema.Attribute.String & Schema.Attribute.Private;
+    localizations: Schema.Attribute.Relation<
+      'oneToMany',
+      'api::producto-piloto.producto-piloto'
+    > &
+      Schema.Attribute.Private;
+    marca: Schema.Attribute.Relation<'manyToOne', 'api::marca.marca'>;
+    metadatos_seo: Schema.Attribute.Component<
+      'compartido.metadatos-seo',
+      false
+    >;
+    nombre: Schema.Attribute.String & Schema.Attribute.Required;
+    precio: Schema.Attribute.Decimal & Schema.Attribute.Required;
+    publishedAt: Schema.Attribute.DateTime;
+    referencia: Schema.Attribute.String & Schema.Attribute.Unique;
+    slug: Schema.Attribute.UID<'nombre'> & Schema.Attribute.Required;
+    updatedAt: Schema.Attribute.DateTime;
+    updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+    variantes_piloto: Schema.Attribute.Component<
+      'tienda.variante-piloto',
+      true
+    >;
   };
 }
 
@@ -581,6 +748,9 @@ export interface ApiWhatsAppEventWhatsAppEvent
     draftAndPublish: false;
   };
   attributes: {
+    cantidad_items: Schema.Attribute.Integer;
+    cliente_nombre: Schema.Attribute.String;
+    cliente_telefono: Schema.Attribute.String;
     createdAt: Schema.Attribute.DateTime;
     createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
       Schema.Attribute.Private;
@@ -590,42 +760,16 @@ export interface ApiWhatsAppEventWhatsAppEvent
       'api::whats-app-event.whats-app-event'
     > &
       Schema.Attribute.Private;
+    monto_total: Schema.Attribute.Decimal;
     payload: Schema.Attribute.JSON;
     publishedAt: Schema.Attribute.DateTime;
+    resumen_items: Schema.Attribute.Text;
     tracking_id: Schema.Attribute.String & Schema.Attribute.Required;
     type: Schema.Attribute.Enumeration<['INTENT', 'OPEN']> &
       Schema.Attribute.Required;
     updatedAt: Schema.Attribute.DateTime;
     updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
       Schema.Attribute.Private;
-  };
-}
-
-export interface ApiYearYear extends Struct.CollectionTypeSchema {
-  collectionName: 'years';
-  info: {
-    description: 'A\u00F1os de fabricaci\u00F3n';
-    displayName: 'Year';
-    pluralName: 'years';
-    singularName: 'year';
-  };
-  options: {
-    draftAndPublish: true;
-  };
-  attributes: {
-    createdAt: Schema.Attribute.DateTime;
-    createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
-      Schema.Attribute.Private;
-    locale: Schema.Attribute.String & Schema.Attribute.Private;
-    localizations: Schema.Attribute.Relation<'oneToMany', 'api::year.year'> &
-      Schema.Attribute.Private;
-    publishedAt: Schema.Attribute.DateTime;
-    updatedAt: Schema.Attribute.DateTime;
-    updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
-      Schema.Attribute.Private;
-    year: Schema.Attribute.String &
-      Schema.Attribute.Required &
-      Schema.Attribute.Unique;
   };
 }
 
@@ -1139,12 +1283,14 @@ declare module '@strapi/strapi' {
       'admin::transfer-token': AdminTransferToken;
       'admin::transfer-token-permission': AdminTransferTokenPermission;
       'admin::user': AdminUser;
-      'api::bike-model.bike-model': ApiBikeModelBikeModel;
-      'api::brand.brand': ApiBrandBrand;
-      'api::category.category': ApiCategoryCategory;
-      'api::product.product': ApiProductProduct;
+      'api::categoria.categoria': ApiCategoriaCategoria;
+      'api::marca-moto.marca-moto': ApiMarcaMotoMarcaMoto;
+      'api::marca.marca': ApiMarcaMarca;
+      'api::modelo-moto.modelo-moto': ApiModeloMotoModeloMoto;
+      'api::pedido.pedido': ApiPedidoPedido;
+      'api::producto-moto.producto-moto': ApiProductoMotoProductoMoto;
+      'api::producto-piloto.producto-piloto': ApiProductoPilotoProductoPiloto;
       'api::whats-app-event.whats-app-event': ApiWhatsAppEventWhatsAppEvent;
-      'api::year.year': ApiYearYear;
       'plugin::content-releases.release': PluginContentReleasesRelease;
       'plugin::content-releases.release-action': PluginContentReleasesReleaseAction;
       'plugin::i18n.locale': PluginI18NLocale;

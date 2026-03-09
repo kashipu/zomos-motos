@@ -1,6 +1,6 @@
 ---
 import Layout from "@/layouts/Layout.astro";
-import { queryStrapi, getStrapiMedia } from "@/lib/strapi";
+import { fetchProductoBySlug, fetchRelacionados, getStrapiMedia, getImageUrl, compatibilidadTexto } from "@/lib/strapi";
 import AddToCart from "@/components/AddToCart";
 import WhatsAppButton from "@/components/WhatsAppButton";
 import ProductSEO from "@/components/ProductSEO.astro";
@@ -14,93 +14,81 @@ export const prerender = false;
 
 const { slug } = Astro.params;
 
-let product = null;
-let relatedProducts: any[] = [];
+if (!slug) return Astro.redirect("/404");
 
-try {
-  if (!slug) throw new Error("No slug provided");
+const product = await fetchProductoBySlug(slug);
 
-  // Search for the main product
-  const data = await queryStrapi<any[]>("products", {
-    params: {
-      "filters[slug][$eq]": slug,
-      populate: "*",
-    },
-  });
+if (!product) return Astro.redirect("/404");
 
-  if (data && data.length > 0) {
-    product = data[0];
+const relatedProducts = await fetchRelacionados(product);
 
-    // Search for related products (same category)
-    if (product.category) {
-      relatedProducts = await queryStrapi<any[]>("products", {
-        params: {
-          "filters[category][slug][$eq]": product.category.slug,
-          "filters[slug][$ne]": slug,
-          "pagination[limit]": 4,
-          populate: "*",
-        },
-      });
-    }
-  }
-} catch (e) {
-  console.error(`Failed to fetch product with slug ${slug}:`, e);
-}
+// Breadcrumbs con tipo contextual
+const tipoLabel = product.tipo === "moto" ? "Para tu Moto" : product.tipo === "piloto" ? "Para el Piloto" : null;
+const breadcrumbs: { nombre: string; href?: string }[] = [];
 
-if (!product) {
-  return Astro.redirect("/404");
-}
-
-const breadcrumbs: { nombre: string; href?: string }[] = [
-  { nombre: "Catálogo", href: "/productos" },
-];
-if (product.category) {
+if (tipoLabel) {
   breadcrumbs.push({
-    nombre: product.category.name || "Categoría",
-    href: `/productos?category=${product.category.slug}`,
+    nombre: tipoLabel,
+    href: `/productos?type=${product.tipo}`,
   });
 }
-breadcrumbs.push({ nombre: product.name || "Producto" });
 
+if (product.categoria) {
+  const catParams = product.tipo
+    ? `?type=${product.tipo}&categoria=${product.categoria.slug}`
+    : `?categoria=${product.categoria.slug}`;
+  breadcrumbs.push({
+    nombre: product.categoria.nombre || "Categoría",
+    href: `/productos${catParams}`,
+  });
+}
+breadcrumbs.push({ nombre: product.nombre });
+
+// Gallery
 const gallery =
-  product.images?.map((img: any) => ({
-    url: getStrapiMedia(img.url) || undefined,
-    alt: product.name || "Imagen de producto",
+  product.imagenes?.map((img) => ({
+    url: getStrapiMedia(img.url) ?? undefined,
+    alt: product.nombre,
   })) || [];
 
-const compatibility = {
-  marca: product.compatibilities?.[0]?.brand || "Universal",
-  modelo: product.compatibilities?.[0]?.model || "Todos los modelos",
-  anio: product.compatibilities?.[0]?.reference || "N/A",
-};
+// Compatibility info for DetalleInfo
+const compatTexto = product.compatibilidades?.length
+  ? compatibilidadTexto(product.compatibilidades)
+  : undefined;
+
+const compatibility =
+  product.tipo === "moto" && product.compatibilidades?.length
+    ? {
+        marca: product.compatibilidades[0]?.marca_moto?.nombre || "Universal",
+        modelo: compatTexto || "Todos los modelos",
+      }
+    : undefined;
 ---
 
-<Layout title={product.name}>
+<Layout title={product.nombre}>
   <ProductSEO
     slot="head"
     product={{
       ...product,
-      name: product.name || "Producto",
-      slug: product.slug || "",
-      description: product.description || "Descripción del producto",
-      precio: product.precio || 0,
-      images: product.images || [],
+      nombre: product.nombre,
+      slug: product.slug,
+      descripcion: product.descripcion || "Descripción del producto",
+      precio: product.precio,
+      imagenes: product.imagenes || [],
     }}
   />
 
   <main class="max-w-[1280px] mx-auto px-6 lg:px-10 py-12">
-    <!-- Breadcrumbs -->
     <MigasPan items={breadcrumbs} />
 
     <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-20">
-      <!-- Image Gallery -->
       <GaleriaImagenes imagenes={gallery} />
 
-      <!-- Product Info -->
       <DetalleInfo
-        nombre={product.name || "Producto"}
-        marca={product.brand || "Zomos Motos"}
-        precio={product.precio || 0}
+        nombre={product.nombre}
+        marca={product.marca?.nombre || "Zomos Motos"}
+        precio={product.precio}
+        descuento={product.descuento}
         referencia={product.referencia || "REF-000"}
         compatibilidad={compatibility}
       >
@@ -108,37 +96,40 @@ const compatibility = {
           <AddToCart
             client:load
             product={{
-              id: product.documentId,
-              name: product.name || "Producto",
-              price: product.precio || 0,
+              id: String(product.id),
+              nombre: product.nombre,
+              precio: product.precio,
+              descuento: product.descuento,
               sku: product.referencia || "REF-000",
-              image: gallery[0]?.url,
+              imagen: gallery[0]?.url,
+              tipo: product.tipo,
+              marca: product.marca?.nombre,
+              variantes: product.variantes,
+              compatibilidadTexto: compatTexto,
             }}
           />
 
           <WhatsAppButton
             client:load
-            productName={product.name}
+            productName={product.nombre}
             sku={product.referencia}
           />
         </div>
       </DetalleInfo>
     </div>
 
-    <!-- Ficha Técnica & Descripción -->
-    <FichaTecnica descripcion={product.description} />
+    <FichaTecnica descripcion={product.descripcion} />
 
-    <!-- Related Products -->
     {
       relatedProducts.length > 0 && (
         <section class="mt-32">
           <div class="flex items-center justify-between mb-12">
             <h2 class="text-3xl font-black text-white uppercase tracking-tight font-display">
-              También <span class="text-primario">te puede interesar</span>
+              También <span class="text-primary">te puede interesar</span>
             </h2>
             <a
               href="/productos"
-              class="text-gray-500 hover:text-white transition-colors text-xs font-bold uppercase tracking-widest"
+              class="text-zinc-400 hover:text-white transition-colors text-xs font-bold uppercase tracking-widest"
             >
               Ver catálogo completo
             </a>
@@ -147,16 +138,14 @@ const compatibility = {
           <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
             {relatedProducts.map((p) => (
               <TarjetaProducto
-                nombre={p.name || "Producto"}
-                precio={p.precio || 0}
-                categoria={p.category?.name || "Premium"}
-                imagen={
-                  p.images?.[0]?.url
-                    ? getStrapiMedia(p.images[0].url) || undefined
-                    : undefined
-                }
-                slug={p.slug || undefined}
-                badge={p.is_new ? "Nuevo" : undefined}
+                nombre={p.nombre}
+                precio={p.precio}
+                descuento={p.descuento}
+                categoria={p.categoria?.nombre || "Premium"}
+                compatibilidad={p.compatibilidades?.length ? compatibilidadTexto(p.compatibilidades) : undefined}
+                imagen={getImageUrl(p)}
+                slug={p.slug}
+                tipo={p.tipo}
               />
             ))}
           </div>

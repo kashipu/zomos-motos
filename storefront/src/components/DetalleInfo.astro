@@ -1,17 +1,17 @@
 ---
-import { Star, ShieldCheck, Truck, Headphones } from "lucide-react";
+import { ShieldCheck, Truck, Headphones } from "lucide-react";
 import TablaCompatibilidad from "./TablaCompatibilidad.astro";
 
 interface Props {
   nombre: string;
   marca?: string;
   precio: number;
+  descuento?: number;
   referencia: string;
   categoria?: string;
   compatibilidad?: {
     marca?: string;
     modelo?: string;
-    anio?: string;
   };
 }
 
@@ -19,10 +19,14 @@ const {
   nombre,
   marca = "Premium Brand",
   precio,
+  descuento = 0,
   referencia,
   categoria = "Accesorios",
   compatibilidad,
 } = Astro.props;
+
+const tieneDescuento = descuento > 0;
+const precioFinal = tieneDescuento ? Math.round(precio * (1 - descuento / 100)) : precio;
 ---
 
 <div class="flex flex-col gap-8 lg:col-span-5">
@@ -41,25 +45,31 @@ const {
     </h1>
 
     <div class="flex items-center gap-6">
-      <div class="flex items-center gap-1">
-        {
-          [...Array(5)].map((_) => (
-            <Star size={14} className="fill-primary text-primary" />
-          ))
-        }
-        <span class="text-white text-xs font-bold ml-1">5.0</span>
-      </div>
-      <span class="text-gray-600 text-xs font-bold uppercase tracking-widest"
+      <span class="text-zinc-400 text-xs font-bold uppercase tracking-widest"
         >REF: {referencia}</span
       >
     </div>
   </div>
 
   <div class="space-y-6">
-    <div class="flex items-baseline gap-4">
-      <span class="text-4xl font-bold text-white tracking-tighter">
-        ${(precio || 0).toLocaleString("es-ES", { minimumFractionDigits: 2 })}
-      </span>
+    <div class="flex items-baseline gap-4 flex-wrap">
+      {tieneDescuento ? (
+        <>
+          <span class="text-4xl font-bold text-white tracking-tighter">
+            ${precioFinal.toLocaleString("es-CO")}
+          </span>
+          <span class="text-xl text-zinc-500 line-through">
+            ${(precio || 0).toLocaleString("es-CO")}
+          </span>
+          <span class="px-3 py-1 bg-green-600/20 text-green-400 text-[10px] font-bold rounded-full border border-green-600/30 uppercase tracking-tighter">
+            -{descuento}%
+          </span>
+        </>
+      ) : (
+        <span class="text-4xl font-bold text-white tracking-tighter">
+          ${(precio || 0).toLocaleString("es-CO")}
+        </span>
+      )}
       <span
         class="px-3 py-1 bg-primary/10 text-primary text-[10px] font-bold rounded-full border border-primary/20 uppercase tracking-tighter"
       >
@@ -73,7 +83,6 @@ const {
         <TablaCompatibilidad
           marca={compatibilidad.marca}
           modelo={compatibilidad.modelo}
-          anio={compatibilidad.anio}
         />
       )
     }
@@ -94,7 +103,7 @@ const {
         className="text-primary mb-2 group-hover:scale-110 transition-transform"
       />
       <span
-        class="text-[9px] font-bold text-gray-500 uppercase tracking-tighter"
+        class="text-[9px] font-bold text-zinc-400 uppercase tracking-tighter"
         >Envío Global</span
       >
     </div>
@@ -106,7 +115,7 @@ const {
         className="text-primary mb-2 group-hover:scale-110 transition-transform"
       />
       <span
-        class="text-[9px] font-bold text-gray-500 uppercase tracking-tighter"
+        class="text-[9px] font-bold text-zinc-400 uppercase tracking-tighter"
         >100% Original</span
       >
     </div>
@@ -118,7 +127,7 @@ const {
         className="text-primary mb-2 group-hover:scale-110 transition-transform"
       />
       <span
-        class="text-[9px] font-bold text-gray-500 uppercase tracking-tighter"
+        class="text-[9px] font-bold text-zinc-400 uppercase tracking-tighter"
         >Soporte Pro</span
       >
     </div>

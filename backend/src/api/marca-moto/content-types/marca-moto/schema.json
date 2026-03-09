@@ -1,0 +1,37 @@
+{
+  "kind": "collectionType",
+  "collectionName": "marcas_moto",
+  "info": {
+    "singularName": "marca-moto",
+    "pluralName": "marcas-motos",
+    "displayName": "Marcas de Motos",
+    "description": "Fabricantes de motocicletas (Yamaha, Honda, Bajaj, AKT, Suzuki...)"
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "attributes": {
+    "nombre": {
+      "type": "string",
+      "required": true,
+      "unique": true
+    },
+    "slug": {
+      "type": "uid",
+      "targetField": "nombre",
+      "required": true
+    },
+    "logo": {
+      "type": "media",
+      "multiple": false,
+      "required": false,
+      "allowedTypes": ["images"]
+    },
+    "modelos": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::modelo-moto.modelo-moto",
+      "mappedBy": "marca"
+    }
+  }
+}

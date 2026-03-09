@@ -19,6 +19,21 @@
       "type": "string",
       "required": true
     },
+    "cliente_nombre": {
+      "type": "string"
+    },
+    "cliente_telefono": {
+      "type": "string"
+    },
+    "monto_total": {
+      "type": "decimal"
+    },
+    "resumen_items": {
+      "type": "text"
+    },
+    "cantidad_items": {
+      "type": "integer"
+    },
     "payload": {
       "type": "json"
     }

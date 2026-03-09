@@ -1,220 +1,238 @@
 ---
 import Layout from "@/layouts/Layout.astro";
-import { queryStrapi, getStrapiMedia } from "@/lib/strapi";
+import { fetchProductos, fetchCategorias, fetchMarcasMoto, fetchModelosMoto, fetchMarcas, getImageUrl, compatibilidadTexto, type Producto, type Categoria, type MarcaMoto, type ModeloMoto, type Marca } from "@/lib/strapi";
 import { Filter } from "lucide-react";
 import MigasPan from "@/components/MigasPan.astro";
 import PanelFiltros from "@/components/PanelFiltros.astro";
 import TarjetaProducto from "@/components/TarjetaProducto.astro";
 
-// Enable dynamic rendering
 export const prerender = false;
 
 const { searchParams } = Astro.url;
-const categorySlug = searchParams.get("category");
-const brand = searchParams.get("brand");
-const model = searchParams.get("model");
+const categoriaSlug = searchParams.get("categoria") || undefined;
+const tipo = (searchParams.get("type") as "moto" | "piloto" | null) || undefined;
+const marca = searchParams.get("brand") || undefined;
+const marcaMotoSlug = searchParams.get("marca-moto") || undefined;
+const modeloSlug = searchParams.get("modelo") || undefined;
+const minPrice = searchParams.get("min_price") || undefined;
+const maxPrice = searchParams.get("max_price") || undefined;
+const sort = searchParams.get("sort") || "recomendados";
 
-let products: any[] = [];
-let categories: any[] = [];
+let products: Producto[] = [];
+let categories: Categoria[] = [];
+let marcasMoto: MarcaMoto[] = [];
+let modelosMoto: ModeloMoto[] = [];
+let marcas: Marca[] = [];
 
 try {
-  categories = await queryStrapi<any[]>("categories");
-
-  const filters: any = {};
-  if (categorySlug) {
-    filters["filters[category][slug][$eq]"] = categorySlug;
-  }
-  if (brand || model) {
-    filters["filters[$or][0][is_generic][$eq]"] = "true";
-    if (brand)
-      filters["filters[$or][1][compatibilities][brand][$containsi]"] = brand;
-    if (model)
-      filters["filters[$or][1][compatibilities][model][$containsi]"] = model;
-  }
-
-  products = await queryStrapi<any[]>("products", {
-    params: {
-      populate: "*",
-      ...filters,
-    },
-  });
+  [products, categories, marcasMoto, modelosMoto, marcas] = await Promise.all([
+    fetchProductos({
+      tipo,
+      categoriaSlug,
+      marcaSlug: marca,
+      marcaMotoSlug,
+      modeloMotoSlug: modeloSlug,
+      minPrice,
+      maxPrice,
+    }),
+    fetchCategorias(),
+    fetchMarcasMoto(),
+    fetchModelosMoto(marcaMotoSlug),
+    fetchMarcas(),
+  ]);
 } catch (e) {
   console.error("Failed to fetch data:", e);
 }
 
-const breadcrumbs = [{ nombre: "Catálogo", href: "/productos" }];
-if (categorySlug) {
-  const cat = categories.find((c) => c.slug === categorySlug);
-  if (cat)
-    breadcrumbs.push({
-      nombre: cat.name || "Categoría",
-      href: `/productos?category=${categorySlug}`,
-    });
+// Ordenar productos en el frontend
+if (sort === "precio-asc") {
+  products.sort((a, b) => a.precio - b.precio);
+} else if (sort === "precio-desc") {
+  products.sort((a, b) => b.precio - a.precio);
 }
+
+// Filtrar categorías por tipo activo (UNIVERSAL aparece en ambos)
+const filteredCategories = tipo
+  ? categories.filter((c) => c.tipo === tipo.toUpperCase() || c.tipo === "UNIVERSAL")
+  : categories;
+
+// Título dinámico
+const pageTitle = tipo === "moto"
+  ? "Accesorios para tu Moto"
+  : tipo === "piloto"
+    ? "Equipamiento para el Piloto"
+    : "Catálogo Completo";
+
+const pageSubtitle = tipo === "moto"
+  ? "Repuestos, lujos y accesorios para tu motocicleta."
+  : tipo === "piloto"
+    ? "Cascos, guantes, chaquetas y todo para rodar protegido."
+    : "Todo el equipamiento para el piloto y accesorios para la moto.";
+
+// Breadcrumbs
+const breadcrumbs: { nombre: string; href: string }[] = [];
+if (tipo) {
+  breadcrumbs.push({
+    nombre: tipo === "moto" ? "Para tu Moto" : "Para el Piloto",
+    href: `/productos?type=${tipo}`,
+  });
+}
+if (categoriaSlug) {
+  const cat = categories.find((c) => c.slug === categoriaSlug);
+  if (cat) breadcrumbs.push({ nombre: cat.nombre, href: `/productos?type=${tipo || ""}&categoria=${categoriaSlug}` });
+}
+
+// Nombre legible de filtros activos
+const activeFilterNames: string[] = [];
+if (categoriaSlug) {
+  const cat = categories.find((c) => c.slug === categoriaSlug);
+  if (cat) activeFilterNames.push(cat.nombre);
+}
+if (marcaMotoSlug) {
+  const mm = marcasMoto.find((m) => m.slug === marcaMotoSlug);
+  if (mm) activeFilterNames.push(mm.nombre);
+}
+if (marca) {
+  const m = marcas.find((b) => b.slug === marca);
+  if (m) activeFilterNames.push(m.nombre);
+}
+if (modeloSlug) {
+  const mod = modelosMoto.find((m) => m.slug === modeloSlug);
+  if (mod) activeFilterNames.push(mod.nombre);
+}
+if (minPrice) activeFilterNames.push(`Min $${Number(minPrice).toLocaleString("es-CO")}`);
+if (maxPrice) activeFilterNames.push(`Max $${Number(maxPrice).toLocaleString("es-CO")}`);
+
+const clearUrl = tipo ? `/productos?type=${tipo}` : "/productos";
 ---
 
-<Layout title="Catálogo Premium">
+<Layout title={pageTitle}>
   <main class="max-w-[1240px] mx-auto px-6 py-12">
-    <!-- Breadcrumbs -->
     <MigasPan items={breadcrumbs} />
 
-    <!-- Encabezado de Página -->
-    <div
-      class="flex flex-col md:flex-row md:items-end justify-between gap-8 mb-12"
-    >
+    <div class="flex flex-col md:flex-row md:items-end justify-between gap-8 mb-12">
       <div class="space-y-2">
-        <h1
-          class="text-white text-5xl font-bold uppercase tracking-tight font-display"
-        >
-          Catálogo <span class="text-primary">Premium</span>
+        <h1 class="text-white text-4xl md:text-5xl font-bold uppercase tracking-tight font-display">
+          {tipo === "moto" && <>Accesorios <span class="text-primary">Moto</span></>}
+          {tipo === "piloto" && <>Equipamiento <span class="text-primary">Piloto</span></>}
+          {!tipo && <>Catálogo <span class="text-primary">Completo</span></>}
         </h1>
-        <p class="text-gray-500 text-lg max-w-xl font-medium">
-          Equipamiento de alto rendimiento para el piloto y la moto élite.
+        <p class="text-zinc-400 text-lg max-w-xl font-medium">
+          {pageSubtitle}
         </p>
       </div>
 
-      <!-- Tabs Rápidos (Piloto / Moto) -->
-      <div class="flex border-b border-white/10/50 gap-8">
+      <div class="flex border-b border-white/10 gap-8">
         <a
           href="/productos"
-          class={`pb-3 px-1 border-b-2 font-bold uppercase tracking-wider text-sm transition-all ${!categorySlug ? "border-primary text-white" : "border-transparent text-gray-500 hover:text-white"}`}
+          class={`pb-3 px-1 border-b-2 font-bold uppercase tracking-wider text-sm transition-all ${!tipo ? "border-primary text-white" : "border-transparent text-zinc-400 hover:text-white"}`}
         >
           Todos
         </a>
         <a
-          href="/productos?category=piloto"
-          class={`pb-3 px-1 border-b-2 font-bold uppercase tracking-wider text-sm transition-all ${categorySlug === "piloto" ? "border-primary text-white" : "border-transparent text-gray-500 hover:text-white"}`}
+          href="/productos?type=piloto"
+          class={`pb-3 px-1 border-b-2 font-bold uppercase tracking-wider text-sm transition-all ${tipo === "piloto" ? "border-primary text-white" : "border-transparent text-zinc-400 hover:text-white"}`}
         >
           Piloto
         </a>
         <a
-          href="/productos?category=moto"
-          class={`pb-3 px-1 border-b-2 font-bold uppercase tracking-wider text-sm transition-all ${categorySlug === "moto" ? "border-primary text-white" : "border-transparent text-gray-500 hover:text-white"}`}
+          href="/productos?type=moto"
+          class={`pb-3 px-1 border-b-2 font-bold uppercase tracking-wider text-sm transition-all ${tipo === "moto" ? "border-primary text-white" : "border-transparent text-zinc-400 hover:text-white"}`}
         >
           Moto
         </a>
       </div>
     </div>
 
-    {
-      (brand || model) && (
-        <div class="mb-8 p-4 bg-primary/5 border border-primary/20 rounded-2xl flex items-center justify-between">
-          <p class="text-primary text-sm font-medium">
-            <span class="text-gray-500 mr-2">Filtrado por:</span>
-            {[brand, model].filter(Boolean).join(" | ")}
-          </p>
-          <a
-            href="/productos"
-            class="text-xs font-bold text-primary uppercase tracking-widest hover:underline underline-offset-4 transition-all"
-          >
-            Limpiar
-          </a>
-        </div>
-      )
-    }
+    {activeFilterNames.length > 0 && (
+      <div class="mb-8 p-4 bg-primary/5 border border-primary/20 rounded-2xl flex items-center justify-between">
+        <p class="text-primary text-sm font-medium">
+          <span class="text-zinc-400 mr-2">Filtros activos:</span>
+          {activeFilterNames.join(" | ")}
+        </p>
+        <a
+          href={clearUrl}
+          class="text-xs font-bold text-primary uppercase tracking-widest hover:underline underline-offset-4 transition-all"
+        >
+          Limpiar Todo
+        </a>
+      </div>
+    )}
 
     <div class="flex flex-col lg:flex-row gap-12 mt-4">
-      <!-- Sidebar de Filtros -->
       <PanelFiltros
-        categorias={categories.map((c) => ({
-          nombre: c.name || "Sin nombre",
-          slug: c.slug || "",
-        }))}
+        tipo={tipo}
+        categorias={filteredCategories.map((c) => ({ nombre: c.nombre, slug: c.slug }))}
+        marcasMoto={marcasMoto.map((m) => ({ nombre: m.nombre, slug: m.slug }))}
+        modelosMoto={marcaMotoSlug ? modelosMoto.map((m) => ({ nombre: m.nombre, slug: m.slug })) : []}
+        marcas={marcas.map((m) => ({ nombre: m.nombre, slug: m.slug }))}
       />
 
-      <!-- Área de Productos -->
       <div class="flex-1 flex flex-col gap-8">
-        <!-- Barra de Ordenamiento y Stats -->
-        <div
-          class="flex flex-col sm:flex-row items-center justify-between bg-card-dark/50 p-4 rounded-xl border border-white/10 gap-4"
-        >
-          <p class="text-gray-500 text-sm font-medium">
-            Mostrando <span class="text-white font-bold">{products.length}</span
-            > productos encontrados
+        <div class="flex flex-col sm:flex-row items-center justify-between bg-card-dark/50 p-4 rounded-xl border border-white/10 gap-4">
+          <p class="text-zinc-400 text-sm font-medium">
+            Mostrando <span class="text-white font-bold">{products.length}</span> productos
           </p>
           <div class="flex items-center gap-4 w-full sm:w-auto">
-            <span
-              class="text-[10px] uppercase text-gray-500 font-bold tracking-widest whitespace-nowrap"
-              >Ordenar por:</span
-            >
-            <select
-              class="bg-background-dark border-white/10 text-white rounded-lg text-xs font-bold focus:ring-primary focus:border-primary px-3 py-2 w-full sm:w-40 outline-none transition-all"
-            >
-              <option>Recomendados</option>
-              <option>Precio: Menor a Mayor</option>
-              <option>Precio: Mayor a Menor</option>
-              <option>Novedades</option>
+            <span class="text-[10px] uppercase text-zinc-400 font-bold tracking-widest whitespace-nowrap">Ordenar por:</span>
+            <select id="sort-select" class="bg-background-dark border border-white/10 text-white rounded-lg text-xs font-bold focus:ring-primary focus:border-primary px-3 py-2 w-full sm:w-40 outline-none transition-all">
+              <option value="recomendados" selected={sort === "recomendados"}>Recomendados</option>
+              <option value="precio-asc" selected={sort === "precio-asc"}>Precio: Menor a Mayor</option>
+              <option value="precio-desc" selected={sort === "precio-desc"}>Precio: Mayor a Menor</option>
             </select>
           </div>
         </div>
 
-        <!-- Grilla de Productos -->
         <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-8">
-          {
-            products.length > 0 ? (
-              products.map((p) => (
-                <TarjetaProducto
-                  nombre={p.name || "Producto"}
-                  precio={p.precio || 0}
-                  categoria={p.category?.name || "Premium"}
-                  imagen={
-                    p.images && p.images.length > 0
-                      ? getStrapiMedia(p.images[0].url) || undefined
-                      : undefined
-                  }
-                  slug={p.slug || undefined}
-                  badge={p.is_new ? "Nuevo" : undefined}
-                />
-              ))
-            ) : (
-              <div class="col-span-full py-32 text-center border-2 border-dashed border-white/10 rounded-3xl">
-                <div class="mb-4 text-gray-600">
-                  <Filter size={48} className="mx-auto opacity-20" />
-                </div>
-                <p class="text-gray-500 font-medium italic">
-                  No se encontraron productos con estos criterios.
-                </p>
-                <a
-                  href="/productos"
-                  class="mt-6 inline-block text-primary font-bold uppercase tracking-widest text-xs hover:underline underline-offset-4"
-                >
-                  Ver todo el catálogo
-                </a>
+          {products.length > 0 ? (
+            products.map((p) => (
+              <TarjetaProducto
+                nombre={p.nombre}
+                precio={p.precio}
+                descuento={p.descuento}
+                categoria={p.categoria?.nombre || ""}
+                compatibilidad={p.compatibilidades?.length ? compatibilidadTexto(p.compatibilidades) : undefined}
+                imagen={getImageUrl(p)}
+                slug={p.slug}
+                tipo={p.tipo}
+              />
+            ))
+          ) : (
+            <div class="col-span-full py-32 text-center border-2 border-dashed border-white/10 rounded-3xl">
+              <div class="mb-4 text-zinc-500">
+                <Filter size={48} className="mx-auto opacity-20" />
               </div>
-            )
-          }
-        </div>
-
-        <!-- Paginación (Visual) -->
-        <div
-          class="flex justify-center items-center gap-4 mt-8 py-6 border-t border-white/10/30"
-        >
-          <button
-            class="h-12 w-12 flex items-center justify-center rounded-xl bg-card-dark border border-white/10 text-gray-500 hover:text-white hover:border-primary transition-all active:scale-90"
-          >
-            &larr;
-          </button>
-          <div class="flex gap-2">
-            <button
-              class="h-12 w-12 flex items-center justify-center rounded-xl bg-primary text-background-dark font-bold shadow-lg"
-              >1</button
-            >
-            <button
-              class="h-12 w-12 flex items-center justify-center rounded-xl bg-card-dark border border-white/10 text-gray-500 hover:text-white hover:border-primary transition-all"
-              >2</button
-            >
-            <button
-              class="h-12 w-12 flex items-center justify-center rounded-xl bg-card-dark border border-white/10 text-gray-500 hover:text-white hover:border-primary transition-all"
-              >3</button
-            >
-          </div>
-          <button
-            class="h-12 w-12 flex items-center justify-center rounded-xl bg-card-dark border border-white/10 text-gray-500 hover:text-white hover:border-primary transition-all active:scale-90"
-          >
-            &rarr;
-          </button>
+              <p class="text-zinc-400 font-medium italic">
+                No se encontraron productos con estos criterios.
+              </p>
+              <a
+                href={clearUrl}
+                class="mt-6 inline-block text-primary font-bold uppercase tracking-widest text-xs hover:underline underline-offset-4"
+              >
+                Limpiar filtros
+              </a>
+            </div>
+          )}
         </div>
       </div>
     </div>
   </main>
 </Layout>
+
+<script>
+  function setupSort() {
+    const select = document.getElementById("sort-select") as HTMLSelectElement | null;
+    if (!select) return;
+    select.addEventListener("change", () => {
+      const url = new URL(window.location.href);
+      if (select.value === "recomendados") {
+        url.searchParams.delete("sort");
+      } else {
+        url.searchParams.set("sort", select.value);
+      }
+      window.location.href = url.toString();
+    });
+  }
+  setupSort();
+  document.addEventListener("astro:after-swap", setupSort);
+</script>

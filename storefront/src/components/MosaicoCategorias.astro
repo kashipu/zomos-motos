@@ -5,25 +5,25 @@ const categorias = [
   {
     titulo: "Equipamiento para el Piloto",
     descripcion:
-      "Protección de élite para la máxima velocidad. Cascos, trajes y guantes profesionales.",
+      "Cascos, guantes, chaquetas e impermeables. Todo lo que necesitas para rodar seguro.",
     imagen:
       "https://images.unsplash.com/photo-1591637333184-19aa84b3e01f?auto=format&fit=crop&q=80&w=800",
-    enlace: "/productos?category=piloto",
-    cta: "Explorar catálogo",
+    enlace: "/productos?type=piloto",
+    cta: "Ver equipamiento",
   },
   {
-    titulo: "Lujos para Moto",
+    titulo: "Accesorios para tu Moto",
     descripcion:
-      "Sistemas de escape, piezas CNC y mejoras de rendimiento de primer nivel.",
+      "Maniguetas, farolas LED, sliders, pastillas de freno y más para tu Pulsar, NKD o Nmax.",
     imagen:
       "https://images.unsplash.com/photo-1599819811279-d5ad9cccf838?auto=format&fit=crop&q=80&w=800",
-    enlace: "/productos?category=moto",
-    cta: "Explorar piezas",
+    enlace: "/productos?type=moto",
+    cta: "Ver accesorios",
   },
 ];
 ---
 
-<section class="py-20 max-w-7xl mx-auto px-6 lg:px-20">
+<section class="py-20 max-w-screen-2xl mx-auto px-6 lg:px-20">
   <div class="flex items-end justify-between mb-10">
     <div>
       <span class="text-primary font-bold uppercase tracking-widest text-xs"
@@ -35,7 +35,7 @@ const categorias = [
     </div>
     <a
       href="/productos"
-      class="hidden sm:flex items-center gap-2 text-zinc-400 hover:text-primary transition-colors text-sm font-bold uppercase tracking-wider group"
+      class="flex items-center gap-2 text-zinc-400 hover:text-primary transition-colors text-sm font-bold uppercase tracking-wider group"
     >
       Ver todo <ArrowRight
         size={18}
@@ -72,7 +72,3 @@ const categorias = [
     }
   </div>
 </section>
-
-
-
-

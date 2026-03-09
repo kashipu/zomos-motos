@@ -1,39 +1,27 @@
 ---
 import Layout from "@/layouts/Layout.astro";
-import { queryStrapi, getStrapiMedia } from "@/lib/strapi";
+import { fetchProductos, getImageUrl, compatibilidadTexto, type Producto } from "@/lib/strapi";
 import HeroPrincipal from "@/components/HeroPrincipal.astro";
 import BarraBeneficios from "@/components/BarraBeneficios.astro";
 import MosaicoCategorias from "@/components/MosaicoCategorias.astro";
 import TarjetaProducto from "@/components/TarjetaProducto.astro";
 import Boletin from "@/components/Boletin.astro";
 
-// Fetch products from Strapi
-let products: any[] = [];
+let products: Producto[] = [];
 try {
-  products = await queryStrapi<any[]>("products", {
-    params: {
-      populate: "*",
-      "pagination[limit]": 8,
-    },
-  });
+  products = await fetchProductos({ limit: 9 });
 } catch (e) {
   console.error("Failed to fetch products:", e);
 }
 ---
 
 <Layout title="Bienvenidos">
-  <!-- Hero Section -->
   <HeroPrincipal />
-
-  <!-- Beneficios -->
   <BarraBeneficios />
-
-  <!-- Categorías -->
   <MosaicoCategorias />
 
-  <!-- Productos Destacados -->
   <section class="py-20 bg-white/[0.02]">
-    <div class="max-w-7xl mx-auto px-6 lg:px-20">
+    <div class="max-w-screen-2xl mx-auto px-6 lg:px-20">
       <div class="flex items-center justify-between mb-12">
         <h2 class="text-3xl font-bold tracking-tight text-white font-display">
           Piezas Destacadas
@@ -46,29 +34,24 @@ try {
         </a>
       </div>
 
-      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
         {
           products.length > 0 ? (
-            products.map((p) => {
-              const mainImage =
-                p.images && p.images.length > 0
-                  ? getStrapiMedia(p.images[0].url)
-                  : undefined;
-
-              return (
-                <TarjetaProducto
-                  nombre={p.name}
-                  precio={p.precio}
-                  categoria={p.category?.name || "Premium"}
-                  imagen={mainImage}
-                  slug={p.slug || ""}
-                  badge={p.is_new ? "Nuevo" : undefined}
-                />
-              );
-            })
+            products.map((p) => (
+              <TarjetaProducto
+                nombre={p.nombre}
+                precio={p.precio}
+                descuento={p.descuento}
+                categoria={p.categoria?.nombre || "Premium"}
+                compatibilidad={p.compatibilidades?.length ? compatibilidadTexto(p.compatibilidades) : undefined}
+                imagen={getImageUrl(p)}
+                slug={p.slug}
+                tipo={p.tipo}
+              />
+            ))
           ) : (
             <div class="col-span-full py-20 text-center border border-dashed border-white/10 rounded-3xl">
-              <p class="text-gray-500 italic">
+              <p class="text-zinc-400 italic">
                 No hay productos destacados disponibles actualmente.
               </p>
             </div>
@@ -78,6 +61,5 @@ try {
     </div>
   </section>
 
-  <!-- Newsletter -->
   <Boletin />
 </Layout>

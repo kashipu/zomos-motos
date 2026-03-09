@@ -17,7 +17,7 @@ const { items } = Astro.props;
 >
   <a
     href="/"
-    class="text-gray-500 hover:text-white transition-colors flex items-center gap-1.5 group"
+    class="text-zinc-400 hover:text-white transition-colors flex items-center gap-1.5 group"
   >
     <Home size={14} className="group-hover:scale-110 transition-transform" />
     <span class="hidden sm:inline">Inicio</span>
@@ -26,11 +26,11 @@ const { items } = Astro.props;
   {
     items.map((item, i) => (
       <div class="flex items-center gap-2">
-        <ChevronRight size={14} className="text-gray-600" />
+        <ChevronRight size={14} className="text-zinc-500" />
         {item.href ? (
           <a
             href={item.href}
-            class="text-gray-500 hover:text-white transition-colors capitalize"
+            class="text-zinc-400 hover:text-white transition-colors capitalize"
           >
             {item.nombre}
           </a>

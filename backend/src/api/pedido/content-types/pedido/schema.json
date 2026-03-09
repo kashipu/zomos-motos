@@ -1,0 +1,72 @@
+{
+  "kind": "collectionType",
+  "collectionName": "pedidos",
+  "info": {
+    "singularName": "pedido",
+    "pluralName": "pedidos",
+    "displayName": "Pedidos",
+    "description": "Pedidos realizados vía WhatsApp con datos del cliente"
+  },
+  "options": {
+    "draftAndPublish": false
+  },
+  "attributes": {
+    "tracking_id": {
+      "type": "string",
+      "required": true,
+      "unique": true
+    },
+    "estado": {
+      "type": "enumeration",
+      "enum": ["PENDIENTE", "CONTACTADO", "COMPLETADO", "CANCELADO"],
+      "default": "PENDIENTE",
+      "required": true
+    },
+    "cliente_nombre": {
+      "type": "string",
+      "required": true
+    },
+    "cliente_telefono": {
+      "type": "string",
+      "required": true
+    },
+    "cliente_correo": {
+      "type": "string"
+    },
+    "cliente_cedula": {
+      "type": "string",
+      "required": true
+    },
+    "cliente_direccion": {
+      "type": "text",
+      "required": true
+    },
+    "autorizacion_datos": {
+      "type": "boolean",
+      "default": false,
+      "required": true
+    },
+    "items": {
+      "type": "json",
+      "required": true
+    },
+    "monto_total": {
+      "type": "decimal",
+      "required": true
+    },
+    "marcas_moto_meta": {
+      "type": "json"
+    },
+    "fecha_pedido": {
+      "type": "datetime",
+      "required": true
+    },
+    "whatsapp_enviado": {
+      "type": "boolean",
+      "default": false
+    },
+    "fecha_whatsapp": {
+      "type": "datetime"
+    }
+  }
+}

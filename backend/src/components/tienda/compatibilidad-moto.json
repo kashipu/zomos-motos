@@ -1,0 +1,23 @@
+{
+  "collectionName": "components_tienda_compatibilidades_moto",
+  "info": {
+    "displayName": "Compatibilidad Moto",
+    "icon": "motorcycle",
+    "description": "Marca y modelo de moto compatible con el producto"
+  },
+  "options": {},
+  "attributes": {
+    "marca_moto": {
+      "type": "relation",
+      "relation": "oneToOne",
+      "target": "api::marca-moto.marca-moto",
+      "required": true
+    },
+    "modelo_moto": {
+      "type": "relation",
+      "relation": "oneToOne",
+      "target": "api::modelo-moto.modelo-moto",
+      "required": true
+    }
+  }
+}

@@ -1,0 +1,37 @@
+{
+  "kind": "collectionType",
+  "collectionName": "modelos_moto",
+  "info": {
+    "singularName": "modelo-moto",
+    "pluralName": "modelos-motos",
+    "displayName": "Modelos de Motos",
+    "description": "Modelos específicos de motocicletas (Pulsar NS 200, Nmax 155, MT-09...)"
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "attributes": {
+    "nombre": {
+      "type": "string",
+      "required": true
+    },
+    "slug": {
+      "type": "uid",
+      "targetField": "nombre",
+      "required": true
+    },
+    "marca": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "api::marca-moto.marca-moto",
+      "inversedBy": "modelos",
+      "required": true
+    },
+    "anio_desde": {
+      "type": "integer"
+    },
+    "anio_hasta": {
+      "type": "integer"
+    }
+  }
+}

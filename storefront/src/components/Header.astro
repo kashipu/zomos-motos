@@ -1,80 +1,393 @@
 ---
-import { Search, User, Bike, ShoppingCart } from "lucide-react";
+import { Search, ShoppingCart, Menu, X, ChevronDown } from "lucide-react";
+import { fetchNavData } from "@/lib/strapi";
 
-const navItems = [
-  { name: "Catálogo", href: "/productos" },
-  { name: "Performance", href: "#" },
-  { name: "Custom", href: "#" },
-  { name: "Racing", href: "#" },
-];
+const { categoriasMoto, categoriasPiloto, marcasMoto } = await fetchNavData();
+
+// Top 8 marcas de moto para el mega-menu
+const topMarcasMoto = marcasMoto.slice(0, 8);
 ---
 
 <header
-  class="fixed top-0 w-full z-50 border-b border-white/10 bg-background-dark/80 backdrop-blur-md px-6 lg:px-20 py-4"
+  id="main-header"
+  class="fixed top-0 w-full z-50 border-b border-white/10 bg-background-dark/80 backdrop-blur-md px-4 sm:px-6 lg:px-20 py-3 sm:py-4"
 >
-  <div class="max-w-7xl mx-auto flex items-center justify-between font-display">
-    <div class="flex items-center gap-12">
-      <!-- Logo -->
-      <a href="/" class="flex items-center gap-3 group">
-        <div class="text-primary group-hover:scale-110 transition-transform">
-        </div>
-        <h2
-          class="text-xl font-bold tracking-tighter uppercase italic text-white"
-        >
-          Moto<span class="text-primary">Premium</span>
-        </h2>
-      </a>
+  <div class="max-w-screen-2xl mx-auto w-full flex items-center justify-between font-display">
+    <!-- Logo (Desktop) -->
+    <a href="/" class="hidden sm:flex items-center gap-3 group shrink-0">
+      <div class="text-primary group-hover:scale-110 transition-transform h-8">
+        <img width="200" height="32" src="/assets/isologo.svg" alt="Zomos Motos" />
+      </div>
+    </a>
 
-      <!-- Navegación Desktop -->
-      <nav class="hidden md:flex items-center gap-8">
-        {
-          navItems.map((item) => (
-            <a
-              href={item.href}
-              class="text-sm font-medium text-zinc-400 hover:text-primary transition-colors"
-            >
-              {item.name}
-            </a>
-          ))
-        }
-      </nav>
-    </div>
+    <!-- Logo (Mobile) -->
+    <a href="/" class="sm:hidden flex items-center group shrink-0">
+      <div class="text-primary group-hover:scale-110 transition-transform h-8">
+        <img width="100" height="32" src="/assets/logo.svg" alt="Zomos Motos" />
+      </div>
+    </a>
+
+    <!-- Navegación Desktop con Mega-Menu -->
+    <nav class="hidden lg:flex items-center gap-8 absolute left-1/2 transform -translate-x-1/2">
+      <!-- Para tu Moto -->
+      <div class="group/moto relative">
+        <a
+          href="/productos?type=moto"
+          class="flex items-center gap-1.5 text-xs xl:text-sm font-bold uppercase tracking-wider text-zinc-400 hover:text-primary transition-colors py-2"
+        >
+          Para tu Moto
+          <ChevronDown size={14} className="group-hover/moto:rotate-180 transition-transform" />
+        </a>
+
+        <!-- Dropdown Moto -->
+        <div class="invisible opacity-0 group-hover/moto:visible group-hover/moto:opacity-100 transition-all duration-200 absolute top-full left-1/2 -translate-x-1/2 pt-4 w-[640px]">
+          <div class="bg-background-dark/95 backdrop-blur-xl border border-white/10 rounded-2xl shadow-2xl shadow-black/50 p-6">
+            <div class="grid grid-cols-3 gap-8">
+              <!-- Categorías Moto -->
+              <div>
+                <h4 class="text-xs font-bold uppercase tracking-widest text-primary/80 mb-4">Categorías</h4>
+                <ul class="space-y-2.5">
+                  {categoriasMoto.map((cat) => (
+                    <li>
+                      <a href={`/productos?type=moto&categoria=${cat.slug}`} class="text-sm text-zinc-400 hover:text-white transition-colors">
+                        {cat.nombre}
+                      </a>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+
+              <!-- Marcas de Moto -->
+              <div>
+                <h4 class="text-xs font-bold uppercase tracking-widest text-primary/80 mb-4">Marcas de Moto</h4>
+                <ul class="space-y-2.5">
+                  {topMarcasMoto.map((m) => (
+                    <li>
+                      <a href={`/productos?type=moto&marca-moto=${m.slug}`} class="text-sm text-zinc-400 hover:text-white transition-colors">
+                        {m.nombre}
+                      </a>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+
+              <!-- CTA -->
+              <div class="flex flex-col justify-between">
+                <div>
+                  <h4 class="text-xs font-bold uppercase tracking-widest text-primary/80 mb-4">Explorar</h4>
+                  <p class="text-zinc-500 text-sm leading-relaxed">
+                    Maniguetas, farolas LED, sliders, pastillas y más para tu Pulsar, NKD o Nmax.
+                  </p>
+                </div>
+                <a
+                  href="/productos?type=moto"
+                  class="mt-4 inline-flex items-center gap-2 bg-primary/10 text-primary text-xs font-bold uppercase tracking-wider px-4 py-2.5 rounded-lg hover:bg-primary hover:text-white transition-all"
+                >
+                  Ver todo Moto
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Para el Piloto -->
+      <div class="group/piloto relative">
+        <a
+          href="/productos?type=piloto"
+          class="flex items-center gap-1.5 text-xs xl:text-sm font-bold uppercase tracking-wider text-zinc-400 hover:text-primary transition-colors py-2"
+        >
+          Para el Piloto
+          <ChevronDown size={14} className="group-hover/piloto:rotate-180 transition-transform" />
+        </a>
+
+        <!-- Dropdown Piloto -->
+        <div class="invisible opacity-0 group-hover/piloto:visible group-hover/piloto:opacity-100 transition-all duration-200 absolute top-full left-1/2 -translate-x-1/2 pt-4 w-[420px]">
+          <div class="bg-background-dark/95 backdrop-blur-xl border border-white/10 rounded-2xl shadow-2xl shadow-black/50 p-6">
+            <div class="grid grid-cols-2 gap-8">
+              <!-- Categorías Piloto -->
+              <div>
+                <h4 class="text-xs font-bold uppercase tracking-widest text-primary/80 mb-4">Categorías</h4>
+                <ul class="space-y-2.5">
+                  {categoriasPiloto.map((cat) => (
+                    <li>
+                      <a href={`/productos?type=piloto&categoria=${cat.slug}`} class="text-sm text-zinc-400 hover:text-white transition-colors">
+                        {cat.nombre}
+                      </a>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+
+              <!-- CTA -->
+              <div class="flex flex-col justify-between">
+                <div>
+                  <h4 class="text-xs font-bold uppercase tracking-widest text-primary/80 mb-4">Equipamiento</h4>
+                  <p class="text-zinc-500 text-sm leading-relaxed">
+                    Cascos, guantes, chaquetas e impermeables para rodar seguro.
+                  </p>
+                </div>
+                <a
+                  href="/productos?type=piloto"
+                  class="mt-4 inline-flex items-center gap-2 bg-primary/10 text-primary text-xs font-bold uppercase tracking-wider px-4 py-2.5 rounded-lg hover:bg-primary hover:text-white transition-all"
+                >
+                  Ver todo Piloto
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </nav>
 
     <!-- Acciones -->
-    <div class="flex items-center gap-6">
-      <!-- Search Input -->
-      <div
-        class="hidden lg:flex items-center bg-white/5 rounded-lg px-3 py-1.5 border border-white/10"
-      >
+    <div class="flex items-center gap-2 sm:gap-4 lg:gap-6 ml-auto">
+      <!-- Search (Desktop) -->
+      <div class="hidden lg:flex items-center bg-white/5 rounded-lg px-3 py-1.5 border border-white/10">
         <Search size={18} className="text-zinc-400" />
         <input
+          id="search-desktop"
           class="bg-transparent border-none focus:ring-0 text-sm w-48 placeholder:text-zinc-500 text-white outline-none ml-2"
-          placeholder="Buscar piezas..."
+          placeholder="Buscar productos..."
           type="text"
         />
       </div>
 
-      <!-- Cart Button -->
+      <!-- Search (Mobile) -->
       <button
-        class="bg-primary hover:bg-red-700 text-white px-6 py-2 rounded-lg text-sm font-bold uppercase tracking-wider transition-all flex items-center gap-2 shadow-[0_0_15px_rgba(242,13,13,0.3)] cart-toggle-btn"
+        id="search-toggle-mobile"
+        class="lg:hidden p-2 text-zinc-400 hover:text-primary transition-colors"
       >
-        <ShoppingCart size={18} />
-        <span class="hidden sm:inline">Tienda</span>
-        <span class="cart-count-badge hidden ml-1">0</span>
+        <Search size={20} />
       </button>
 
-      <!-- User Avatar -->
-      <div
-        class="size-10 rounded-full border border-primary/50 overflow-hidden cursor-pointer hover:border-primary transition-colors"
+      <!-- Cart Button -->
+      <button
+        id="cart-button"
+        class="cart-toggle-btn p-2 text-zinc-400 hover:text-primary transition-colors relative"
+        aria-label="Abrir carrito"
       >
-        <img
-          class="w-full h-full object-cover"
-          src="https://lh3.googleusercontent.com/aida-public/AB6AXuDPKqsfBVPrE4wj7N841QaYG6VlrC3N24mJ9HMse2RDWVrr2ot34no7_Dd9EBTBWO00TnQIQLzgdKlqsIkIOXaNO5a7bA_3P5alQ9jl2fA9fSaT0LuUiTAXPctt34yLkZGfTi_N6g9Rz0n_72_kB9aXilYAdXKzANFLYiz-kU_VOXv8QQFiLH_SvQpVByh2hDw9n_KgBaAnLdgrnVasCakgGPOdVnOmtZF6x6paT8WWmypEXaicYFEDV8XIKPQp2fLaUuChOHP3XrWn"
-          alt="Avatar"
-        />
-      </div>
+        <ShoppingCart size={20} className="sm:size-6" />
+        <span class="cart-count-badge hidden absolute -top-1 -right-1 bg-primary text-white text-[10px] font-bold rounded-full min-w-5 h-5 flex items-center justify-center">0</span>
+      </button>
+
+      <!-- Mobile Menu Toggle -->
+      <button
+        id="menu-toggle"
+        class="lg:hidden p-2 text-white hover:text-primary transition-colors relative flex items-center justify-center min-w-10"
+        aria-label="Toggle Menu"
+      >
+        <div id="menu-icon-container" class="relative size-7 pointer-events-none">
+          <Menu id="menu-icon" size={28} className="absolute inset-0 transition-all duration-300" />
+          <X id="close-icon" size={28} className="absolute inset-0 opacity-0 scale-90 rotate-90 transition-all duration-300" />
+        </div>
+      </button>
+    </div>
+  </div>
+
+  <!-- Mobile Search Bar -->
+  <div
+    id="mobile-search-bar"
+    class="max-h-0 overflow-hidden bg-background-dark/95 border-t border-white/5 transition-all duration-300 px-4 sm:px-6 pointer-events-none lg:hidden"
+  >
+    <div class="py-4 flex items-center gap-3">
+      <Search size={20} className="text-primary" />
+      <input
+        id="search-mobile"
+        class="bg-transparent border-none focus:ring-0 text-white w-full placeholder:text-zinc-500 outline-none"
+        placeholder="Buscar en el catálogo..."
+        type="text"
+      />
     </div>
   </div>
 </header>
 
+<!-- Mobile Menu (FUERA del header para evitar stacking context issues) -->
+<div
+  id="mobile-menu"
+  class="fixed inset-x-0 bottom-0 top-[57px] sm:top-[65px] bg-background-dark z-50 lg:hidden transition-transform duration-300 ease-out translate-x-full pointer-events-none overflow-y-auto"
+>
+  <nav class="flex flex-col gap-0 px-5 py-4">
+    <!-- Para tu Moto (Accordion) -->
+    <details class="border-b border-white/10 group/moto-nav">
+      <summary class="flex items-center justify-between py-4 cursor-pointer list-none">
+        <span class="text-sm font-bold uppercase tracking-wider text-white">
+          Para tu Moto
+        </span>
+        <ChevronDown size={16} className="text-zinc-500 group-open/moto-nav:rotate-180 transition-transform" />
+      </summary>
+      <div class="pb-4 pl-2 space-y-1">
+        <a href="/productos?type=moto" class="block py-2 text-sm font-semibold text-primary hover:text-white transition-colors">
+          Ver todo Moto
+        </a>
+        <p class="text-[10px] font-bold uppercase tracking-widest text-primary/80 mt-3 mb-2">Categorías</p>
+        {categoriasMoto.map((cat) => (
+          <a href={`/productos?type=moto&categoria=${cat.slug}`} class="block py-1.5 text-sm text-zinc-400 hover:text-white transition-colors">
+            {cat.nombre}
+          </a>
+        ))}
+        <p class="text-[10px] font-bold uppercase tracking-widest text-primary/80 mt-4 mb-2">Marcas de Moto</p>
+        {topMarcasMoto.map((m) => (
+          <a href={`/productos?type=moto&marca-moto=${m.slug}`} class="block py-1.5 text-sm text-zinc-400 hover:text-white transition-colors">
+            {m.nombre}
+          </a>
+        ))}
+      </div>
+    </details>
 
+    <!-- Para el Piloto (Accordion) -->
+    <details class="border-b border-white/10 group/piloto-nav">
+      <summary class="flex items-center justify-between py-4 cursor-pointer list-none">
+        <span class="text-sm font-bold uppercase tracking-wider text-white">
+          Para el Piloto
+        </span>
+        <ChevronDown size={16} className="text-zinc-500 group-open/piloto-nav:rotate-180 transition-transform" />
+      </summary>
+      <div class="pb-4 pl-2 space-y-1">
+        <a href="/productos?type=piloto" class="block py-2 text-sm font-semibold text-primary hover:text-white transition-colors">
+          Ver todo Piloto
+        </a>
+        {categoriasPiloto.map((cat) => (
+          <a href={`/productos?type=piloto&categoria=${cat.slug}`} class="block py-1.5 text-sm text-zinc-400 hover:text-white transition-colors">
+            {cat.nombre}
+          </a>
+        ))}
+      </div>
+    </details>
+
+    <!-- Link directo catálogo -->
+    <a
+      href="/productos"
+      class="text-sm font-bold uppercase tracking-wider text-zinc-400 hover:text-primary transition-colors py-4 border-b border-white/10"
+    >
+      Todo el Catálogo
+    </a>
+  </nav>
+</div>
+
+<script>
+  function initHeader() {
+    const header = document.getElementById("main-header");
+    if (!header) return;
+
+    // Limpiar listeners previos usando clone (para evitar duplicados en re-init)
+    const menuToggle = document.getElementById("menu-toggle");
+    const menuIcon = document.getElementById("menu-icon");
+    const closeIcon = document.getElementById("close-icon");
+    const cartButton = document.getElementById("cart-button");
+    const searchToggleMobile = document.getElementById("search-toggle-mobile");
+    const mobileSearchBar = document.getElementById("mobile-search-bar");
+    const desktopSearchInput = document.getElementById("search-desktop") as HTMLInputElement;
+    const mobileSearchInput = document.getElementById("search-mobile") as HTMLInputElement;
+
+    // Siempre re-query el mobile menu (puede haber sido recreado por View Transitions)
+    let mobileMenu = document.getElementById("mobile-menu");
+    let menuOpen = false;
+
+    // Evitar duplicar listeners en el cart button
+    if (!cartButton?.dataset.bound) {
+      cartButton?.addEventListener("click", () => {
+        window.dispatchEvent(new CustomEvent("open-cart"));
+      });
+      if (cartButton) cartButton.dataset.bound = "1";
+    }
+
+    const handleSearch = (e: KeyboardEvent) => {
+      if (e.key === "Enter") {
+        const query = (e.target as HTMLInputElement).value.trim();
+        if (query) {
+          window.location.href = `/productos?search=${encodeURIComponent(query)}`;
+        }
+      }
+    };
+
+    if (!desktopSearchInput?.dataset.bound) {
+      desktopSearchInput?.addEventListener("keydown", handleSearch);
+      if (desktopSearchInput) desktopSearchInput.dataset.bound = "1";
+    }
+    if (!mobileSearchInput?.dataset.bound) {
+      mobileSearchInput?.addEventListener("keydown", handleSearch);
+      if (mobileSearchInput) mobileSearchInput.dataset.bound = "1";
+    }
+
+    function openMenu() {
+      mobileMenu = document.getElementById("mobile-menu");
+      if (!mobileMenu || menuOpen) return;
+      menuOpen = true;
+      mobileMenu.classList.remove("translate-x-full", "pointer-events-none");
+      mobileMenu.classList.add("translate-x-0", "pointer-events-auto");
+      menuIcon?.classList.add("opacity-0", "scale-90", "-rotate-90");
+      closeIcon?.classList.remove("opacity-0", "scale-90", "rotate-90");
+      document.body.style.overflow = "hidden";
+    }
+
+    function closeMenu() {
+      mobileMenu = document.getElementById("mobile-menu");
+      if (!mobileMenu || !menuOpen) return;
+      menuOpen = false;
+      mobileMenu.classList.add("translate-x-full", "pointer-events-none");
+      mobileMenu.classList.remove("translate-x-0", "pointer-events-auto");
+      menuIcon?.classList.remove("opacity-0", "scale-90", "-rotate-90");
+      closeIcon?.classList.add("opacity-0", "scale-90", "rotate-90");
+      document.body.style.overflow = "";
+    }
+
+    // Rebind menu toggle (siempre fresco)
+    if (!menuToggle?.dataset.bound) {
+      menuToggle?.addEventListener("click", (e) => {
+        e.stopPropagation();
+        if (menuOpen) closeMenu();
+        else openMenu();
+      });
+      if (menuToggle) menuToggle.dataset.bound = "1";
+    }
+
+    if (!searchToggleMobile?.dataset.bound) {
+      searchToggleMobile?.addEventListener("click", (e) => {
+        e.preventDefault();
+        const isHidden = mobileSearchBar?.classList.contains("max-h-0");
+        if (isHidden) {
+          mobileSearchBar?.classList.remove("max-h-0", "pointer-events-none");
+          mobileSearchBar?.classList.add("max-h-20");
+          setTimeout(() => mobileSearchInput?.focus(), 100);
+        } else {
+          mobileSearchBar?.classList.add("max-h-0", "pointer-events-none");
+          mobileSearchBar?.classList.remove("max-h-20");
+        }
+      });
+      if (searchToggleMobile) searchToggleMobile.dataset.bound = "1";
+    }
+
+    // Re-bind mobile menu link clicks (mobile menu puede ser nuevo)
+    if (mobileMenu && !mobileMenu.dataset.bound) {
+      mobileMenu.addEventListener("click", (e) => {
+        if ((e.target as HTMLElement).closest("a")) closeMenu();
+      });
+      mobileMenu.dataset.bound = "1";
+    }
+
+    // Click fuera para cerrar (usar un solo listener global)
+    if (!(window as any).__headerClickOutside) {
+      document.addEventListener("click", (e) => {
+        if (!menuOpen) return;
+        const t = e.target as Node;
+        const mm = document.getElementById("mobile-menu");
+        const mt = document.getElementById("menu-toggle");
+        if (!mm?.contains(t) && !mt?.contains(t)) closeMenu();
+      });
+      (window as any).__headerClickOutside = true;
+    }
+
+    // Cerrar menú en navegación
+    closeMenu();
+  }
+
+  initHeader();
+  document.addEventListener("astro:after-swap", initHeader);
+</script>
+
+<style>
+  summary::-webkit-details-marker {
+    display: none;
+  }
+</style>

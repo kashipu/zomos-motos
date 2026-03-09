@@ -1,68 +1,104 @@
 {
   "seed": {
+    "marcas_moto": [
+      { "nombre": "Yamaha", "slug": "yamaha" },
+      { "nombre": "Honda", "slug": "honda" },
+      { "nombre": "Bajaj", "slug": "bajaj" },
+      { "nombre": "AKT", "slug": "akt" },
+      { "nombre": "Suzuki", "slug": "suzuki" },
+      { "nombre": "KTM", "slug": "ktm" }
+    ],
     "marcas": [
-      {
-        "nombre": "Yamaha",
-        "slug": "yamaha"
-      },
-      {
-        "nombre": "Honda",
-        "slug": "honda"
-      }
+      { "nombre": "AGV", "slug": "agv" },
+      { "nombre": "Alpinestars", "slug": "alpinestars" },
+      { "nombre": "Akrapovic", "slug": "akrapovic" },
+      { "nombre": "Brembo", "slug": "brembo" },
+      { "nombre": "Bell", "slug": "bell" },
+      { "nombre": "Dainese", "slug": "dainese" },
+      { "nombre": "Shoei", "slug": "shoei" },
+      { "nombre": "LS2", "slug": "ls2" }
     ],
     "modelos_moto": [
-      {
-        "nombre": "MT-09",
-        "slug": "mt-09",
-        "marca": "Yamaha"
-      },
-      {
-        "nombre": "CB500F",
-        "slug": "cb500f",
-        "marca": "Honda"
-      }
+      { "nombre": "MT-09", "slug": "mt-09", "marca_moto": "Yamaha", "anio_desde": 2017, "anio_hasta": 2025 },
+      { "nombre": "CB500F", "slug": "cb500f", "marca_moto": "Honda", "anio_desde": 2019, "anio_hasta": 2025 },
+      { "nombre": "Pulsar NS 200", "slug": "pulsar-ns-200", "marca_moto": "Bajaj", "anio_desde": 2018, "anio_hasta": 2025 },
+      { "nombre": "Nmax 155", "slug": "nmax-155", "marca_moto": "Yamaha", "anio_desde": 2020, "anio_hasta": 2025 },
+      { "nombre": "Duke 390", "slug": "duke-390", "marca_moto": "KTM", "anio_desde": 2017, "anio_hasta": 2025 },
+      { "nombre": "Gixxer 250", "slug": "gixxer-250", "marca_moto": "Suzuki", "anio_desde": 2019, "anio_hasta": 2025 }
     ],
     "categorias": [
-      {
-        "nombre": "Repuestos",
-        "slug": "repuestos",
-        "tipo": "MOTO",
-        "descripcion": "Repuestos originales y de calidad para motocicletas"
-      },
-      {
-        "nombre": "Cascos",
-        "slug": "cascos",
-        "tipo": "PILOTO",
-        "descripcion": "Cascos integrales y modulares de protección premium"
-      }
+      { "nombre": "Repuestos", "slug": "repuestos", "tipo": "MOTO", "descripcion": "Repuestos originales y de calidad para motocicletas" },
+      { "nombre": "Accesorios Moto", "slug": "accesorios-moto", "tipo": "MOTO", "descripcion": "Accesorios para personalización y mejora de motos" },
+      { "nombre": "Escapes", "slug": "escapes", "tipo": "MOTO", "descripcion": "Sistemas de escape y silenciadores de alto rendimiento" },
+      { "nombre": "Protección Moto", "slug": "proteccion-moto", "tipo": "MOTO", "descripcion": "Sliders, defensas y protecciones para tu moto" },
+      { "nombre": "Cascos", "slug": "cascos", "tipo": "PILOTO", "descripcion": "Cascos integrales y modulares de protección premium" },
+      { "nombre": "Chaquetas", "slug": "chaquetas", "tipo": "PILOTO", "descripcion": "Chaquetas de protección para moto" },
+      { "nombre": "Guantes", "slug": "guantes", "tipo": "PILOTO", "descripcion": "Guantes técnicos y de protección para pilotos" },
+      { "nombre": "Botas", "slug": "botas", "tipo": "PILOTO", "descripcion": "Botas de moto con protección y agarre" },
+      { "nombre": "Lubricantes y Limpieza", "slug": "lubricantes-limpieza", "tipo": "UNIVERSAL", "descripcion": "Productos de mantenimiento, lubricantes y limpieza para motos y equipo" }
     ],
     "productos_moto": [
       {
         "nombre": "Leva de Lujo Yamaha MT-09",
         "slug": "leva-lujo-yamaha-mt09",
-        "precio": 45.99,
+        "precio": 185000,
         "referencia": "LEVA-YAM-MT09-001",
         "descripcion": "<p>Leva de alta calidad para Yamaha MT-09. Fabricada con materiales premium garantizando durabilidad y rendimiento óptimo.</p>",
         "categoria": "Repuestos",
-        "marca_moto": "Yamaha",
-        "modelo_moto": "MT-09",
+        "marca": "Akrapovic",
+        "compatibilidades": [
+          { "marca_moto": "Yamaha", "modelo_moto": "MT-09" }
+        ],
         "metadatos_seo": {
           "titulo_meta": "Leva de Lujo para Yamaha MT-09 | Zomos Motos",
-          "descripcion_meta": "Leva premium para Yamaha MT-09. Durabilidad garantizada y máximo rendimiento. Envío rápido en Colombia."
+          "descripcion_meta": "Leva premium para Yamaha MT-09. Durabilidad garantizada y máximo rendimiento."
         }
       },
       {
         "nombre": "Filtro de Aire Premium Honda CB500F",
         "slug": "filtro-aire-honda-cb500f",
-        "precio": 32.50,
+        "precio": 95000,
         "referencia": "FILTRO-HON-CB500-001",
         "descripcion": "<p>Filtro de aire de alto flujo para Honda CB500F. Aumenta la eficiencia del motor y mejora la respuesta del acelerador.</p>",
         "categoria": "Repuestos",
-        "marca_moto": "Honda",
-        "modelo_moto": "CB500F",
+        "marca": "Brembo",
+        "compatibilidades": [
+          { "marca_moto": "Honda", "modelo_moto": "CB500F" }
+        ],
         "metadatos_seo": {
           "titulo_meta": "Filtro de Aire Premium Honda CB500F | Zomos Motos",
-          "descripcion_meta": "Filtro de aire de alto flujo para Honda CB500F. Mejor eficiencia y respuesta del motor. Envío garantizado."
+          "descripcion_meta": "Filtro de aire de alto flujo para Honda CB500F. Mejor eficiencia y respuesta."
+        }
+      },
+      {
+        "nombre": "Slider Protector Bajaj Pulsar NS 200",
+        "slug": "slider-bajaj-pulsar-ns200",
+        "precio": 120000,
+        "referencia": "SLIDER-BAJ-NS200-001",
+        "descripcion": "<p>Sliders de protección para Bajaj Pulsar NS 200. Protege tu moto en caso de caída con estilo y resistencia.</p>",
+        "categoria": "Protección Moto",
+        "marca": "Akrapovic",
+        "compatibilidades": [
+          { "marca_moto": "Bajaj", "modelo_moto": "Pulsar NS 200" },
+          { "marca_moto": "Bajaj", "modelo_moto": "Pulsar NS 200" }
+        ],
+        "metadatos_seo": {
+          "titulo_meta": "Slider Protector Bajaj Pulsar NS 200 | Zomos Motos",
+          "descripcion_meta": "Sliders premium para Bajaj Pulsar NS 200. Máxima protección con estilo."
+        }
+      },
+      {
+        "nombre": "Aceite de Cadena Spray 400ml",
+        "slug": "aceite-cadena-spray-400ml",
+        "precio": 32000,
+        "referencia": "LUB-GEN-CADENA-001",
+        "descripcion": "<p>Lubricante en spray para cadena de moto. Resistente al agua y alta adherencia. Compatible con todas las motos.</p>",
+        "categoria": "Lubricantes y Limpieza",
+        "marca": null,
+        "compatibilidades": [],
+        "metadatos_seo": {
+          "titulo_meta": "Aceite de Cadena Spray | Zomos Motos",
+          "descripcion_meta": "Lubricante spray para cadena de moto. Resistente al agua, uso universal."
         }
       }
     ],
@@ -70,73 +106,72 @@
       {
         "nombre": "Casco Integral Bell Moto-9",
         "slug": "casco-bell-moto-9",
-        "precio": 350.00,
+        "precio": 850000,
         "referencia": "CASCO-BELL-MOTO9-001",
-        "descripcion": "<p>Casco integral Bell Moto-9 con certificación DOT y ECE. Diseño aerodinámico con excelente ventilación y comodidad para largas jornadas.</p>",
+        "descripcion": "<p>Casco integral Bell Moto-9 con certificación DOT y ECE. Diseño aerodinámico con excelente ventilación.</p>",
         "categoria": "Cascos",
-        "marca_generico": false,
+        "marca": "Bell",
         "variantes_piloto": [
-          {
-            "talla": "M",
-            "color": "Negro",
-            "marca_piloto": "BELL",
-            "modificador_precio": 0,
-            "cantidad_stock": 12
-          },
-          {
-            "talla": "L",
-            "color": "Rojo",
-            "marca_piloto": "BELL",
-            "modificador_precio": 5.00,
-            "cantidad_stock": 8
-          },
-          {
-            "talla": "XL",
-            "color": "Blanco",
-            "marca_piloto": "BELL",
-            "modificador_precio": 5.00,
-            "cantidad_stock": 5
-          }
+          { "talla": "M", "color": "Negro", "cantidad_stock": 12 },
+          { "talla": "L", "color": "Rojo", "cantidad_stock": 8 },
+          { "talla": "XL", "color": "Blanco", "cantidad_stock": 5 }
         ],
         "metadatos_seo": {
           "titulo_meta": "Casco Bell Moto-9 - Protección Premium | Zomos Motos",
-          "descripcion_meta": "Casco integral Bell Moto-9 con certificación DOT/ECE. Máxima protección y comodidad para pilotos exigentes."
+          "descripcion_meta": "Casco integral Bell Moto-9 con certificación DOT/ECE. Máxima protección."
         }
       },
       {
-        "nombre": "Chaqueta de Moto Alpinestars GP Pro",
+        "nombre": "Chaqueta Alpinestars GP Pro",
         "slug": "chaqueta-alpinestars-gp-pro",
-        "precio": 450.00,
+        "precio": 1200000,
         "referencia": "CHAQ-ALPI-GPPRO-001",
-        "descripcion": "<p>Chaqueta de cuero premium Alpinestars GP Pro. Protección máxima con tecnología de absorción de impactos y ventilación estratégica.</p>",
-        "categoria": "Cascos",
-        "marca_generico": false,
+        "descripcion": "<p>Chaqueta de cuero premium Alpinestars GP Pro. Protección máxima con tecnología de absorción de impactos.</p>",
+        "categoria": "Chaquetas",
+        "marca": "Alpinestars",
         "variantes_piloto": [
-          {
-            "talla": "S",
-            "color": "Negro",
-            "marca_piloto": "ALPINESTARS",
-            "modificador_precio": 0,
-            "cantidad_stock": 6
-          },
-          {
-            "talla": "M",
-            "color": "Negro",
-            "marca_piloto": "ALPINESTARS",
-            "modificador_precio": 0,
-            "cantidad_stock": 10
-          },
-          {
-            "talla": "L",
-            "color": "Rojo/Negro",
-            "marca_piloto": "ALPINESTARS",
-            "modificador_precio": 15.00,
-            "cantidad_stock": 3
-          }
+          { "talla": "S", "color": "Negro", "cantidad_stock": 6 },
+          { "talla": "M", "color": "Negro", "cantidad_stock": 10 },
+          { "talla": "L", "color": "Rojo/Negro", "cantidad_stock": 3 }
         ],
         "metadatos_seo": {
-          "titulo_meta": "Chaqueta Alpinestars GP Pro - Cuero Premium | Zomos Motos",
-          "descripcion_meta": "Chaqueta de cuero Alpinestars GP Pro. Máxima protección y comodidad para pilotos profesionales y aficionados."
+          "titulo_meta": "Chaqueta Alpinestars GP Pro | Zomos Motos",
+          "descripcion_meta": "Chaqueta de cuero Alpinestars GP Pro. Máxima protección para pilotos."
+        }
+      },
+      {
+        "nombre": "Guantes Dainese Carbon 4",
+        "slug": "guantes-dainese-carbon-4",
+        "precio": 380000,
+        "referencia": "GUAN-DAI-CARB4-001",
+        "descripcion": "<p>Guantes Dainese Carbon 4 con protectores de carbono. Máximo agarre y protección para conducción deportiva.</p>",
+        "categoria": "Guantes",
+        "marca": "Dainese",
+        "variantes_piloto": [
+          { "talla": "M", "color": "Negro", "cantidad_stock": 15 },
+          { "talla": "L", "color": "Negro/Rojo", "cantidad_stock": 8 },
+          { "talla": "XL", "color": "Negro", "cantidad_stock": 4 }
+        ],
+        "metadatos_seo": {
+          "titulo_meta": "Guantes Dainese Carbon 4 | Zomos Motos",
+          "descripcion_meta": "Guantes con protectores de carbono Dainese. Agarre y protección deportiva."
+        }
+      },
+      {
+        "nombre": "Buff Tubular Multifunción Moto",
+        "slug": "buff-tubular-multifuncion-moto",
+        "precio": 25000,
+        "referencia": "ACC-GEN-BUFF-001",
+        "descripcion": "<p>Buff tubular multifunción para uso bajo el casco. Protege del frío, polvo y sol. Material elástico y transpirable.</p>",
+        "categoria": "Cascos",
+        "marca": null,
+        "variantes_piloto": [
+          { "talla": "UNICA", "color": "Negro", "cantidad_stock": 50 },
+          { "talla": "UNICA", "color": "Camuflaje", "cantidad_stock": 30 }
+        ],
+        "metadatos_seo": {
+          "titulo_meta": "Buff Tubular para Moto | Zomos Motos",
+          "descripcion_meta": "Buff multifunción para motociclistas. Protección contra frío y polvo."
         }
       }
     ]

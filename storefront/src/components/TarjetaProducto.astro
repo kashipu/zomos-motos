@@ -1,58 +1,67 @@
 ---
-import { Eye, ShoppingCart } from "lucide-react";
+import { ShoppingCart } from "lucide-react";
 
 interface Props {
   nombre?: string;
   precio?: number;
+  descuento?: number;
   categoria?: string;
+  compatibilidad?: string;
   imagen?: string;
   badge?: "Nuevo" | "Agotado" | "Oferta" | null;
   slug?: string;
-  rating?: number;
+  tipo?: "moto" | "piloto";
 }
 
 const {
   nombre = "Producto Premium",
   precio = 0,
+  descuento = 0,
   categoria = "Accesorios",
-  imagen = "https://images.unsplash.com/photo-1558981403-c5f9899a28bc?auto=format&fit=crop&q=80&w=400",
+  compatibilidad,
+  imagen = "/assets/placeholder-product.svg",
   badge = null,
   slug = "#",
-  rating = 5,
+  tipo = undefined,
 } = Astro.props;
+
+const tieneDescuento = descuento > 0;
+const precioFinal = tieneDescuento ? Math.round(precio * (1 - descuento / 100)) : precio;
+const badgeFinal = badge || (tieneDescuento ? "Oferta" : null);
 ---
 
 <article
-  class="bg-card-dark rounded-xl border border-white/5 overflow-hidden group hover:border-primary/50 transition-all duration-500 flex flex-col h-full"
+  class="bg-card-dark rounded-xl border border-white/5 overflow-hidden group hover:border-primary/50 transition-all duration-500 flex flex-col h-full relative"
 >
+  <!-- Link principal (Invisible pero cubre toda la card) -->
+  <a
+    href={`/productos/${slug}`}
+    class="absolute inset-0 z-10"
+    aria-label={`Ver detalle de ${nombre}`}></a>
+
   <!-- Contenedor de Imagen -->
   <div class="aspect-square relative overflow-hidden bg-zinc-900">
     <img
-      src={imagen ||
-        "https://images.unsplash.com/photo-1558981403-c5f91cbba527?auto=format&fit=crop&q=80&w=800"}
+      src={imagen || "/assets/placeholder-product.svg"}
       alt={nombre}
+      loading="lazy"
+      decoding="async"
       class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
     />
 
     <!-- Badge (Novedad, Oferta, etc) -->
     {
-      badge && (
-        <div class="absolute top-4 right-4 bg-primary text-white text-[10px] font-bold px-2 py-1 rounded uppercase tracking-tighter z-10 animate-fade-in">
-          {badge}
+      badgeFinal && (
+        <div class={`absolute top-4 left-4 text-white text-[16px] font-bold px-2 py-1 rounded uppercase tracking-normal z-20 ${badgeFinal === "Oferta" ? "bg-green-600" : badgeFinal === "Agotado" ? "bg-zinc-600" : "bg-primary"}`}>
+          {badgeFinal === "Oferta" ? `-${descuento}%` : badgeFinal}
         </div>
       )
     }
 
-    <!-- Botón Rápido (Solo visible en hover para mobile o siempre en desktop) -->
+    <!-- Overlay Visual (hover) -->
     <div
-      class="absolute inset-0 bg-background-dark/40 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center gap-3"
+      class="absolute inset-0 bg-background-dark/20 opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none"
     >
-      <a
-        href={`/productos/${slug}`}
-        class="p-3 bg-white text-background-dark rounded-full hover:bg-primary hover:text-white transition-all transform translate-y-4 group-hover:translate-y-0 duration-300"
-      >
-        <Eye size={20} />
-      </a>
     </div>
   </div>
 
@@ -65,25 +74,110 @@ const {
         {nombre}
       </h3>
       <p
-        class="text-zinc-500 text-[10px] font-bold uppercase tracking-widest mt-1"
+        class="text-zinc-400 text-[10px] font-bold uppercase tracking-widest mt-1"
       >
         {categoria}
       </p>
+      {compatibilidad && (() => {
+        const refs = compatibilidad.split(", ");
+        const mostrar = refs.slice(0, 1).join(", ");
+        const extras = refs.length - 2;
+        return (
+          <p class="text-primary/70 text-[10px] font-bold uppercase tracking-widest mt-1 line-clamp-1">
+            {mostrar}{extras > 0 && ` +${extras}`}
+          </p>
+        );
+      })()}
     </div>
 
     <div
       class="mt-auto pt-4 flex items-center justify-between border-t border-white/5"
     >
-      <span class="text-xl font-bold text-white tracking-tighter"
-        >${(precio || 0).toLocaleString("es-ES")}</span
-      >
-      <button
-        class="size-10 rounded-lg bg-white/5 flex items-center justify-center hover:bg-primary transition-colors active:scale-90"
-      >
-        <ShoppingCart size={18} />
-      </button>
+      <div class="flex items-baseline gap-2">
+        {tieneDescuento ? (
+          <>
+            <span class="text-xl font-bold text-white tracking-tight z-20">
+              $ {precioFinal.toLocaleString("es-CO")}
+            </span>
+            <span class="text-sm text-zinc-500 line-through">
+              $ {precio.toLocaleString("es-CO")}
+            </span>
+          </>
+        ) : (
+          <span class="text-xl font-bold text-white tracking-tight z-20">
+            $ {(precio || 0).toLocaleString("es-CO")}
+          </span>
+        )}
+      </div>
+      {tipo === "piloto" ? (
+        <!-- Piloto: ir al detalle para seleccionar talla/color -->
+        <a
+          href={`/productos/${slug}`}
+          class="size-10 rounded-lg bg-white/5 flex items-center justify-center hover:bg-primary transition-colors active:scale-90 relative z-30"
+          aria-label="Ver opciones"
+        >
+          <ShoppingCart size={18} />
+        </a>
+      ) : (
+        <!-- Moto: agregar directamente al carrito -->
+        <button
+          class="add-to-cart-btn size-10 rounded-lg bg-white/5 flex items-center justify-center hover:bg-primary transition-colors active:scale-90 relative z-30"
+          aria-label="Añadir al carrito"
+          data-id={slug}
+          data-nombre={nombre}
+          data-precio={precioFinal}
+          data-sku={slug}
+          data-imagen={imagen}
+          data-tipo="moto"
+          data-compatibilidad={compatibilidad || ""}
+        >
+          <ShoppingCart size={18} />
+        </button>
+      )}
     </div>
   </div>
 </article>
 
+<script>
+  import { addToCart, type CartItem } from "@/store/cart";
 
+  function setupAddToCartButtons() {
+    document.querySelectorAll<HTMLButtonElement>(".add-to-cart-btn").forEach((btn) => {
+      if (btn.dataset.bound === "1") return;
+      btn.dataset.bound = "1";
+
+      btn.addEventListener("click", (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+
+        const item: CartItem = {
+          cartKey: btn.dataset.id || "",
+          id: btn.dataset.id || "",
+          nombre: btn.dataset.nombre || "",
+          sku: btn.dataset.sku || "",
+          precio: Number(btn.dataset.precio) || 0,
+          cantidad: 1,
+          imagen: btn.dataset.imagen || undefined,
+          tipo: (btn.dataset.tipo as "moto" | "piloto") || "moto",
+        };
+
+        if (btn.dataset.compatibilidad) {
+          item.compatibilidad = btn.dataset.compatibilidad;
+        }
+
+        addToCart(item);
+
+        // Feedback visual
+        btn.classList.add("bg-green-600");
+        btn.classList.remove("bg-white/5");
+        setTimeout(() => {
+          btn.classList.remove("bg-green-600");
+          btn.classList.add("bg-white/5");
+        }, 800);
+      });
+    });
+  }
+
+  setupAddToCartButtons();
+  document.addEventListener("astro:after-swap", setupAddToCartButtons);
+</script>

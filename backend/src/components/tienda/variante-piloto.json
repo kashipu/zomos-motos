@@ -1,0 +1,26 @@
+{
+  "collectionName": "components_tienda_variantes_piloto",
+  "info": {
+    "displayName": "Variante de Piloto",
+    "icon": "user-check",
+    "description": "Talla, color y stock por variante"
+  },
+  "options": {},
+  "attributes": {
+    "talla": {
+      "type": "enumeration",
+      "required": true,
+      "enum": ["XS", "S", "M", "L", "XL", "XXL", "UNICA"]
+    },
+    "color": {
+      "type": "string",
+      "required": true
+    },
+    "cantidad_stock": {
+      "type": "integer",
+      "required": true,
+      "min": 0,
+      "default": 0
+    }
+  }
+}

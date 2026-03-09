@@ -1,0 +1,30 @@
+{
+  "collectionName": "components_compartido_metadatos_seos",
+  "info": {
+    "displayName": "Metadatos SEO",
+    "icon": "search",
+    "description": "SEO Metadata global"
+  },
+  "options": {},
+  "attributes": {
+    "titulo_meta": {
+      "type": "string",
+      "maxLength": 60,
+      "required": true
+    },
+    "descripcion_meta": {
+      "type": "text",
+      "maxLength": 160,
+      "required": true
+    },
+    "imagen_meta": {
+      "type": "media",
+      "multiple": false,
+      "required": false,
+      "allowedTypes": ["images"]
+    },
+    "url_canonica_personalizada": {
+      "type": "string"
+    }
+  }
+}

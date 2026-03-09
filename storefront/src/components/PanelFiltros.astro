@@ -1,126 +1,258 @@
 ---
-import { Filter, ChevronDown, RotateCcw } from "lucide-react";
+import { Filter, ChevronDown, RotateCcw, X } from "lucide-react";
 
 interface Props {
+  tipo?: "moto" | "piloto";
   categorias?: { nombre: string; slug: string }[];
-  marcas?: string[];
+  marcas?: { nombre: string; slug: string }[];
+  marcasMoto?: { nombre: string; slug: string }[];
+  modelosMoto?: { nombre: string; slug: string }[];
 }
 
 const {
+  tipo,
   categorias = [],
-  marcas = ["Alpinestars", "Dainese", "Brembo", "Akrapovič"],
+  marcas = [],
+  marcasMoto = [],
+  modelosMoto = [],
 } = Astro.props;
+
+const currentUrl = Astro.url;
+
+function getFilterUrl(key: string, value: string | null) {
+  const params = new URLSearchParams(currentUrl.search);
+  if (value) {
+    params.set(key, value);
+  } else {
+    params.delete(key);
+  }
+  // Al quitar marca-moto, también quitar modelo
+  if (key === "marca-moto" && !value) {
+    params.delete("modelo");
+  }
+  return `/productos?${params.toString()}`;
+}
+
+const clearUrl = tipo ? `/productos?type=${tipo}` : "/productos";
+
+const showMarcasMoto = (!tipo || tipo === "moto") && marcasMoto.length > 0;
+const showModelosMoto = modelosMoto.length > 0;
+const showMarcasEquipo = marcas.length > 0;
 ---
 
-<aside class="w-full lg:w-72 flex-shrink-0">
+<!-- Botón Gatillo Mobile (Flotante) -->
+<button
+  id="filter-trigger"
+  class="lg:hidden fixed bottom-6 right-6 z-[60] flex items-center gap-2 bg-primary text-background-dark px-6 py-3 rounded-full font-bold shadow-2xl shadow-primary/40 active:scale-95 hover:scale-105 hover:bg-white transition-all duration-300"
+>
+  <Filter size={18} />
+  Filtros
+</button>
+
+<!-- Overlay Mobile -->
+<div
+  id="filter-overlay"
+  class="fixed inset-0 bg-black/80 backdrop-blur-sm z-[70] hidden opacity-0 transition-opacity duration-300 lg:hidden"
+></div>
+
+<!-- Panel de Filtros -->
+<aside
+  id="filter-sidebar"
+  class="fixed inset-y-0 left-0 w-[85%] max-w-sm bg-background-dark z-[80] transform -translate-x-full lg:translate-x-0 transition-transform duration-300 ease-out lg:relative lg:inset-auto lg:w-72 lg:bg-transparent lg:z-0 lg:block lg:flex-shrink-0"
+>
   <div
-    class="sticky top-24 flex flex-col gap-6 bg-card-dark/30 p-6 rounded-2xl border border-white/10 shadow-sm"
+    class="flex flex-col gap-6 bg-card-dark lg:bg-card-dark/40 p-6 lg:p-7 border-r lg:border border-white/10 lg:rounded-3xl shadow-xl h-full lg:h-auto lg:sticky lg:top-28 backdrop-blur-md overflow-y-auto lg:overflow-visible"
   >
-    <div
-      class="flex items-center justify-between border-b border-white/10 pb-4"
-    >
-      <h3
-        class="text-white text-xl font-bold uppercase tracking-tight font-display"
-      >
+    <div class="flex items-center justify-between border-b border-white/10 pb-5">
+      <h3 class="text-white text-xl font-bold uppercase tracking-tight font-display">
         Filtros
       </h3>
-      <Filter size={18} className="text-primary" />
+      <button id="filter-close" class="lg:hidden text-zinc-400 hover:text-white">
+        <X size={24} />
+      </button>
+      <Filter size={18} className="hidden lg:block text-primary" />
     </div>
 
     <!-- Categorías -->
-    <div class="space-y-4">
-      <div class="flex items-center justify-between px-1">
-        <span class="text-sm font-bold uppercase tracking-widest text-white"
-          >Categorías</span
-        >
-        <ChevronDown size={16} className="text-gray-500" />
+    <details class="group/section" open>
+      <summary class="flex items-center justify-between px-1 cursor-pointer list-none">
+        <span class="text-xs font-bold uppercase tracking-widest text-primary/80">Categorías</span>
+        <ChevronDown size={14} className="text-zinc-400 group-open/section:rotate-180 transition-transform" />
+      </summary>
+      <div class="flex flex-col gap-2 mt-4">
+        {categorias.map((cat) => (
+          <a
+            href={getFilterUrl("categoria", currentUrl.searchParams.get("categoria") === cat.slug ? null : cat.slug)}
+            class={`flex items-center gap-3 group cursor-pointer p-1 rounded-md transition-colors ${currentUrl.searchParams.get("categoria") === cat.slug ? "bg-primary/10" : ""}`}
+          >
+            <div class={`h-4 w-4 rounded border border-white/10 flex items-center justify-center transition-all ${currentUrl.searchParams.get("categoria") === cat.slug ? "bg-primary border-primary" : "bg-background-dark"}`}>
+              {currentUrl.searchParams.get("categoria") === cat.slug && (
+                <span class="text-[10px] text-background-dark font-black">✓</span>
+              )}
+            </div>
+            <span class={`text-sm transition-colors ${currentUrl.searchParams.get("categoria") === cat.slug ? "text-white font-bold" : "text-gray-400 group-hover:text-white"}`}>
+              {cat.nombre}
+            </span>
+          </a>
+        ))}
       </div>
-      <div class="flex flex-col gap-2">
-        {
-          categorias.map((cat) => (
-            <label class="flex items-center justify-between group cursor-pointer">
-              <div class="flex items-center gap-3">
-                <input
-                  type="checkbox"
-                  class="rounded border-white/10 bg-background-dark text-primary focus:ring-primary h-4 w-4 transition-all"
-                />
-                <span class="text-sm text-gray-400 group-hover:text-white transition-colors">
-                  {cat.nombre}
-                </span>
+    </details>
+
+    <!-- Marcas de Moto (solo en contexto moto o sin tipo) -->
+    {showMarcasMoto && (
+      <details class="group/section pt-4 border-t border-white/10/50" open>
+        <summary class="flex items-center justify-between px-1 cursor-pointer list-none">
+          <span class="text-xs font-bold uppercase tracking-widest text-primary/80">Marca de Moto</span>
+          <ChevronDown size={14} className="text-zinc-400 group-open/section:rotate-180 transition-transform" />
+        </summary>
+        <div class="flex flex-col gap-2 mt-4">
+          {marcasMoto.map((m) => (
+            <a
+              href={getFilterUrl("marca-moto", currentUrl.searchParams.get("marca-moto") === m.slug ? null : m.slug)}
+              class={`flex items-center gap-3 group cursor-pointer p-1 rounded-md transition-colors ${currentUrl.searchParams.get("marca-moto") === m.slug ? "bg-primary/10" : ""}`}
+            >
+              <div class={`h-4 w-4 rounded border border-white/10 flex items-center justify-center transition-all ${currentUrl.searchParams.get("marca-moto") === m.slug ? "bg-primary border-primary" : "bg-background-dark"}`}>
+                {currentUrl.searchParams.get("marca-moto") === m.slug && (
+                  <span class="text-[10px] text-background-dark font-black">✓</span>
+                )}
               </div>
-              <span class="text-[10px] text-gray-600 font-mono">08</span>
-            </label>
-          ))
-        }
-      </div>
-    </div>
-
-    <!-- Marcas -->
-    <div class="space-y-4 pt-4 border-t border-white/10/50">
-      <div class="flex items-center justify-between px-1">
-        <span class="text-sm font-bold uppercase tracking-widest text-white"
-          >Marcas</span
-        >
-        <ChevronDown size={16} className="text-gray-500" />
-      </div>
-      <div class="flex flex-col gap-2">
-        {
-          marcas.map((marca) => (
-            <label class="flex items-center gap-3 cursor-pointer group">
-              <input
-                type="checkbox"
-                class="rounded border-white/10 bg-background-dark text-primary focus:ring-primary h-4 w-4 transition-all"
-              />
-              <span class="text-sm text-gray-400 group-hover:text-white transition-colors">
-                {marca}
+              <span class={`text-sm transition-colors ${currentUrl.searchParams.get("marca-moto") === m.slug ? "text-white font-bold" : "text-gray-400 group-hover:text-white"}`}>
+                {m.nombre}
               </span>
-            </label>
-          ))
-        }
-      </div>
-    </div>
-
-    <!-- Rango de Precio (Visual) -->
-    <div class="space-y-4 pt-4 border-t border-white/10/50">
-      <p class="text-sm font-bold uppercase tracking-widest text-white px-1">
-        Precio
-      </p>
-      <div class="px-1 pt-2">
-        <div class="h-1.5 w-full bg-white/10 rounded-full relative">
-          <div
-            class="absolute left-1/4 right-1/4 h-full bg-primary rounded-full"
-          >
-          </div>
-          <div
-            class="absolute left-1/4 top-1/2 -translate-y-1/2 h-4 w-4 bg-white border-2 border-primary rounded-full cursor-pointer shadow-lg hover:scale-110 transition-transform"
-          >
-          </div>
-          <div
-            class="absolute right-1/4 top-1/2 -translate-y-1/2 h-4 w-4 bg-white border-2 border-primary rounded-full cursor-pointer shadow-lg hover:scale-110 transition-transform"
-          >
-          </div>
+            </a>
+          ))}
         </div>
-        <div
-          class="flex justify-between mt-4 text-[10px] font-bold text-gray-500 uppercase tracking-widest"
+      </details>
+    )}
+
+    <!-- Modelos de Moto (aparece al seleccionar marca de moto) -->
+    {showModelosMoto && (
+      <details class="group/section pt-4 border-t border-white/10/50" open>
+        <summary class="flex items-center justify-between px-1 cursor-pointer list-none">
+          <span class="text-xs font-bold uppercase tracking-widest text-primary/80">Modelo</span>
+          <ChevronDown size={14} className="text-zinc-400 group-open/section:rotate-180 transition-transform" />
+        </summary>
+        <div class="flex flex-col gap-2 mt-4">
+          {modelosMoto.map((m) => (
+            <a
+              href={getFilterUrl("modelo", currentUrl.searchParams.get("modelo") === m.slug ? null : m.slug)}
+              class={`flex items-center gap-3 group cursor-pointer p-1 rounded-md transition-colors ${currentUrl.searchParams.get("modelo") === m.slug ? "bg-primary/10" : ""}`}
+            >
+              <div class={`h-4 w-4 rounded border border-white/10 flex items-center justify-center transition-all ${currentUrl.searchParams.get("modelo") === m.slug ? "bg-primary border-primary" : "bg-background-dark"}`}>
+                {currentUrl.searchParams.get("modelo") === m.slug && (
+                  <span class="text-[10px] text-background-dark font-black">✓</span>
+                )}
+              </div>
+              <span class={`text-sm transition-colors ${currentUrl.searchParams.get("modelo") === m.slug ? "text-white font-bold" : "text-gray-400 group-hover:text-white"}`}>
+                {m.nombre}
+              </span>
+            </a>
+          ))}
+        </div>
+      </details>
+    )}
+
+    <!-- Marcas de Equipamiento (solo en contexto piloto o sin tipo) -->
+    {showMarcasEquipo && (
+      <details class="group/section pt-4 border-t border-white/10/50" open>
+        <summary class="flex items-center justify-between px-1 cursor-pointer list-none">
+          <span class="text-xs font-bold uppercase tracking-widest text-primary/80">Marca</span>
+          <ChevronDown size={14} className="text-zinc-400 group-open/section:rotate-180 transition-transform" />
+        </summary>
+        <div class="flex flex-col gap-2 mt-4">
+          {marcas.map((m) => (
+            <a
+              href={getFilterUrl("brand", currentUrl.searchParams.get("brand") === m.slug ? null : m.slug)}
+              class={`flex items-center gap-3 group cursor-pointer p-1 rounded-md transition-colors ${currentUrl.searchParams.get("brand") === m.slug ? "bg-primary/10" : ""}`}
+            >
+              <div class={`h-4 w-4 rounded border border-white/10 flex items-center justify-center transition-all ${currentUrl.searchParams.get("brand") === m.slug ? "bg-primary border-primary" : "bg-background-dark"}`}>
+                {currentUrl.searchParams.get("brand") === m.slug && (
+                  <span class="text-[10px] text-background-dark font-black">✓</span>
+                )}
+              </div>
+              <span class={`text-sm transition-colors ${currentUrl.searchParams.get("brand") === m.slug ? "text-white font-bold" : "text-gray-400 group-hover:text-white"}`}>
+                {m.nombre}
+              </span>
+            </a>
+          ))}
+        </div>
+      </details>
+    )}
+
+    <!-- Rango de Precio -->
+    <details class="group/section pt-4 border-t border-white/10/50" open>
+      <summary class="flex items-center justify-between px-1 cursor-pointer list-none">
+        <span class="text-xs font-bold uppercase tracking-widest text-primary/80">Rango de Precio</span>
+        <ChevronDown size={14} className="text-zinc-400 group-open/section:rotate-180 transition-transform" />
+      </summary>
+      <div class="flex flex-col gap-2 mt-4">
+        <a
+          href={getFilterUrl("max_price", currentUrl.searchParams.get("max_price") === "200000" ? null : "200000")}
+          class={`text-xs p-2 rounded-lg border border-white/5 transition-all ${currentUrl.searchParams.get("max_price") === "200000" ? "bg-primary text-background-dark font-bold" : "bg-white/5 text-gray-400 hover:text-white"}`}
         >
-          <span>$0</span>
-          <span>$5,000+</span>
-        </div>
+          Hasta $200.000
+        </a>
+        <a
+          href={getFilterUrl("max_price", currentUrl.searchParams.get("max_price") === "500000" ? null : "500000")}
+          class={`text-xs p-2 rounded-lg border border-white/5 transition-all ${currentUrl.searchParams.get("max_price") === "500000" ? "bg-primary text-background-dark font-bold" : "bg-white/5 text-gray-400 hover:text-white"}`}
+        >
+          Hasta $500.000
+        </a>
+        <a
+          href={getFilterUrl("min_price", currentUrl.searchParams.get("min_price") === "500000" ? null : "500000")}
+          class={`text-xs p-2 rounded-lg border border-white/5 transition-all ${currentUrl.searchParams.get("min_price") === "500000" ? "bg-primary text-background-dark font-bold" : "bg-white/5 text-gray-400 hover:text-white"}`}
+        >
+          Más de $500.000
+        </a>
       </div>
-    </div>
+    </details>
 
-    <button
-      class="mt-4 flex w-full items-center justify-center gap-2 rounded-xl h-12 bg-white/5 text-gray-300 text-xs font-bold uppercase tracking-[0.2em] hover:bg-primary hover:text-background-dark transition-all active:scale-95 group"
+    <a
+      href={clearUrl}
+      class="mt-4 flex w-full items-center justify-center gap-2 rounded-xl h-12 bg-white/5 text-gray-300 text-[10px] font-bold uppercase tracking-[0.2em] hover:bg-red-500/20 hover:text-red-400 hover:border-red-500/30 transition-all active:scale-95 group border border-white/5"
     >
-      <RotateCcw
-        size={14}
-        className="group-hover:rotate-[-45deg] transition-transform"
-      />
-      Reiniciar Filtros
-    </button>
+      <RotateCcw size={14} className="group-hover:rotate-[-45deg] transition-transform" />
+      Limpiar Filtros
+    </a>
   </div>
 </aside>
 
+<script>
+  function setupFilters() {
+    const trigger = document.getElementById("filter-trigger");
+    const overlay = document.getElementById("filter-overlay");
+    const sidebar = document.getElementById("filter-sidebar");
+    const close = document.getElementById("filter-close");
 
+    function openFilters() {
+      overlay?.classList.remove("hidden");
+      setTimeout(() => {
+        overlay?.classList.add("opacity-100");
+        sidebar?.classList.remove("-translate-x-full");
+      }, 10);
+      document.body.style.overflow = "hidden";
+    }
 
+    function closeFilters() {
+      overlay?.classList.remove("opacity-100");
+      sidebar?.classList.add("-translate-x-full");
+      setTimeout(() => {
+        overlay?.classList.add("hidden");
+      }, 300);
+      document.body.style.overflow = "";
+    }
 
+    trigger?.addEventListener("click", openFilters);
+    overlay?.addEventListener("click", closeFilters);
+    close?.addEventListener("click", closeFilters);
+  }
+
+  setupFilters();
+  document.addEventListener("astro:after-swap", setupFilters);
+</script>
+
+<style>
+  summary::-webkit-details-marker {
+    display: none;
+  }
+</style>

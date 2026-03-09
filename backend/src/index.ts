@@ -2,6 +2,15 @@ export default {
   register(/* { strapi } */) {},
 
   async bootstrap({ strapi }) {
+    try {
+      await runSeed(strapi);
+    } catch (err: any) {
+      console.error("[Seed] Error fatal en seed (no bloquea Strapi):", err.message);
+    }
+  },
+};
+
+async function runSeed(strapi: any) {
     console.log("[Seed] Iniciando seed de datos...");
 
     // ═══════════════════════════════════════════════════════════════
@@ -729,5 +738,4 @@ export default {
     }
 
     console.log("[Seed] ¡Seed completado!");
-  },
-};
+}

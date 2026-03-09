@@ -1,4 +1,4 @@
-# Astro Exclusions
+# Astro
 node_modules/
 dist/
 .astro/
@@ -8,7 +8,24 @@ dist/
 .env.local
 
 # Logs
+*.log
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
 pnpm-debug.log*
+
+# Tests & reports
+*.test.ts
+*.test.tsx
+*.spec.ts
+*.spec.tsx
+e2e/
+test/
+test-results/
+test-output*
+playwright.config.*
+playwright-report/
+playwright-report.*
+vitest.config.*
+report.json
+coverage/

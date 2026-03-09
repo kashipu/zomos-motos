@@ -1,16 +1,21 @@
-# Strapi Exclusions
+# Strapi
 node_modules/
 dist/
+build/
 .cache/
 .tmp/
-build/
 .strapi/
+.strapi-updater.json
 
 # Environment
 .env
 
 # Database
-.sqlite
+*.db
+*.sqlite
 
-# Media uploads (usually handled by external storage in production)
+# Media uploads (volume en producción)
 public/uploads/
+
+# Logs
+*.log

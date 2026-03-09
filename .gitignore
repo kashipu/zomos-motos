@@ -1,5 +1,7 @@
-# Common exclusions
+# Dependencies
 node_modules/
+
+# Build output
 dist/
 build/
 .cache/
@@ -19,23 +21,47 @@ pnpm-debug.log*
 .env.development
 .env.*.local
 
-# Project specific
+# Astro
 .astro/
+
+# Strapi
 .strapi/
+.strapi-updater.json
 public/uploads/
-.next/
 
 # Databases
 *.db
 *.sqlite
 
-# OS and IDEs
+# OS
 .DS_Store
 Thumbs.db
+
+# IDEs
 .vscode/
 .idea/
 .project
 .classpath
 .settings/
-.swp
-.swo
+*.swp
+*.swo
+
+# Claude Code
+.claude/
+
+# Tests & reports (no necesarios en producción)
+*.test.ts
+*.test.tsx
+*.spec.ts
+*.spec.tsx
+**/e2e/
+**/test/
+**/test-results/
+**/test-output*
+**/__tests__/
+playwright.config.*
+playwright-report/
+playwright-report.*
+vitest.config.*
+report.json
+coverage/
